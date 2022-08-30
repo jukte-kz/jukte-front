@@ -6,17 +6,18 @@ import {useCallback, useEffect, useState} from "react";
 import axios from 'axios';
 import qs from 'qs';
 import Cookies from 'js-cookie';
-import {router} from "next/client";
+import {useRouter} from "next/router";
 
 export default function Login() {
     const phoneMask = '+7-(999)-999-99-99';
-    const passwordMask = '';
+    const passwordMask = '999999';
     const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [showError, setShowError] = useState(false);
     const [errMessage, setErrMesage] = useState('');
     const [checkComplete, setCheckComplete] = useState(false);
+    const router = useRouter();
 
     const onChangePhone = useCallback((event) => {
         setPhone(event.target.value);
@@ -89,17 +90,21 @@ export default function Login() {
                             <div className="mb-2 block">
                                 <Label
                                     htmlFor="password"
-                                    value="Введите пароль"
+                                    value="Введите 6-значный пин-код"
                                 />
                             </div>
-                                <TextInput
-                                    value={password}
-                                    onChange={onChangePassword}
-                                    id="password"
-                                    type="password"
-                                    required={true}
-                                    sizing="lg"
-                                />
+                            <InputMask value={password} maskChar={null} onChange={onChangePassword} mask={passwordMask}>
+                                {(inputProps) => (
+                                    <TextInput
+                                        {...inputProps}
+                                        id="password"
+                                        type="password"
+                                        placeholder="Пароль"
+                                        required={true}
+                                        sizing="lg"
+                                    />
+                                )}
+                            </InputMask>
                         </div>
                         {showError && (
                             <h2 className='flex items-center gap-2'>

@@ -40,7 +40,6 @@ export default function Home () {
                 }
             }).then((res) => {
                 setUserInfo(res.data)
-                setUserSuccess(false)
                 setCancel(true)
                 setLoading(true)
             }).catch((err) => {
@@ -48,12 +47,12 @@ export default function Home () {
                     setCancel(true)
                 }
                 if (err.response.data.message === 'User has not access') {
-                    setUserSuccess(true)
                     Cookies.set('userSuccess', userSuccess)
                 }
             })
         }
     })
+
     return (
         <div>
             <Header removeUrl='/login'></Header>

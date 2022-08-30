@@ -11,6 +11,7 @@ export default function Registration () {
     const phoneMask = '+7-(999)-999-99-99';
     const otpMask = '999999';
     const iinMask = '999999999999';
+    const passwordMask = '999999';
     const [phone, setPhone] = useState('');
     const [otp, setOtp] = useState(String);
     const [iin, setIin] = useState('');
@@ -218,18 +219,21 @@ export default function Registration () {
                             <div className="mb-2 block">
                                 <Label
                                     htmlFor="password"
-                                    value="Придумайте пароль"
+                                    value="Придумайте 6-значный пин-код"
                                 />
                             </div>
-                            <TextInput
-                                id="password"
-                                type="password"
-                                placeholder="Пароль"
-                                required={true}
-                                sizing="lg"
-                                value={password}
-                                onChange={onChangePassword}
-                            />
+                            <InputMask value={password} maskChar={null} onChange={onChangePassword} mask={passwordMask}>
+                                {(inputProps) => (
+                                    <TextInput
+                                        {...inputProps}
+                                        id="password"
+                                        type="password"
+                                        placeholder="Пароль"
+                                        required={true}
+                                        sizing="lg"
+                                    />
+                                )}
+                            </InputMask>
                         </div>
                         {showError && (
                             <h2 className='flex items-center gap-2'>
