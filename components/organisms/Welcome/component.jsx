@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export default function Welcome({toLogin}) {
     return (
-        <div className='flex min-h-full flex-col h-full justify-between items-center py-10 px-8 main-welcome'>
+        <div className='flex min-h-full flex-col h-full justify-between items-center py-4 px-4 main-welcome'>
             <Image alt='logo' src='/assets/image/logo.svg' width={160} height={40} />
             <div className='flex flex-col items-center'>
                 <Image alt='walp-image' width={328} height={328}  src='/assets/image/walp.svg'></Image>

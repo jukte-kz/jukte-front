@@ -5,6 +5,8 @@ import InputMask from 'react-input-mask';
 import {useCallback, useEffect, useState} from "react";
 import axios from 'axios';
 import qs from 'qs';
+import Cookies from 'js-cookie';
+import {router} from "next/client";
 
 export default function Login() {
     const phoneMask = '+7-(999)-999-99-99';
@@ -39,8 +41,9 @@ export default function Login() {
                 password: password
             }),
         }).then((res) => {
-            console.log(res.data)
             setShowError(false)
+            Cookies.set('accessToken', res.data.accessToken)
+            router.push('/home')
         }).catch((err) => {
             setError(err)
             if (err.response.data.message === 'User not found') {
@@ -74,7 +77,7 @@ export default function Login() {
                                         {...inputProps}
                                         color={error && '#C92140'}
                                         id="phone"
-                                        type="phone"
+                                        type="tel"
                                         placeholder="+7-777-777-77-77"
                                         required={true}
                                         sizing="lg"

@@ -1,15 +1,18 @@
 import Header from "../components/atoms/Header/component";
-import {Label, TextInput, Tabs} from "flowbite-react";
+import {Label, TextInput, Modal} from "flowbite-react";
 import InputMask from "react-input-mask";
 import Image from "next/image";
 import {useCallback, useEffect, useState} from "react";
 import axios from "axios";
 import qs from "qs";
+import {useRouter} from "next/router";
 
 export default function Registration () {
     const phoneMask = '+7-(999)-999-99-99';
+    const otpMask = '999999';
     const iinMask = '999999999999';
     const [phone, setPhone] = useState('');
+    const [otp, setOtp] = useState(String);
     const [iin, setIin] = useState('');
     const [name, setName] = useState('');
     const [surname, setSurname] = useState('');
@@ -18,13 +21,19 @@ export default function Registration () {
     const [showError, setShowError] = useState(false);
     const [errMessage, setErrMesage] = useState('');
     const [checkComplete, setCheckComplete] = useState(false);
+    const [otpCheckComplete, setOtpCheckComplete] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+    const [successText, setSuccessText] = useState(false);
+
+    const router = useRouter();
 
     const onChangePhone = useCallback((event) => {
         setPhone(event.target.value);
-        if(phone.length > 17) {
-            console.log('asd')
-        }
-    }, [phone.length]);
+    }, []);
+
+    const onChangeOtp = useCallback((event) => {
+        setOtp(event.target.value);
+    }, [])
 
     const onChangeIin = useCallback((event) => {
         setIin(event.target.value);
@@ -45,6 +54,10 @@ export default function Registration () {
     const onChangeRole = (e) => {
         setRole(e.target.value)
     }
+    const toEndRegister = () => {
+        setShowModal(false);
+        router.push('/login');
+    }
 
     const postRegister = () => {
         axios({
@@ -61,7 +74,9 @@ export default function Registration () {
                 iin: iin
             }),
         }).then((res) => {
-            console.log(res.data)
+            if (res.data) {
+                setShowModal(true)
+            }
             setShowError(false)
         }).catch((err) => {
             if (err.response.data.message.includes('E11000')) {
@@ -71,10 +86,33 @@ export default function Registration () {
         })
     }
 
+    const toVerifyOtp = () => {
+        axios({
+            method: 'put',
+            url: 'https://api.jukte.kz/auth/register/verify',
+            data: qs.stringify({
+                code: otp,
+                phone: phone.replace(/(-)|\+|\(|\)/g, '')
+            }),
+            headers: {
+                'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+            }
+        }).then((res) => {
+            if (res.data) {
+                setSuccessText(true)
+            }
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+
     useEffect(() => {
         setCheckComplete(
             phone.length === 18 && name.length > 0 &&
             surname.length > 0 && iin.length === 12 && password.length > 0 && role.length > 0
+        )
+        setOtpCheckComplete(
+            otp.length === 6
         )
     })
 
@@ -101,7 +139,7 @@ export default function Registration () {
                     </div>
                 </div>
                 <form className='flex flex-col registration-form'>
-                    <div className='mb-auto'>
+                    <div>
                         <div className='input-container'>
                             <div className="mb-2 block">
                                 <Label
@@ -114,7 +152,7 @@ export default function Registration () {
                                     <TextInput
                                         {...inputProps}
                                         id="phone"
-                                        type="phone"
+                                        type="tel"
                                         placeholder="+7-777-777-77-77"
                                         required={true}
                                         sizing="lg"
@@ -134,6 +172,7 @@ export default function Registration () {
                                     <TextInput
                                         {...inputProps}
                                         id="iin"
+                                        type='number'
                                         placeholder="ИИН"
                                         required={true}
                                         sizing="lg"
@@ -199,11 +238,60 @@ export default function Registration () {
                             </h2>
                         )}
                     </div>
-                    <button type='button' disabled={!checkComplete} onClick={postRegister} className='flex items-center px-4'>
+                    <button type='button' disabled={!checkComplete} onClick={postRegister} className='flex items-center'>
                         <p className="w-full">Зарегестрироваться</p>
                     </button>
                 </form>
             </div>
+            <Modal
+                show={showModal}
+                position="center"
+            >
+                <Modal.Body>
+                    {successText ? (
+                        <div className='w-full success-container'>
+                            <p className='text-center'>Регистрация прошла успешно!</p>
+                            <div className="success-animation mt-6">
+                                <svg className="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                    <circle className="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                                    <path className="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                                </svg>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="">
+                            <p className="text-base leading-relaxed">
+                                На номер <span className='violet-text'>{phone}</span> выслан <br/> 6-значный код, введите его для завершения регистрации.
+                            </p>
+                            <div className='input-container mt-6'>
+                                <InputMask value={otp} maskChar={null} onChange={onChangeOtp} mask={otpMask}>
+                                    {(inputProps) => (
+                                        <TextInput
+                                            {...inputProps}
+                                            id="otp"
+                                            type="text"
+                                            placeholder="Введите код"
+                                            required={true}
+                                            sizing="lg"
+                                        />
+                                    )}
+                                </InputMask>
+                            </div>
+                        </div>
+                    )}
+                </Modal.Body>
+                <Modal.Footer>
+                    {successText ? (
+                        <button className='w-full redirect-button' onClick={toEndRegister}>
+                            Завершить регистрацию
+                        </button>
+                    ): (
+                        <button className='w-full redirect-button' disabled={!otpCheckComplete} onClick={toVerifyOtp}>
+                            Подтвердить
+                        </button>
+                    )}
+                </Modal.Footer>
+            </Modal>
         </div>
     )
 }
