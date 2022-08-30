@@ -173,7 +173,7 @@ export default function Registration () {
                                     <TextInput
                                         {...inputProps}
                                         id="iin"
-                                        type='number'
+                                        type='tel'
                                         placeholder="ИИН"
                                         required={true}
                                         sizing="lg"
