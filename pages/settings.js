@@ -9,25 +9,28 @@ import Image from "next/image";
 
 export default function Settings () {
     const phoneMask = '+7-(999)-999-99-99';
-    const ibanMask = 'KZ99999999999999';
     const binMask = '999999999999';
-    const [phone, setPhone] = useState('');
     const [userInfo, setUserInfo] = useState();
     const [loading, setLoading] = useState(false);
     const [cancelReq, setCancelReq] = useState(false);
     const [showToast, setShowToast] = useState(false);
+    const [showCarNumber, setShowCardNumber] = useState(false);
 
+    const [phone, setPhone] = useState('');
     const [name, setName] = useState('');
     const [surname, setSurname] = useState('');
     const [iin, setIin] = useState('');
 
     const [companyName, setCompanyName] = useState('');
+    const [companyAddress, setCompanyAddress] = useState('');
     const [bin, setBin] = useState('');
     const [iban, setIban] = useState('');
 
     const [directorName, setDirectorName] = useState('');
     const [directorSurname, setDirectorSurname] = useState('');
     const [directorPhone, setDirectorPhone] = useState('');
+
+    const [carNumber, setCarNumber] = useState('');
 
     const onChangePhone = useCallback((event) => {
         setPhone(event.target.value);
@@ -42,6 +45,9 @@ export default function Settings () {
         setIin(event.target.value);
     }, []);
 
+    const onChangeCompanyAddress = useCallback((event) => {
+        setCompanyAddress(event.target.value);
+    }, []);
     const onChangeCompanyName = useCallback((event) => {
         setCompanyName(event.target.value);
     }, []);
@@ -62,6 +68,10 @@ export default function Settings () {
         setDirectorPhone(event.target.value);
     }, []);
 
+    const onChangeCarNumber = useCallback((event) => {
+        setCarNumber(event.target.value);
+    }, []);
+
     useEffect(() => {
         if (!cancelReq) {
             axios({
@@ -77,8 +87,21 @@ export default function Settings () {
                 setLoading(true);
                 setName(res.data.name);
                 setSurname(res.data.surname);
-                setPhone(res.data.phone);
                 setIin(res.data.iin);
+                setPhone(res.data.phone);
+                setCompanyName(res.data.company.name);
+                setCompanyAddress(res.data.company.contacts.address);
+                setBin(res.data.company.bin);
+                setIban(res.data.company.account);
+                setDirectorName(res.data.company.director.name);
+                setDirectorSurname(res.data.company.director.surname);
+                setDirectorPhone(res.data.company.director.phone);
+                setCarNumber(Cookies.get('carNumber'));
+                if (res.data.role === 'driver') {
+                   setShowCardNumber(true)
+                } else {
+                    setShowCardNumber(false)
+                }
             }).catch((err) => {
                 if (err) {
                     setCancelReq(true);
@@ -88,6 +111,7 @@ export default function Settings () {
     })
 
     const sendUserData = () => {
+        Cookies.set('carNumber', carNumber);
         axios({
             method: 'put',
             url: 'https://api.jukte.kz/user/',
@@ -99,16 +123,22 @@ export default function Settings () {
                     phone: phone.replace(/(-)|\+|\(|\)/g, ''),
                 },
                 company: {
-                    account: iban,
-                    bin: bin,
                     name: companyName,
+                    account: iban.toUpperCase(),
+                    bin: bin,
+                    director: {
+                        name: directorName,
+                        surname: directorSurname,
+                        iin: '981103350587',
+                        phone: directorPhone.replace(/(-)|\+|\(|\)/g, '')
+                    },
+                    contacts: {
+                        address: companyAddress,
+                    }
                 },
-                director: {
-                    name: directorName,
-                    surname: directorSurname,
-                    iin: '981103350587',
-                    phone: directorPhone.replace(/(-)|\+|\(|\)/g, '')
-                }
+                transport: {
+                    number: carNumber,
+                },
             }),
             headers: {
                 'content-type': 'application/x-www-form-urlencoded;charset=utf-8',
@@ -123,9 +153,10 @@ export default function Settings () {
 
     return (
         <div>
-            <Header removeUrl='/home' />
+            <Header removeUrl='/home' text='На главную' />
             <div className='settings-main py-6 px-4'>
                 <h1>Настройки</h1>
+                <hr className='mt-4' />
                 <div className="form-section mt-6 border-2 p-4">
                     <h4>Личные данные</h4>
                     {userInfo && (
@@ -176,7 +207,7 @@ export default function Settings () {
                                         <div className="mb-2 block">
                                             <Label
                                                 htmlFor="iin"
-                                                value="Введите ваш ИИН"
+                                                value="Введите ИИН (для нерезидентов Казахстана номер документа)"
                                             />
                                         </div>
                                         <InputMask value={iin} maskChar={null} onChange={onChangeIin}>
@@ -236,18 +267,32 @@ export default function Settings () {
                                                 value="Введите имя компании"
                                             />
                                         </div>
-                                        <InputMask value={companyName} maskChar={null} onChange={onChangeCompanyName}>
-                                            {(inputProps) => (
-                                                <TextInput
-                                                    {...inputProps}
-                                                    id="companyName"
-                                                    type="text"
-                                                    placeholder={companyName}
-                                                    required={true}
-                                                    sizing="lg"
-                                                />
-                                            )}
-                                        </InputMask>
+                                        <TextInput
+                                            onChange={onChangeCompanyName}
+                                            value={companyName}
+                                            id="companyName"
+                                            type="text"
+                                            placeholder={companyName}
+                                            required={true}
+                                            sizing="lg"
+                                        />
+                                    </div>
+                                    <div className='input-container'>
+                                        <div className="mb-2 block">
+                                            <Label
+                                                htmlFor="companyAddress"
+                                                value="Юридически  адрес компании"
+                                            />
+                                        </div>
+                                        <TextInput
+                                            onChange={onChangeCompanyAddress}
+                                            value={companyAddress}
+                                            id="companyAddress"
+                                            type="text"
+                                            placeholder={companyAddress ? (companyAddress) : ('Город, адрес')}
+                                            required={true}
+                                            sizing="lg"
+                                        />
                                     </div>
                                     <div className='input-container'>
                                         <div className="mb-2 block">
@@ -276,18 +321,15 @@ export default function Settings () {
                                                 value="Введите номер счета (IBAN)"
                                             />
                                         </div>
-                                        <InputMask value={iban} maskChar={null} onChange={onChangeIban} mask={ibanMask}>
-                                            {(inputProps) => (
-                                                <TextInput
-                                                    {...inputProps}
-                                                    id="iban"
-                                                    type="tel"
-                                                    placeholder={iban}
-                                                    required={true}
-                                                    sizing="lg"
-                                                />
-                                            )}
-                                        </InputMask>
+                                            <TextInput
+                                                onChange={onChangeIban}
+                                                value={iban}
+                                                id="iban"
+                                                type="text"
+                                                placeholder={iban}
+                                                required={true}
+                                                sizing="lg"
+                                            />
                                     </div>
                                 </div>
                             ) : (
@@ -313,18 +355,15 @@ export default function Settings () {
                                                 value="Введите имя директора"
                                             />
                                         </div>
-                                        <InputMask value={directorName} maskChar={null} onChange={onChangeDirectorName}>
-                                            {(inputProps) => (
-                                                <TextInput
-                                                    {...inputProps}
-                                                    id="directorName"
-                                                    type="text"
-                                                    placeholder={directorName}
-                                                    required={true}
-                                                    sizing="lg"
-                                                />
-                                            )}
-                                        </InputMask>
+                                        <TextInput
+                                            id="directorName"
+                                            type="text"
+                                            placeholder={directorName}
+                                            onChange={onChangeDirectorName}
+                                            value={directorName}
+                                            required={true}
+                                            sizing="lg"
+                                        />
                                     </div>
                                     <div className='input-container'>
                                         <div className="mb-2 block">
@@ -333,18 +372,15 @@ export default function Settings () {
                                                 value="Введите фамилию директора"
                                             />
                                         </div>
-                                        <InputMask value={directorSurname} maskChar={null} onChange={onChangeDirectorSurname}>
-                                            {(inputProps) => (
-                                                <TextInput
-                                                    {...inputProps}
-                                                    id="directorSurname"
-                                                    type="text"
-                                                    placeholder={directorSurname}
-                                                    required={true}
-                                                    sizing="lg"
-                                                />
-                                            )}
-                                        </InputMask>
+                                        <TextInput
+                                            id="directorSurname"
+                                            type="text"
+                                            placeholder={directorSurname}
+                                            required={true}
+                                            sizing="lg"
+                                            value={directorSurname}
+                                            onChange={onChangeDirectorSurname}
+                                        />
                                     </div>
                                     <div className='input-container'>
                                         <div className="mb-2 block">
@@ -377,6 +413,43 @@ export default function Settings () {
                         </form>
                     )}
                 </div>
+                {showCarNumber && (
+                    <div className="form-section mt-6 border-2 p-4">
+                        <h4>Данные машины</h4>
+                        {userInfo && (
+                            <form className='flex flex-col mt-4 login-form'>
+                                {loading ? (
+                                    <div className='mb-auto'>
+                                        <div className='input-container'>
+                                            <div className="mb-2 block">
+                                                <Label
+                                                    htmlFor="carNumber"
+                                                    value="Введите гос.номер машины"
+                                                />
+                                            </div>
+                                            <TextInput
+                                                id="carNumber"
+                                                type="text"
+                                                placeholder={carNumber ? (carNumber) : ('гос.номер')}
+                                                onChange={onChangeCarNumber}
+                                                value={carNumber}
+                                                required={true}
+                                                sizing="lg"
+                                            />
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className='w-full flex items-center justify-center'>
+                                        <div className="text-center">
+                                            <Spinner aria-label="Center-aligned spinner example" />
+                                        </div>
+                                    </div>
+                                )}
+                            </form>
+                        )}
+                    </div>
+
+                )}
                 <button type='button' className='flex items-center settings-button px-4 mt-4' onClick={sendUserData}>
                     <p className="w-full">Сохранить</p>
                 </button>

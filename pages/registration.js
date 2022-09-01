@@ -10,7 +10,6 @@ import {useRouter} from "next/router";
 export default function Registration () {
     const phoneMask = '+7-(999)-999-99-99';
     const otpMask = '999999';
-    const iinMask = '999999999999';
     const passwordMask = '999999';
     const [phone, setPhone] = useState('');
     const [otp, setOtp] = useState(String);
@@ -110,7 +109,7 @@ export default function Registration () {
     useEffect(() => {
         setCheckComplete(
             phone.length === 18 && name.length > 0 &&
-            surname.length > 0 && iin.length === 12 && password.length > 0 && role.length > 0
+            surname.length > 0 && iin.length > 0 && password.length > 0 && role.length > 0
         )
         setOtpCheckComplete(
             otp.length === 6
@@ -165,16 +164,16 @@ export default function Registration () {
                             <div className="mb-2 block">
                                 <Label
                                     htmlFor="iin"
-                                    value="Введите свои ИИН"
+                                    value="Введите ИИН (для нерезидентов Казахстана номер документа)"
                                 />
                             </div>
-                            <InputMask value={iin} maskChar={null} onChange={onChangeIin} mask={iinMask}>
+                            <InputMask value={iin} maskChar={null} onChange={onChangeIin}>
                                 {(inputProps) => (
                                     <TextInput
                                         {...inputProps}
                                         id="iin"
                                         type='tel'
-                                        placeholder="ИИН"
+                                        placeholder="Номер документа"
                                         required={true}
                                         sizing="lg"
                                     />

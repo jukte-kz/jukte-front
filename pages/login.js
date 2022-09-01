@@ -113,7 +113,7 @@ export default function Login() {
                             </h2>
                         )}
                     </div>
-                    <button disabled={!checkComplete} type='button' onClick={postLogin} className='flex items-center px-4'>
+                    <button disabled={!checkComplete} type='button' onClick={postLogin} className='flex login-button items-center px-4'>
                         <p className="w-full">Войти</p>
                         <Image width={24} height={24} alt='arrow-icon' src='/assets/icon/right-arrow.svg'></Image>
                     </button>

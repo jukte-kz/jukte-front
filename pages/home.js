@@ -7,21 +7,21 @@ import {useRouter} from "next/router";
 import Link from 'next/link'
 import Image from "next/image";
 import LinkBlock from "../components/atoms/LinkBlock/component";
+import MyCard from "../components/molecules /MyCard/component";
+import OpenCard from "../components/molecules /OpenCard/component";
 
 export default function Home () {
-    const [userSuccess, setUserSuccess] = useState(true);
+    const [userSuccess, setUserSuccess] = useState(false);
     const [cancel, setCancel] = useState(false);
+    const [cancelArchive, setCancelArchive] = useState(false);
+    const [cancelOpenOrders, setCancelOpenOrders] = useState(false);
     const [loading, setLoading] = useState();
-    const [userInfo, setUserInfo] = useState();
-    const [userSuccessMessage, setUserSuccessMessage] = useState('');
 
-    useEffect(() => {
-        if (!userSuccess) {
-            setUserSuccessMessage('верифицирован')
-        } else {
-            setUserSuccessMessage('не верифицирован')
-        }
-    })
+    const [userInfo, setUserInfo] = useState();
+    const [myOrders, setMyOrders] = useState(Array);
+    const [openOrders, setOpenOrders] = useState(Array);
+
+    const [userSuccessMessage, setUserSuccessMessage] = useState('');
 
     const router = useRouter();
 
@@ -42,6 +42,10 @@ export default function Home () {
                 setUserInfo(res.data)
                 setCancel(true)
                 setLoading(true)
+                Cookies.set('role',res.data.role)
+                if (!res.data.company) {
+                    setUserSuccess(true)
+                }
             }).catch((err) => {
                 if (err) {
                     setCancel(true)
@@ -53,9 +57,49 @@ export default function Home () {
         }
     })
 
+    useEffect(() => {
+        if(!cancelArchive) {
+            axios({
+                method: 'get',
+                url: 'https://api.jukte.kz/orders/archive',
+                headers: {
+                    'content-type': 'application/x-www-form-urlencoded;charset=utf-8',
+                    token: Cookies.get('accessToken')
+                }
+            }).then((res) => {
+                if (res.data.data.orders.length)
+                    setMyOrders(res.data.data.orders);
+                setCancelArchive(true)
+            })
+        }
+        if (!userSuccess) {
+            setUserSuccessMessage('верифицирован')
+        } else {
+            setUserSuccessMessage('не верифицирован')
+        }
+    })
+
+    useEffect(() => {
+        if(!cancelOpenOrders) {
+            axios({
+                method: 'get',
+                url: 'https://api.jukte.kz/orders',
+                headers: {
+                    'content-type': 'application/x-www-form-urlencoded;charset=utf-8',
+                    token: Cookies.get('accessToken')
+                }
+            }).then((res) => {
+                if (res.data.data.orders.length) {
+                    setOpenOrders(res.data.data.orders);
+                }
+                setCancelOpenOrders(true)
+            })
+        }
+    })
+
     return (
         <div>
-            <Header removeUrl='/login'></Header>
+            <Header removeUrl='/login' text='Выйти'></Header>
             {loading ? (
                 <div className='p-4'>
                     <div className='w-full info-title-container'>
@@ -69,9 +113,95 @@ export default function Home () {
                         <div className='elip2'/>
                     </div>
                     <LinkBlock removeUrl='/myOrders' title='Мои заявки' image='/assets/icon/myOrders.svg' />
-                    <LinkBlock removeUrl='/createOrders' title='Создать заявку' image='/assets/icon/createOrders.svg' />
+                    {userInfo.role === 'logistician' && (
+                        <LinkBlock removeUrl='/createOrders' title='Создать заявку' image='/assets/icon/createOrders.svg' />
+                    )}
+                    {userInfo.role === 'driver' && (
+                        <LinkBlock removeUrl='/openOrders' title='Открытые заявки' image='/assets/icon/createOrders.svg' />
+                    )}
                     <LinkBlock removeUrl='/settings' title='Настройки' image='/assets/icon/settings.svg' />
                     <LinkBlock removeUrl='/faq' title='Вопросы и ответы' image='/assets/icon/faq.svg' />
+                    <div className='my-orders-container py-8'>
+                        <div className='flex w-full justify-between items-center'>
+                            <h2>Мои заявки</h2>
+                            <Link href='/myOrders'>
+                                Посмотреть все
+                            </Link>
+                        </div>
+                        <div className='flex justify-end mt-2'>
+                            <div className="inline-flex shrink-0 items-center justify-center rounded bg-blue-50">
+                                <p className='p-2'>Количество: {myOrders.length}</p>
+                            </div>
+                        </div>
+                        {myOrders.length > 0 ? (
+                            <div className='flex flex-col gap-2 mt-4 bg-gray-400 p-4'>
+                                {
+                                    myOrders.slice(0,1).map((data, index) => {
+                                        return (
+                                            <MyCard
+                                                key={index}
+                                                product={data.product}
+                                                price={data.price}
+                                                weight={data.weight}
+                                                date={data.date}
+                                                type={data.type}
+                                                from={data.from}
+                                                to={data.to}
+                                                distance={data.distance}
+                                                description={data.description}
+                                                status={data.status}
+                                                role={userInfo.role}
+                                                phone={data.ownerPhone}
+                                                id={data._id}
+                                            />
+                                        )
+                                    })
+                                }
+                            </div>
+                        ) : (
+                            <p className='mt-4'>На данный момент у вас нету заявок</p>
+                        )}
+                    </div>
+                    {userInfo.role === 'driver' && (
+                        <div className='my-orders-container py-8'>
+                            <div className='flex w-full justify-between items-center'>
+                                <h2>Открытые заявки</h2>
+                                <Link href='/openOrders'>
+                                    Посмотреть все
+                                </Link>
+                            </div>
+                            <div className='flex justify-end mt-2'>
+                                <div className="inline-flex shrink-0 items-center justify-center rounded bg-blue-50">
+                                    <p className='p-2'>Количество: {openOrders.length}</p>
+                                </div>
+                            </div>
+                            {openOrders.length > 0 ? (
+                                <div className='flex flex-col gap-2 mt-4 bg-gray-400 p-4'>
+                                    {
+                                        myOrders.slice(0,1).map((data, index) => {
+                                            return (
+                                                <OpenCard
+                                                    key={index}
+                                                    product={data.product}
+                                                    price={data.price}
+                                                    weight={data.weight}
+                                                    date={data.date}
+                                                    type={data.type}
+                                                    from={data.from}
+                                                    to={data.to}
+                                                    distance={data.distance}
+                                                    description={data.description}
+                                                    status={data.status}
+                                                />
+                                            )
+                                        })
+                                    }
+                                </div>
+                            ) : (
+                                <p className='mt-4'>На данный момент свободных заявок нет</p>
+                            )}
+                        </div>
+                    )}
                 </div>
             ) : (
                 <div className='w-full h-[calc(100vh-5rem)] flex items-center justify-center'>
@@ -80,10 +210,6 @@ export default function Home () {
                     </div>
                 </div>
             )}
-            <div className='my-orders-container p-4'>
-                <h2>Мои заявки</h2>
-
-            </div>
             <Modal
                 show={userSuccess}
             >
