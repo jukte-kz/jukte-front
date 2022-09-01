@@ -167,18 +167,15 @@ export default function Registration () {
                                     value="Введите ИИН (для нерезидентов Казахстана номер документа)"
                                 />
                             </div>
-                            <InputMask value={iin} maskChar={null} onChange={onChangeIin}>
-                                {(inputProps) => (
-                                    <TextInput
-                                        {...inputProps}
-                                        id="iin"
-                                        type='tel'
-                                        placeholder="Номер документа"
-                                        required={true}
-                                        sizing="lg"
-                                    />
-                                )}
-                            </InputMask>
+                                <TextInput
+                                    onChange={onChangeIin}
+                                    value={iin}
+                                    id="iin"
+                                    type='tel'
+                                    placeholder="Номер документа"
+                                    required={true}
+                                    sizing="lg"
+                                />
                         </div>
                         <div className='input-container'>
                             <div className="mb-2 block">
