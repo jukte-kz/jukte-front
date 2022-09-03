@@ -1,15 +1,17 @@
 import Header from "../components/atoms/Header/component";
-import {Label, Spinner, TextInput, Toast} from "flowbite-react";
+import {Label, Modal, Spinner, TextInput, Toast} from "flowbite-react";
 import InputMask from "react-input-mask";
 import {useCallback, useEffect, useState} from "react";
 import axios from "axios";
 import qs from "qs";
 import Cookies from "js-cookie";
-import Image from "next/image";
+import {useRouter} from "next/router";
 
 export default function Settings () {
     const phoneMask = '+7-(999)-999-99-99';
     const binMask = '999999999999';
+    const router = useRouter();
+
     const [userInfo, setUserInfo] = useState();
     const [loading, setLoading] = useState(false);
     const [cancelReq, setCancelReq] = useState(false);
@@ -28,9 +30,12 @@ export default function Settings () {
 
     const [directorName, setDirectorName] = useState('');
     const [directorSurname, setDirectorSurname] = useState('');
-    const [directorPhone, setDirectorPhone] = useState('');
 
     const [carNumber, setCarNumber] = useState('');
+
+    const toEndSettings = () => {
+        router.push('/home')
+    }
 
     const onChangePhone = useCallback((event) => {
         setPhone(event.target.value);
@@ -130,7 +135,6 @@ export default function Settings () {
                         name: directorName,
                         surname: directorSurname,
                         iin: '981103350587',
-                        phone: directorPhone.replace(/(-)|\+|\(|\)/g, '')
                     },
                     contacts: {
                         address: companyAddress,
@@ -255,7 +259,7 @@ export default function Settings () {
                     )}
                 </div>
                 <div className="form-section mt-6 border-2 p-4">
-                    <h4>Данные компании</h4>
+                    <h4>Реквизиты компании</h4>
                     {userInfo && (
                         <form className='flex flex-col mt-4 login-form'>
                             {loading ? (
@@ -342,77 +346,6 @@ export default function Settings () {
                         </form>
                     )}
                 </div>
-                <div className="form-section mt-6 border-2 p-4">
-                    <h4>Данные директора компании</h4>
-                    {userInfo && (
-                        <form className='flex flex-col mt-4 login-form'>
-                            {loading ? (
-                                <div className='mb-auto'>
-                                    <div className='input-container'>
-                                        <div className="mb-2 block">
-                                            <Label
-                                                htmlFor="directorName"
-                                                value="Введите имя директора"
-                                            />
-                                        </div>
-                                        <TextInput
-                                            id="directorName"
-                                            type="text"
-                                            placeholder={directorName}
-                                            onChange={onChangeDirectorName}
-                                            value={directorName}
-                                            required={true}
-                                            sizing="lg"
-                                        />
-                                    </div>
-                                    <div className='input-container'>
-                                        <div className="mb-2 block">
-                                            <Label
-                                                htmlFor="directorSurname"
-                                                value="Введите фамилию директора"
-                                            />
-                                        </div>
-                                        <TextInput
-                                            id="directorSurname"
-                                            type="text"
-                                            placeholder={directorSurname}
-                                            required={true}
-                                            sizing="lg"
-                                            value={directorSurname}
-                                            onChange={onChangeDirectorSurname}
-                                        />
-                                    </div>
-                                    <div className='input-container'>
-                                        <div className="mb-2 block">
-                                            <Label
-                                                htmlFor="directorPhone"
-                                                value="Введите номер телефон директора"
-                                            />
-                                        </div>
-                                        <InputMask value={directorPhone} maskChar={null} onChange={onChangeDirectorPhone} mask={phoneMask}>
-                                            {(inputProps) => (
-                                                <TextInput
-                                                    {...inputProps}
-                                                    id="directorPhone"
-                                                    type="tel"
-                                                    placeholder="+7-777-777-77-77"
-                                                    required={true}
-                                                    sizing="lg"
-                                                />
-                                            )}
-                                        </InputMask>
-                                    </div>
-                                </div>
-                            ) : (
-                                <div className='w-full flex items-center justify-center'>
-                                    <div className="text-center">
-                                        <Spinner aria-label="Center-aligned spinner example" />
-                                    </div>
-                                </div>
-                            )}
-                        </form>
-                    )}
-                </div>
                 {showCarNumber && (
                     <div className="form-section mt-6 border-2 p-4">
                         <h4>Данные машины</h4>
@@ -423,18 +356,35 @@ export default function Settings () {
                                         <div className='input-container'>
                                             <div className="mb-2 block">
                                                 <Label
-                                                    htmlFor="carNumber"
+                                                    htmlFor="directorName"
                                                     value="Введите гос.номер машины"
                                                 />
                                             </div>
                                             <TextInput
-                                                id="carNumber"
+                                                id="directorName"
                                                 type="text"
-                                                placeholder={carNumber ? (carNumber) : ('гос.номер')}
-                                                onChange={onChangeCarNumber}
-                                                value={carNumber}
+                                                placeholder={directorName}
+                                                onChange={onChangeDirectorName}
+                                                value={directorName}
                                                 required={true}
                                                 sizing="lg"
+                                            />
+                                        </div>
+                                        <div className='input-container'>
+                                            <div className="mb-2 block">
+                                                <Label
+                                                    htmlFor="directorSurname"
+                                                    value="Выберите список документов"
+                                                />
+                                            </div>
+                                            <TextInput
+                                                id="directorSurname"
+                                                type="text"
+                                                placeholder={directorSurname}
+                                                required={true}
+                                                sizing="lg"
+                                                value={directorSurname}
+                                                onChange={onChangeDirectorSurname}
                                             />
                                         </div>
                                     </div>
@@ -453,20 +403,28 @@ export default function Settings () {
                 <button type='button' className='flex items-center settings-button px-4 mt-4' onClick={sendUserData}>
                     <p className="w-full">Сохранить</p>
                 </button>
-                {showToast && (
-                    <div className='fixed top-16 drop-shadow-lg right-4'>
-                        <Toast>
-                            <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-green-100 text-green-500 dark:bg-green-800 dark:text-green-200">
-                                <Image width={24} height={24} src='/assets/icon/check.svg'></Image>
-                            </div>
-                            <div className="ml-3 text-sm font-normal">
-                                Данные успешно обновлены
-                            </div>
-                            <Toast.Toggle />
-                        </Toast>
-                    </div>
-                )}
             </div>
+            <Modal
+                show={showToast}
+                position="center"
+            >
+                <Modal.Body>
+                    <div className='w-full success-container'>
+                        <p className='text-center'>Данные успешно обновлены!</p>
+                        <div className="success-animation mt-6">
+                            <svg className="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                <circle className="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                                <path className="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                            </svg>
+                        </div>
+                    </div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <button className='w-full redirect-button' onClick={toEndSettings}>
+                        Перейти на главную страницу
+                    </button>
+                </Modal.Footer>
+            </Modal>
         </div>
     )
 }

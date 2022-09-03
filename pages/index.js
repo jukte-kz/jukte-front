@@ -8,7 +8,7 @@ import Script from "next/script";
 export default function Home() {
     const router = useRouter();
     const toLogin = () => {
-        router.push('/login');
+        router.push('/registration');
     }
   return (
     <div className={styles.container}>

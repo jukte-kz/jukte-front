@@ -20,6 +20,20 @@ a {
   color: #4F52FF;
 }
 
+::placeholder {
+  color: #1A1A1A!important;
+  opacity: 1!important;
+}
+
+.disabled\:opacity-50:disabled {
+  opacity: 1!important;
+}
+
+.name__placeholder {
+  color: #1A1A1A!important;
+  opacity: 1!important;
+}
+
 * {
   box-sizing: border-box;
 }

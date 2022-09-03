@@ -11,6 +11,7 @@ import Select from 'react-select';
 import React from "react";
 import Script from "next/script";
 import {useRouter} from "next/router";
+import moment from "moment/moment";
 
 export const transport = [
     {
@@ -86,6 +87,8 @@ export default function createOrders() {
     const [checkCalc, setCheckCalc] = useState(false);
     const [checkSendOrder, setCheckSendOrder] = useState(false);
     const [showModal, setShowModal] = useState(false);
+    const [myOrderRedact, setMyOrderRedact] = useState(null);
+    const [roud, setRoud] = useState(null);
 
     const [myOrders, setMyOrders] = useState(Array);
     const [cancelArchive, setCancelArchive] = useState(false);
@@ -120,10 +123,9 @@ export default function createOrders() {
                     token: Cookies.get('accessToken')
                 }
             }).then((res) => {
-                if (res.data.data.orders.length) {
+                if (res.data.data) {
                     setMyOrders(res.data.data.orders);
                 }
-                setLoading(false)
                 setCancelArchive(true)
             })
         }
@@ -139,6 +141,15 @@ export default function createOrders() {
             parseInt(price.replace(/\s/g, '')) > 0);
     })
 
+    useEffect(() => {
+        setRoud(router.asPath.replace('/',''))
+        if (roud) {
+            setMyOrderRedact(myOrders.find(obj => {
+                return obj._id === roud
+            }))
+        }
+    })
+
     const onChangeDate = (date) => {
         setDate(date);
     }
@@ -148,8 +159,8 @@ export default function createOrders() {
 
     const sendOrderData = () => {
         axios({
-            method: 'post',
-            url: 'https://api.jukte.kz/orders/',
+            method: 'put',
+            url: `https://api.jukte.kz/orders/${roud}`,
             data: qs.stringify({
                 product: product,
                 description: description,
@@ -202,81 +213,6 @@ export default function createOrders() {
                 <hr className='mt-4' />
                 <form className='flex flex-col mt-4 login-form'>
                     <div className='mb-auto'>
-                        <div className='input-container'>
-                            <div className="mb-2 block">
-                                <Label
-                                    htmlFor="product"
-                                    value="Наименование товара"
-                                />
-                            </div>
-                            <TextInput
-                                id="product"
-                                type="text"
-                                placeholder=''
-                                required={true}
-                                sizing="lg"
-                                value={product}
-                                onChange={onChangeProduct}
-                            />
-                        </div>
-                        <div className='input-container'>
-                            <div className="mb-2 block">
-                                <Label
-                                    htmlFor="surname"
-                                    value="Выберите дату отправления"
-                                />
-                            </div>
-                            <DatePicker
-                                selected={date}
-                                dateFormat="dd.MM.yyyy"
-                                onChange={onChangeDate}
-                                placeholderText="ДД.ММ.ГГГГ"
-                                dateFormatCalendar="MMMM"
-                                className='block w-full border focus\:ring-blue-500:focus disabled:cursor-not-allowed disabled:opacity-50 bg-gray-50 border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-lg sm:text-md p-4'
-                                customInput={<MaskedInput mask="11.11.1111" placeholder="dd.MM.yyyy" />}
-                                yearDropdownItemNumber={100}
-                                scrollableYearDropdown
-                                minDate={new Date()}
-                            />
-                        </div>
-                        <div className='input-container'>
-                            <div className='mb-2 block'>
-                                <Label htmlFor="transport" value='Выберите тип транспорта' />
-                            </div>
-                            <Select
-                                className="react-select block w-full border focus\:ring-blue-500:focus disabled:cursor-not-allowed disabled:opacity-50 bg-gray-50 border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-lg sm:text-md p-2"
-                                classNamePrefix="name"
-                                placeholder='Выберите тип транспорта'
-                                options={transport}
-                                onChange={onChangeSelect}
-                                isSearchable={false}
-                            />
-                        </div>
-                        <div className='input-container'>
-                            <div className="mb-2 block">
-                                <Label
-                                    htmlFor="weight"
-                                    value="Вес груза"
-                                />
-                            </div>
-                            <InputMask value={weight} maskChar={null} onChange={onChangeWeight} mask={weightMask}>
-                                {(inputProps) => (
-                                    <TextInput
-                                        {...inputProps}
-                                        id="distance"
-                                        type="tel"
-                                        placeholder='0 тонн'
-                                        required={true}
-                                        sizing="lg"
-                                        helperText={showErrorLabel && (
-                                            <p className="text-sm text-red-600 dark:text-red-500">
-                                                Согласно законадательству РК. груз недолжен превышать 20 тонн
-                                            </p>
-                                        )}
-                                    />
-                                )}
-                            </InputMask>
-                        </div>
                         <div className='w-full mb-4 relative' style={{
                             height: '400px'
                         }}>
@@ -314,19 +250,104 @@ export default function createOrders() {
                         <div className='input-container'>
                             <div className="mb-2 block">
                                 <Label
+                                    htmlFor="product"
+                                    value="Наименование товара"
+                                />
+                            </div>
+                            {myOrderRedact && (
+                                <TextInput
+                                    id="product"
+                                    type="text"
+                                    placeholder={myOrderRedact.product}
+                                    required={true}
+                                    sizing="lg"
+                                    value={product}
+                                    onChange={onChangeProduct}
+                                />
+                            )}
+                        </div>
+                        <div className='input-container'>
+                            <div className="mb-2 block">
+                                <Label
+                                    htmlFor="surname"
+                                    value="Выберите дату отправления"
+                                />
+                            </div>
+                            {myOrderRedact && (
+                                <DatePicker
+                                    selected={date}
+                                    dateFormat="dd.MM.yyyy"
+                                    onChange={onChangeDate}
+                                    placeholderText={moment(myOrderRedact.date).format('L')}
+                                    dateFormatCalendar="MMMM"
+                                    className='block w-full border focus\:ring-blue-500:focus disabled:cursor-not-allowed disabled:opacity-50 bg-gray-50 border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-lg sm:text-md p-4'
+                                    customInput={<MaskedInput mask="11.11.1111" placeholder="dd.MM.yyyy" />}
+                                    yearDropdownItemNumber={100}
+                                    scrollableYearDropdown
+                                    minDate={new Date()}
+                                />
+                            )}
+                        </div>
+                        <div className='input-container'>
+                            <div className='mb-2 block'>
+                                <Label htmlFor="transport" value='Выберите тип транспорта' />
+                            </div>
+                            {myOrderRedact && (
+                                <Select
+                                    className="react-select block w-full border focus\:ring-blue-500:focus disabled:cursor-not-allowed disabled:opacity-50 bg-gray-50 border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-lg sm:text-md p-2"
+                                    classNamePrefix="name"
+                                    placeholder={myOrderRedact.type}
+                                    options={transport}
+                                    onChange={onChangeSelect}
+                                    isSearchable={false}
+                                />
+                            )}
+                        </div>
+                        <div className='input-container'>
+                            <div className="mb-2 block">
+                                <Label
+                                    htmlFor="weight"
+                                    value="Вес груза"
+                                />
+                            </div>
+                            {myOrderRedact && (
+                                <InputMask value={weight} maskChar={null} onChange={onChangeWeight} mask={weightMask}>
+                                    {(inputProps) => (
+                                        <TextInput
+                                            {...inputProps}
+                                            id="distance"
+                                            type="tel"
+                                            placeholder={myOrderRedact.weight + ' тонн'}
+                                            required={true}
+                                            sizing="lg"
+                                            helperText={showErrorLabel && (
+                                                <p className="text-sm text-red-600 dark:text-red-500">
+                                                    Согласно законадательству РК. груз недолжен превышать 20 тонн
+                                                </p>
+                                            )}
+                                        />
+                                    )}
+                                </InputMask>
+                            )}
+                        </div>
+                        <div className='input-container'>
+                            <div className="mb-2 block">
+                                <Label
                                     htmlFor="distance"
                                     value="Расстояние"
                                 />
                             </div>
-                            <TextInput
-                                disabled
-                                id="distance"
-                                type="tel"
-                                value={distance}
-                                placeholder='0 км'
-                                required={true}
-                                sizing="lg"
-                            />
+                            {myOrderRedact && (
+                                <TextInput
+                                    disabled
+                                    id="distance"
+                                    type="tel"
+                                    value={distance}
+                                    placeholder={myOrderRedact.distance + ' км'}
+                                    required={true}
+                                    sizing="lg"
+                                />
+                            )}
                         </div>
                         <div className='input-container'>
                             <div className="mb-2 block">
@@ -335,16 +356,18 @@ export default function createOrders() {
                                     value="Время в пути"
                                 />
                             </div>
-                            <TextInput
-                                onChange={onChangeDescription}
-                                value={description}
-                                disabled
-                                id="desc"
-                                type="text"
-                                placeholder="0 ч."
-                                required={true}
-                                sizing="lg"
-                            />
+                            {myOrderRedact && (
+                                <TextInput
+                                    onChange={onChangeDescription}
+                                    value={description}
+                                    disabled
+                                    id="desc"
+                                    type="text"
+                                    placeholder={myOrderRedact.description}
+                                    required={true}
+                                    sizing="lg"
+                                />
+                            )}
                         </div>
                         <div className='input-container'>
                             <div className="mb-2 block">
@@ -353,14 +376,16 @@ export default function createOrders() {
                                     value="Цена"
                                 />
                             </div>
-                            <TextInput
-                                disabled
-                                id="price"
-                                value={price}
-                                placeholder='0 ₸'
-                                required={true}
-                                sizing="lg"
-                            />
+                            {myOrderRedact && (
+                                <TextInput
+                                    disabled
+                                    id="price"
+                                    value={price}
+                                    placeholder={myOrderRedact.price + ' ₸'}
+                                    required={true}
+                                    sizing="lg"
+                                />
+                            )}
                         </div>
                     </div>
                 </form>
@@ -368,7 +393,7 @@ export default function createOrders() {
                     <p className="w-full">Посчиатать</p>
                 </button>
                 <button type='button' disabled={!checkSendOrder} className='flex items-center settings-button px-4 mt-4' onClick={sendOrderData}>
-                    <p className="w-full">Создать заявку</p>
+                    <p className="w-full">Обновить заявку</p>
                 </button>
             </div>
             <Modal

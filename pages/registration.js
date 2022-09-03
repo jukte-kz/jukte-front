@@ -2,10 +2,12 @@ import Header from "../components/atoms/Header/component";
 import {Label, TextInput, Modal} from "flowbite-react";
 import InputMask from "react-input-mask";
 import Image from "next/image";
-import {useCallback, useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import axios from "axios";
 import qs from "qs";
 import {useRouter} from "next/router";
+import {transport} from "../public/assets/data/transportType";
+import Select from "react-select";
 
 export default function Registration () {
     const phoneMask = '+7-(999)-999-99-99';
@@ -17,6 +19,7 @@ export default function Registration () {
     const [name, setName] = useState('');
     const [surname, setSurname] = useState('');
     const [password, setPassword] = useState('');
+    const [transportType, setTransportType] = useState('');
     const [role, setRole] = useState('');
     const [showError, setShowError] = useState(false);
     const [errMessage, setErrMesage] = useState('');
@@ -51,6 +54,10 @@ export default function Registration () {
         setPassword(event.target.value);
     }, []);
 
+    const onChangeSelect = (e) => {
+        setTransportType(e.label)
+    }
+
     const onChangeRole = (e) => {
         setRole(e.target.value)
     }
@@ -67,7 +74,7 @@ export default function Registration () {
                 phone: phone.replace(/(-)|\+|\(|\)/g, ''),
                 password: password,
                 transportWeight: '20',
-                transportType: 'самосвал',
+                transportType: transportType,
                 role: role,
                 name: name,
                 surname: surname,
@@ -109,7 +116,7 @@ export default function Registration () {
     useEffect(() => {
         setCheckComplete(
             phone.length === 18 && name.length > 0 &&
-            surname.length > 0 && iin.length > 0 && password.length === 6 && role.length > 0
+            surname.length > 0 && iin.length > 0 && password.length === 6 && role.length > 0 && transportType
         )
         setOtpCheckComplete(
             otp.length === 6
@@ -121,62 +128,33 @@ export default function Registration () {
             <Header removeUrl='/' />
             <div className='registration-main'>
                 <h1>Регистрация пользователя</h1>
-                <p className='my-2'>
+                <p className='mt-2 mb-6'>
                     Введите данные для регистрации в <span>Jukte.kz</span>
                 </p>
-                <div className='flex gap-2 py-4 radio-button-container'>
-                    <div className="w-1/2 flex items-center pl-4">
-                        <input onChange={onChangeRole} id="bordered-radio-1" type="radio" value="logistician" name="bordered-radio"
-                               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                        <label htmlFor="bordered-radio-1"
-                               className="py-4 ml-2 w-full text-sm font-medium text-gray-900 dark:text-gray-300">Грузоотправитель</label>
+                <div className='py-2 mt-2 mb-4 rounded'>
+                    <div className="block px-4">
+                        <Label
+                            htmlFor="role"
+                            value="Выберите свою деятельность"
+                        />
                     </div>
-                    <div className="w-1/2 flex items-center pl-4">
-                        <input onChange={onChangeRole} id="bordered-radio-2" type="radio" value="driver" name="bordered-radio"
-                               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                        <label htmlFor="bordered-radio-2"
-                               className="py-4 ml-2 w-full text-sm font-medium text-gray-900 dark:text-gray-300">Грузоперевозчик</label>
+                    <div className='flex gap-2 radio-button-container'>
+                        <div className="w-1/2 flex items-center pl-4">
+                            <input onChange={onChangeRole} id="bordered-radio-1" type="radio" value="logistician" name="bordered-radio"
+                                   className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                            <label htmlFor="bordered-radio-1"
+                                   className="py-4 ml-2 w-full text-sm font-medium dark:text-gray-300">Грузоотправитель</label>
+                        </div>
+                        <div className="w-1/2 flex items-center pl-4">
+                            <input onChange={onChangeRole} id="bordered-radio-2" type="radio" value="driver" name="bordered-radio"
+                                   className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                            <label htmlFor="bordered-radio-2"
+                                   className="py-4 ml-2 w-full text-sm font-medium dark:text-gray-300">Грузоперевозчик</label>
+                        </div>
                     </div>
                 </div>
                 <form className='flex flex-col registration-form'>
                     <div>
-                        <div className='input-container'>
-                            <div className="mb-2 block">
-                                <Label
-                                    htmlFor="phone"
-                                    value="Введите номер телефона"
-                                />
-                            </div>
-                            <InputMask value={phone} maskChar={null} onChange={onChangePhone} mask={phoneMask}>
-                                {(inputProps) => (
-                                    <TextInput
-                                        {...inputProps}
-                                        id="phone"
-                                        type="tel"
-                                        placeholder="+7-777-777-77-77"
-                                        required={true}
-                                        sizing="lg"
-                                    />
-                                )}
-                            </InputMask>
-                        </div>
-                        <div className='input-container'>
-                            <div className="mb-2 block">
-                                <Label
-                                    htmlFor="iin"
-                                    value="Введите ИИН (для нерезидентов Казахстана номер документа)"
-                                />
-                            </div>
-                                <TextInput
-                                    onChange={onChangeIin}
-                                    value={iin}
-                                    id="iin"
-                                    type='tel'
-                                    placeholder="Номер документа"
-                                    required={true}
-                                    sizing="lg"
-                                />
-                        </div>
                         <div className='input-container'>
                             <div className="mb-2 block">
                                 <Label
@@ -214,6 +192,43 @@ export default function Registration () {
                         <div className='input-container'>
                             <div className="mb-2 block">
                                 <Label
+                                    htmlFor="iin"
+                                    value="Введите ИИН (для нерезидентов Казахстана номер документа)"
+                                />
+                            </div>
+                                <TextInput
+                                    onChange={onChangeIin}
+                                    value={iin}
+                                    id="iin"
+                                    type='tel'
+                                    placeholder="Номер документа"
+                                    required={true}
+                                    sizing="lg"
+                                />
+                        </div>
+                        <div className='input-container'>
+                            <div className="mb-2 block">
+                                <Label
+                                    htmlFor="phone"
+                                    value="Введите номер телефона"
+                                />
+                            </div>
+                            <InputMask value={phone} maskChar={null} onChange={onChangePhone} mask={phoneMask}>
+                                {(inputProps) => (
+                                    <TextInput
+                                        {...inputProps}
+                                        id="phone"
+                                        type="tel"
+                                        placeholder="+7-777-777-77-77"
+                                        required={true}
+                                        sizing="lg"
+                                    />
+                                )}
+                            </InputMask>
+                        </div>
+                        <div className='input-container'>
+                            <div className="mb-2 block">
+                                <Label
                                     htmlFor="password"
                                     value="Придумайте 6-значный пин-код"
                                 />
@@ -231,6 +246,21 @@ export default function Registration () {
                                 )}
                             </InputMask>
                         </div>
+                        {role === 'driver' && (
+                            <div className='input-container'>
+                                <div className='mb-2 block'>
+                                    <Label htmlFor="transport" value='Выберите тип транспорта' />
+                                </div>
+                                <Select
+                                    className="react-select block w-full border focus\:ring-blue-500:focus disabled:cursor-not-allowed disabled:opacity-50 bg-gray-50 border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-lg sm:text-md p-2"
+                                    classNamePrefix="name"
+                                    placeholder='Выберите тип транспорта'
+                                    options={transport}
+                                    onChange={onChangeSelect}
+                                    isSearchable={false}
+                                />
+                            </div>
+                        )}
                         {showError && (
                             <h2 className='flex items-center gap-2'>
                                 <Image width={24} height={25} src='/assets/icon/attention.svg' alt='errorIcon' />

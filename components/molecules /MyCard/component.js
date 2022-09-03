@@ -47,18 +47,25 @@ export default function MyCard({product, price, weight, date, type, from, to, di
                     <p>{description}</p>
                 </div>
             </div>
-            <div className='mt-4 w-full flex justify-center link-button rounded'>
-                {role === 'logistician' ? (
-                    <Link href={{
-                        pathname: '/[slug]',
-                        query: {
-                            slug: id
-                        }
-                    }}>Редактировать</Link>
-                ): (
-                    <Link href={'tel:+'+phone}>Позвонить заказчику</Link>
-                )}
-            </div>
+            {role === 'logistician' ? (
+                <Link href={{
+                    pathname: '/[slug]',
+                    as: '/slug-1',
+                    query: {
+                        slug: id
+                    }
+                }}>
+                    <div className='mt-4 w-full flex justify-center link-button rounded'>
+                        Редактировать
+                    </div>
+                </Link>
+            ): (
+                <Link href={'tel:+'+phone}>
+                    <div className='mt-4 w-full flex justify-center link-button rounded'>
+                        Позвонить заказчику
+                    </div>
+                </Link>
+            )}
         </div>
     )
 }

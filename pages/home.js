@@ -5,7 +5,6 @@ import Cookies from "js-cookie";
 import {Modal, Spinner} from "flowbite-react";
 import {useRouter} from "next/router";
 import Link from 'next/link'
-import Image from "next/image";
 import LinkBlock from "../components/atoms/LinkBlock/component";
 import MyCard from "../components/molecules /MyCard/component";
 import OpenCard from "../components/molecules /OpenCard/component";
@@ -43,7 +42,7 @@ export default function Home () {
                 setCancel(true)
                 setLoading(true)
                 Cookies.set('role',res.data.role)
-                if (!res.data.company) {
+                if (JSON.stringify(res.data.company.director) === '{}') {
                     setUserSuccess(true)
                 }
             }).catch((err) => {
@@ -178,7 +177,7 @@ export default function Home () {
                             {openOrders.length > 0 ? (
                                 <div className='flex flex-col gap-2 mt-4 bg-gray-400 p-4'>
                                     {
-                                        myOrders.slice(0,1).map((data, index) => {
+                                        openOrders.slice(0,1).map((data, index) => {
                                             return (
                                                 <OpenCard
                                                     key={index}

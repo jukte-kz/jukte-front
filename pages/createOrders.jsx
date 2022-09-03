@@ -11,64 +11,7 @@ import Select from 'react-select';
 import React from "react";
 import Script from "next/script";
 import {useRouter} from "next/router";
-
-export const transport = [
-    {
-        value: 1,
-        label: 'Фура',
-        price: 400
-    },
-    {
-        value: 2,
-        label: 'Самосвал',
-        price: 27
-    },
-    {
-        value: 3,
-        label: 'Тралл',
-        price: 1000
-    },
-    {
-        value: 4,
-        label: 'Рефрижератор',
-        price: 500
-    },
-    {
-        value: 5,
-        label: 'Изотерм',
-        price: 400
-    },
-    {
-        value: 6,
-        label: 'Бортовой',
-        price: 400
-    },
-    {
-        value: 7,
-        label: 'Крытый',
-        price: 400
-    },
-    {
-        value: 8,
-        label: 'Открытый',
-        price: 400
-    },
-    {
-        value: 9,
-        label: 'Тент',
-        price: 400
-    },
-    {
-        value: 8,
-        label: 'Зерновоз',
-        price: 27
-    },
-    {
-        value: 9,
-        label: 'Газель',
-        price: 180
-    }
-];
+import {transport} from "../public/assets/data/transportType";
 
 export default function createOrders() {
     const weightMask = '99 тонн';
@@ -81,7 +24,6 @@ export default function createOrders() {
     const [fromPoint, setFromPoint] = useState('');
     const [toPoint, setToPoint] = useState('');
     const [transportType, setTransportType] = useState('');
-    const [showErrorLabel, setShowErrorLabel] = useState(false);
     const [price, setPrice] = useState('');
     const [checkCalc, setCheckCalc] = useState(false);
     const [checkSendOrder, setCheckSendOrder] = useState(false);
@@ -98,11 +40,6 @@ export default function createOrders() {
     }, []);
     const onChangeWeight = useCallback((event) => {
         setWeight(event.target.value);
-        if (parseFloat(event.target.value) > 20) {
-            setShowErrorLabel(true)
-        } else {
-            setShowErrorLabel(false)
-        }
     })
 
     useEffect(() => {
@@ -178,6 +115,40 @@ export default function createOrders() {
                 <hr className='mt-4' />
                 <form className='flex flex-col mt-4 login-form'>
                     <div className='mb-auto'>
+                        <div className='w-full mb-4 relative' style={{
+                            height: '400px'
+                        }}>
+                            <div id='map' ref={mapRef}></div>
+                            <Script
+                                id="yandex-maps"
+                                src="https://api-maps.yandex.ru/2.1/?apikey=0fb09044-5132-48a3-8653-02425b40b298&lang=ru_RU"
+                                onLoad={() => {
+                                    ymaps.ready(init);
+                                    function init(){
+                                        let myMap = new ymaps.Map(mapRef.current, {
+                                            center: [51.128207, 71.430420],
+                                            zoom: 9,
+                                            controls: ['routePanelControl']
+                                        });
+                                        let control = myMap.controls.get('routePanelControl');
+                                        let multiRoutePromise = control.routePanel.getRouteAsync();
+                                        multiRoutePromise.then(function(multiRoute) {
+                                            multiRoute.model.events.add('requestsuccess', function() {
+                                                let activeRoute = multiRoute.getActiveRoute();
+                                                if (activeRoute) {
+                                                    setDescription(activeRoute.properties.get("duration").text);
+                                                    setDistance(activeRoute.properties.get("distance").text);
+                                                    setFromPoint(control.routePanel.state.get('from'));
+                                                    setToPoint(control.routePanel.state.get('to'));
+                                                }
+                                            });
+                                        }, function (err) {
+                                            console.log(err);
+                                        });
+                                    }
+                                }}
+                            />
+                        </div>
                         <div className='input-container'>
                                 <div className="mb-2 block">
                                     <Label
@@ -244,48 +215,9 @@ export default function createOrders() {
                                         placeholder='0 тонн'
                                         required={true}
                                         sizing="lg"
-                                        helperText={showErrorLabel && (
-                                            <p className="text-sm text-red-600 dark:text-red-500">
-                                                Согласно законадательству РК. груз недолжен превышать 20 тонн
-                                            </p>
-                                        )}
                                     />
                                 )}
                             </InputMask>
-                        </div>
-                        <div className='w-full mb-4 relative' style={{
-                            height: '400px'
-                        }}>
-                            <div id='map' ref={mapRef}></div>
-                            <Script
-                                id="yandex-maps"
-                                src="https://api-maps.yandex.ru/2.1/?apikey=0fb09044-5132-48a3-8653-02425b40b298&lang=ru_RU"
-                                onLoad={() => {
-                                    ymaps.ready(init);
-                                    function init(){
-                                        let myMap = new ymaps.Map(mapRef.current, {
-                                            center: [51.128207, 71.430420],
-                                            zoom: 9,
-                                            controls: ['routePanelControl']
-                                        });
-                                        let control = myMap.controls.get('routePanelControl');
-                                        let multiRoutePromise = control.routePanel.getRouteAsync();
-                                        multiRoutePromise.then(function(multiRoute) {
-                                            multiRoute.model.events.add('requestsuccess', function() {
-                                                let activeRoute = multiRoute.getActiveRoute();
-                                                if (activeRoute) {
-                                                    setDescription(activeRoute.properties.get("duration").text);
-                                                    setDistance(activeRoute.properties.get("distance").text);
-                                                    setFromPoint(control.routePanel.state.get('from'));
-                                                    setToPoint(control.routePanel.state.get('to'));
-                                                }
-                                            });
-                                        }, function (err) {
-                                            console.log(err);
-                                        });
-                                    }
-                                }}
-                            />
                         </div>
                         <div className='input-container'>
                                 <div className="mb-2 block">

@@ -37,7 +37,7 @@ export default function OpenCard({product, price, weight, date, type, from, to, 
                 </div>
             </div>
             <div className='mt-4 w-full flex justify-center link-button rounded'>
-                <Link href={'tel:+'+phone}>Договорится с заказчиком</Link>
+                <Link href={'tel:+'+phone}>Позвонить заказчику</Link>
             </div>
         </div>
     )
