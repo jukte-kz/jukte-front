@@ -1,13 +1,13 @@
 import moment from "moment";
 import Link from "next/link";
 
-export default function MyCard({product, price, weight, date, type, from, to, distance, description, status, phone, role, id}) {
+export default function MyCard({product, ownerRole, price, weight, date, type, from, to, distance, description, status, phone, role, id}) {
     return (
         <div className="rounded shadow-sm bg-white w-full myCard-container p-4">
             <div className='pb-2 mb-4 border-b-2 flex items-start justify-between'>
                 <div>
                     <h2 className='mb-2'>{product}</h2>
-                    <h1>Цена: {price} ₸</h1>
+                    <h1 className='font-bold'>Цена: {price} ₸</h1>
                 </div>
                 <div>
                     {status === 'open' && (
@@ -36,7 +36,7 @@ export default function MyCard({product, price, weight, date, type, from, to, di
                 </div>
                 <div className='flex items-center'>
                     <img className='mr-2' src="/assets/icon/distance.svg" alt=""/>
-                    <p>{from} - {to}</p>
+                    <p className='font-bold'>{from} - {to}</p>
                 </div>
                 <div className='flex items-center'>
                     <img className='mr-2' src="/assets/icon/Measure.svg" alt=""/>
@@ -50,7 +50,6 @@ export default function MyCard({product, price, weight, date, type, from, to, di
             {role === 'logistician' ? (
                 <Link href={{
                     pathname: '/[slug]',
-                    as: '/slug-1',
                     query: {
                         slug: id
                     }

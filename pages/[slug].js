@@ -209,7 +209,7 @@ export default function createOrders() {
         <div>
             <Header removeUrl='/home' text='На главную' />
             <div className='settings-main py-6 px-4'>
-                <h1>Создать заявку</h1>
+                <h1>Обновить заявку</h1>
                 <hr className='mt-4' />
                 <form className='flex flex-col mt-4 login-form'>
                     <div className='mb-auto'>

@@ -75,6 +75,7 @@ export default function MyOrders() {
                                                 status={data.status}
                                                 role={Cookies.get('role')}
                                                 phone={data.ownerPhone}
+                                                id={data._id}
                                             />
                                         )
                                     })

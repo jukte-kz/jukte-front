@@ -8,6 +8,7 @@ import qs from "qs";
 import {useRouter} from "next/router";
 import {transport} from "../public/assets/data/transportType";
 import Select from "react-select";
+import { Checkbox } from "@nextui-org/react";
 
 export default function Registration () {
     const phoneMask = '+7-(999)-999-99-99';
@@ -27,6 +28,7 @@ export default function Registration () {
     const [otpCheckComplete, setOtpCheckComplete] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [successText, setSuccessText] = useState(false);
+    const [selected, setSelected] = useState([]);
 
     const router = useRouter();
 
@@ -116,7 +118,7 @@ export default function Registration () {
     useEffect(() => {
         setCheckComplete(
             phone.length === 18 && name.length > 0 &&
-            surname.length > 0 && iin.length > 0 && password.length === 6 && role.length > 0 && transportType
+            surname.length > 0 && iin.length > 0 && password.length === 6 && role.length > 0
         )
         setOtpCheckComplete(
             otp.length === 6
@@ -131,7 +133,16 @@ export default function Registration () {
                 <p className='mt-2 mb-6'>
                     Введите данные для регистрации в <span>Jukte.kz</span>
                 </p>
-                <div className='py-2 mt-2 mb-4 rounded'>
+                <div className='mt-6 p-4 rounded flex items-center bg-[#4F52FF]'>
+                    <img src="/assets/icon/warning.svg" alt=""/>
+                    <div>
+                        <p className='ml-4 text-warning'>
+                            Внимание! ИИН вводятся один раз!
+                            Просим вас вводить данные <b>корректно</b>.
+                        </p>
+                    </div>
+                </div>
+                <div className='py-2 mt-2 mb-4 rounded bg-blue-50'>
                     <div className="block px-4">
                         <Label
                             htmlFor="role"
@@ -143,13 +154,13 @@ export default function Registration () {
                             <input onChange={onChangeRole} id="bordered-radio-1" type="radio" value="logistician" name="bordered-radio"
                                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
                             <label htmlFor="bordered-radio-1"
-                                   className="py-4 ml-2 w-full text-sm font-medium dark:text-gray-300">Грузоотправитель</label>
+                                   className="py-4 ml-2 w-full text-md font-medium dark:text-gray-300">Грузоотправитель</label>
                         </div>
                         <div className="w-1/2 flex items-center pl-4">
                             <input onChange={onChangeRole} id="bordered-radio-2" type="radio" value="driver" name="bordered-radio"
                                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
                             <label htmlFor="bordered-radio-2"
-                                   className="py-4 ml-2 w-full text-sm font-medium dark:text-gray-300">Грузоперевозчик</label>
+                                   className="py-4 ml-2 w-full text-md font-medium dark:text-gray-300">Грузоперевозчик</label>
                         </div>
                     </div>
                 </div>
@@ -247,8 +258,9 @@ export default function Registration () {
                             </InputMask>
                         </div>
                         {role === 'driver' && (
+                            <>
                             <div className='input-container'>
-                                <div className='mb-2 block'>
+                                <div className='block'>
                                     <Label htmlFor="transport" value='Выберите тип транспорта' />
                                 </div>
                                 <Select
@@ -260,6 +272,24 @@ export default function Registration () {
                                     isSearchable={false}
                                 />
                             </div>
+                            <div className='mb-6 block'>
+                                <Checkbox.Group
+                                    value={selected}
+                                    onChange={setSelected}
+                                    color='success'
+                                    defaultValue={["buenos-aires"]}
+                                    label="Выберите список документов"
+                                >
+                                    <Checkbox value="mdp">Книжка МДП или ТИР Карнет</Checkbox>
+                                    <Checkbox value="cmr">Международная товарно-транспортная накладная</Checkbox>
+                                    <Checkbox value="t1">Транзитная декларация</Checkbox>
+                                    <Checkbox value="ex1">Экспортная декларация</Checkbox>
+                                    <Checkbox value="invoice">Инвойс</Checkbox>
+                                    <Checkbox value="list">Упаковочный лист</Checkbox>
+                                    <Checkbox value="certificate">Сертификат происхождения товара</Checkbox>
+                                </Checkbox.Group>
+                            </div>
+                            </>
                         )}
                         {showError && (
                             <h2 className='flex items-center gap-2'>

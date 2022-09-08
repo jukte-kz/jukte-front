@@ -1,11 +1,12 @@
 import Header from "../components/atoms/Header/component";
 import {Label, Modal, Spinner, TextInput, Toast} from "flowbite-react";
 import InputMask from "react-input-mask";
-import {useCallback, useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import axios from "axios";
 import qs from "qs";
 import Cookies from "js-cookie";
 import {useRouter} from "next/router";
+import {Checkbox} from "@nextui-org/react";
 
 export default function Settings () {
     const phoneMask = '+7-(999)-999-99-99';
@@ -16,7 +17,6 @@ export default function Settings () {
     const [loading, setLoading] = useState(false);
     const [cancelReq, setCancelReq] = useState(false);
     const [showToast, setShowToast] = useState(false);
-    const [showCarNumber, setShowCardNumber] = useState(false);
 
     const [phone, setPhone] = useState('');
     const [name, setName] = useState('');
@@ -29,9 +29,15 @@ export default function Settings () {
     const [iban, setIban] = useState('');
 
     const [directorName, setDirectorName] = useState('');
-    const [directorSurname, setDirectorSurname] = useState('');
+    const [directorSurname, setDirectorSurname] = useState([]);
 
     const [carNumber, setCarNumber] = useState('');
+
+    const [disabledIin, setDisabledIin] = useState(false);
+    const [disabledCompanyName, setDisabledCompanyName] = useState(false);
+    const [disabledCompanyBin, setDisabledCompanyBin] = useState(false);
+    const [disabledCompanyIban, setDisabledCompanyIban] = useState(false);
+    const [disabledCarNumber, setDisabledCarNumber] = useState(false);
 
     const toEndSettings = () => {
         router.push('/home')
@@ -102,16 +108,28 @@ export default function Settings () {
                 setDirectorSurname(res.data.company.director.surname);
                 setDirectorPhone(res.data.company.director.phone);
                 setCarNumber(Cookies.get('carNumber'));
-                if (res.data.role === 'driver') {
-                   setShowCardNumber(true)
-                } else {
-                    setShowCardNumber(false)
-                }
             }).catch((err) => {
                 if (err) {
                     setCancelReq(true);
                 }
             })
+        }
+        if (userInfo) {
+            if (userInfo.iin) {
+                setDisabledIin(true);
+            }
+            if (userInfo.company.name) {
+                setDisabledCompanyName(true);
+            }
+            if (userInfo.company.bin) {
+                setDisabledCompanyBin(true);
+            }
+            if (userInfo.company.account) {
+                setDisabledCompanyIban(true);
+            }
+            if (userInfo.company.director.name) {
+                setDisabledCarNumber(true);
+            }
         }
     })
 
@@ -133,7 +151,7 @@ export default function Settings () {
                     bin: bin,
                     director: {
                         name: directorName,
-                        surname: directorSurname,
+                        surname: directorSurname.join(','),
                         iin: '981103350587',
                     },
                     contacts: {
@@ -161,6 +179,15 @@ export default function Settings () {
             <div className='settings-main py-6 px-4'>
                 <h1>Настройки</h1>
                 <hr className='mt-4' />
+                <div className='mt-6 p-4 rounded flex items-center bg-[#4F52FF]'>
+                    <img src="/assets/icon/warning.svg" alt=""/>
+                    <div>
+                        <p className='ml-4 text-white'>
+                            Внимание! Данные реквизита компании и ИИН вводятся один раз!
+                            Просим вас вводить данные <b>корректно</b>
+                        </p>
+                    </div>
+                </div>
                 <div className="form-section mt-6 border-2 p-4">
                     <h4>Личные данные</h4>
                     {userInfo && (
@@ -214,18 +241,16 @@ export default function Settings () {
                                                 value="Введите ИИН (для нерезидентов Казахстана номер документа)"
                                             />
                                         </div>
-                                        <InputMask value={iin} maskChar={null} onChange={onChangeIin}>
-                                            {(inputProps) => (
-                                                <TextInput
-                                                    {...inputProps}
-                                                    id="iin"
-                                                    type="tel"
-                                                    placeholder={iin}
-                                                    required={true}
-                                                    sizing="lg"
-                                                />
-                                            )}
-                                        </InputMask>
+                                            <TextInput
+                                                disabled={disabledIin}
+                                                onChange={onChangeIin}
+                                                value={iin}
+                                                id="iin"
+                                                type="tel"
+                                                placeholder={iin}
+                                                required={true}
+                                                sizing="lg"
+                                            />
                                     </div>
                                     <div className='input-container'>
                                         <div className="mb-2 block">
@@ -272,6 +297,7 @@ export default function Settings () {
                                             />
                                         </div>
                                         <TextInput
+                                            disabled={disabledCompanyName}
                                             onChange={onChangeCompanyName}
                                             value={companyName}
                                             id="companyName"
@@ -305,18 +331,16 @@ export default function Settings () {
                                                 value="Введите BIN компании"
                                             />
                                         </div>
-                                        <InputMask value={bin} maskChar={null} onChange={onChangeBin} mask={binMask}>
-                                            {(inputProps) => (
-                                                <TextInput
-                                                    {...inputProps}
-                                                    id="bin"
-                                                    type="tel"
-                                                    placeholder={bin}
-                                                    required={true}
-                                                    sizing="lg"
-                                                />
-                                            )}
-                                        </InputMask>
+                                            <TextInput
+                                                value={bin}
+                                                disabled={disabledCompanyBin}
+                                                onChange={onChangeBin}
+                                                id="bin"
+                                                type="tel"
+                                                placeholder={bin}
+                                                required={true}
+                                                sizing="lg"
+                                            />
                                     </div>
                                     <div className='input-container'>
                                         <div className="mb-2 block">
@@ -326,6 +350,7 @@ export default function Settings () {
                                             />
                                         </div>
                                             <TextInput
+                                                disabled={disabledCompanyIban}
                                                 onChange={onChangeIban}
                                                 value={iban}
                                                 id="iban"
@@ -346,23 +371,24 @@ export default function Settings () {
                         </form>
                     )}
                 </div>
-                {showCarNumber && (
-                    <div className="form-section mt-6 border-2 p-4">
-                        <h4>Данные машины</h4>
-                        {userInfo && (
+                {userInfo && (
+                    userInfo.role === 'driver' && (
+                        <div className="form-section mt-6 border-2 p-4">
+                            <h4>Данные машины</h4>
                             <form className='flex flex-col mt-4 login-form'>
                                 {loading ? (
                                     <div className='mb-auto'>
                                         <div className='input-container'>
                                             <div className="mb-2 block">
                                                 <Label
-                                                    htmlFor="directorName"
+                                                    htmlFor="carNumber"
                                                     value="Введите гос.номер машины"
                                                 />
                                             </div>
                                             <TextInput
-                                                id="directorName"
+                                                id="carNumber"
                                                 type="text"
+                                                disabled={disabledCarNumber}
                                                 placeholder={directorName}
                                                 onChange={onChangeDirectorName}
                                                 value={directorName}
@@ -370,22 +396,21 @@ export default function Settings () {
                                                 sizing="lg"
                                             />
                                         </div>
-                                        <div className='input-container'>
-                                            <div className="mb-2 block">
-                                                <Label
-                                                    htmlFor="directorSurname"
-                                                    value="Выберите список документов"
-                                                />
-                                            </div>
-                                            <TextInput
-                                                id="directorSurname"
-                                                type="text"
-                                                placeholder={directorSurname}
-                                                required={true}
-                                                sizing="lg"
+                                        <div className='mb-6 block z-0'>
+                                            <Checkbox.Group
                                                 value={directorSurname}
-                                                onChange={onChangeDirectorSurname}
-                                            />
+                                                onChange={setDirectorSurname}
+                                                color='success'
+                                                label="Выберите список документов"
+                                            >
+                                                <Checkbox value="mdp">Книжка МДП или ТИР Карнет</Checkbox>
+                                                <Checkbox value="cmr">Международная товарно-транспортная накладная</Checkbox>
+                                                <Checkbox value="t1">Транзитная декларация</Checkbox>
+                                                <Checkbox value="ex1">Экспортная декларация</Checkbox>
+                                                <Checkbox value="invoice">Инвойс</Checkbox>
+                                                <Checkbox value="list">Упаковочный лист</Checkbox>
+                                                <Checkbox value="certificate">Сертификат происхождения товара</Checkbox>
+                                            </Checkbox.Group>
                                         </div>
                                     </div>
                                 ) : (
@@ -396,9 +421,8 @@ export default function Settings () {
                                     </div>
                                 )}
                             </form>
-                        )}
-                    </div>
-
+                        </div>
+                    )
                 )}
                 <button type='button' className='flex items-center settings-button px-4 mt-4' onClick={sendUserData}>
                     <p className="w-full">Сохранить</p>
@@ -409,7 +433,7 @@ export default function Settings () {
                 position="center"
             >
                 <Modal.Body>
-                    <div className='w-full success-container'>
+                    <div className='w-full success-container z-10'>
                         <p className='text-center'>Данные успешно обновлены!</p>
                         <div className="success-animation mt-6">
                             <svg className="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">

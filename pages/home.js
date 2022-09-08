@@ -8,6 +8,7 @@ import Link from 'next/link'
 import LinkBlock from "../components/atoms/LinkBlock/component";
 import MyCard from "../components/molecules /MyCard/component";
 import OpenCard from "../components/molecules /OpenCard/component";
+import DriverCard from "../components/molecules /DriverCard/component";
 
 export default function Home () {
     const [userSuccess, setUserSuccess] = useState(false);
@@ -115,8 +116,14 @@ export default function Home () {
                     {userInfo.role === 'logistician' && (
                         <LinkBlock removeUrl='/createOrders' title='Создать заявку' image='/assets/icon/createOrders.svg' />
                     )}
+                    {userInfo.role === 'logistician' && (
+                        <LinkBlock removeUrl='/driverOrders' title='Открыте машины' image='/assets/icon/openCar.svg' />
+                    )}
                     {userInfo.role === 'driver' && (
                         <LinkBlock removeUrl='/openOrders' title='Открытые заявки' image='/assets/icon/createOrders.svg' />
+                    )}
+                    {userInfo.role === 'driver' && (
+                        <LinkBlock removeUrl='/createDriverOrders' image='/assets/icon/createOrders.svg' title='Создать заявку открытой машины' />
                     )}
                     <LinkBlock removeUrl='/settings' title='Настройки' image='/assets/icon/settings.svg' />
                     <LinkBlock removeUrl='/faq' title='Вопросы и ответы' image='/assets/icon/faq.svg' />
@@ -137,22 +144,41 @@ export default function Home () {
                                 {
                                     myOrders.slice(0,1).map((data, index) => {
                                         return (
-                                            <MyCard
-                                                key={index}
-                                                product={data.product}
-                                                price={data.price}
-                                                weight={data.weight}
-                                                date={data.date}
-                                                type={data.type}
-                                                from={data.from}
-                                                to={data.to}
-                                                distance={data.distance}
-                                                description={data.description}
-                                                status={data.status}
-                                                role={userInfo.role}
-                                                phone={data.ownerPhone}
-                                                id={data._id}
-                                            />
+                                            data.ownerRole === 'logistician' ? (
+                                                <MyCard
+                                                    key={index}
+                                                    product={data.product}
+                                                    price={data.price}
+                                                    weight={data.weight}
+                                                    date={data.date}
+                                                    type={data.type}
+                                                    from={data.from}
+                                                    to={data.to}
+                                                    distance={data.distance}
+                                                    description={data.description}
+                                                    status={data.status}
+                                                    role={userInfo.role}
+                                                    phone={data.ownerPhone}
+                                                    id={data._id}
+                                                />
+                                            ) : (
+                                                <DriverCard
+                                                    key={index}
+                                                    shipment={data.product}
+                                                    price={data.price}
+                                                    weight={data.weight}
+                                                    date={data.date}
+                                                    type={data.type}
+                                                    from={data.from}
+                                                    to={data.to}
+                                                    distance={data.distance}
+                                                    description={data.description}
+                                                    status={data.status}
+                                                    role={userInfo.role}
+                                                    phone={data.ownerPhone}
+                                                    id={data._id}
+                                                />
+                                            )
                                         )
                                     })
                                 }
@@ -191,6 +217,48 @@ export default function Home () {
                                                     distance={data.distance}
                                                     description={data.description}
                                                     status={data.status}
+                                                />
+                                            )
+                                        })
+                                    }
+                                </div>
+                            ) : (
+                                <p className='mt-4'>На данный момент свободных заявок нет</p>
+                            )}
+                        </div>
+                    )}
+                    {userInfo.role === 'logistician' && (
+                        <div className='my-orders-container py-8'>
+                            <div className='flex w-full justify-between items-center'>
+                                <h2>Открытые машины</h2>
+                                <Link href='/driverOrders'>
+                                    Посмотреть все
+                                </Link>
+                            </div>
+                            <div className='flex justify-end mt-2'>
+                                <div className="inline-flex shrink-0 items-center justify-center rounded bg-blue-50">
+                                    <p className='p-2'>Количество: {openOrders.length}</p>
+                                </div>
+                            </div>
+                            {openOrders.length > 0 ? (
+                                <div className='flex flex-col gap-2 mt-4 bg-gray-400 p-4'>
+                                    {
+                                        openOrders.slice(0,1).map((data, index) => {
+                                            return (
+                                                <DriverCard
+                                                    key={index}
+                                                    shipment={data.product}
+                                                    price={data.price}
+                                                    weight={data.weight}
+                                                    date={data.date}
+                                                    type={data.type}
+                                                    from={data.from}
+                                                    to={data.to}
+                                                    distance={data.distance}
+                                                    description={data.description}
+                                                    status={data.status}
+                                                    role={Cookies.get('role')}
+                                                    phone={data.ownerPhone}
                                                 />
                                             )
                                         })
