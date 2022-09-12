@@ -107,7 +107,14 @@ export default function Home () {
                             <h2>{userInfo.surname + ' ' + userInfo.name}</h2>
                         )}
                         {userSuccessMessage && (
-                            <p>Статус: {userSuccessMessage}</p>
+                            <p className='mb-1'>Статус: {userSuccessMessage}</p>
+                        )}
+                        {userInfo && (
+                            userInfo.role === 'driver' ? (
+                                <p>Перевозчик</p>
+                            ):(
+                                <p>Отправитель</p>
+                            )
                         )}
                         <div className='elip1'/>
                         <div className='elip2'/>
@@ -217,6 +224,7 @@ export default function Home () {
                                                     distance={data.distance}
                                                     description={data.description}
                                                     status={data.status}
+                                                    phone={data.ownerPhone}
                                                 />
                                             )
                                         })

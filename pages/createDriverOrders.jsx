@@ -12,6 +12,7 @@ import React from "react";
 import Script from "next/script";
 import {useRouter} from "next/router";
 import {transport} from "../public/assets/data/transportType";
+import {ru} from "date-fns/locale";
 
 export default function createDriverOrders() {
     const weightMask = '99 тонн';
@@ -140,11 +141,11 @@ export default function createDriverOrders() {
                         <div className='w-full mb-4 relative' style={{
                             height: '400px'
                         }}>
-                            <div id='map' ref={mapRef}></div>
+                            <div id='map' ref={mapRef}><p>asd</p></div>
                             <Script
                                 id="yandex-maps"
                                 src="https://api-maps.yandex.ru/2.1/?apikey=0fb09044-5132-48a3-8653-02425b40b298&lang=ru_RU"
-                                onLoad={() => {
+                                onReady={() => {
                                     ymaps.ready(init);
                                     function init(){
                                         let myMap = new ymaps.Map(mapRef.current, {
@@ -189,6 +190,7 @@ export default function createDriverOrders() {
                                 yearDropdownItemNumber={100}
                                 scrollableYearDropdown
                                 minDate={new Date()}
+                                locale={ru}
                             />
                         </div>
                         <div className='input-container'>

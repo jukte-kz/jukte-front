@@ -1,5 +1,5 @@
 import Header from "../components/atoms/Header/component";
-import {Label, Modal, TextInput} from "flowbite-react";
+import {Label, Modal, Spinner, TextInput} from "flowbite-react";
 import InputMask from "react-input-mask";
 import {useCallback, useEffect, useRef, useState} from "react";
 import Cookies from "js-cookie";
@@ -12,6 +12,7 @@ import React from "react";
 import Script from "next/script";
 import {useRouter} from "next/router";
 import {transport} from "../public/assets/data/transportType";
+import { ru } from 'date-fns/locale';
 
 export default function createOrders() {
     const weightMask = '99 тонн';
@@ -28,8 +29,10 @@ export default function createOrders() {
     const [checkCalc, setCheckCalc] = useState(false);
     const [checkSendOrder, setCheckSendOrder] = useState(false);
     const [showModal, setShowModal] = useState(false);
+    const [mapInitialize, setMapInitialize] = useState(null);
+    const [mapLoader, setMapLoader] = useState(false);
 
-    const mapRef = useRef()
+    const mapRef = useRef();
     const router = useRouter();
 
     const onChangeDescription = useCallback((event) => {
@@ -50,6 +53,15 @@ export default function createOrders() {
             description.length > 0 &&
             product.length &&
             parseInt(price.replace(/\s/g, '')) > 0);
+    })
+
+    useEffect(() => {
+        setMapInitialize()
+        setTimeout(() => setMapInitialize(document.getElementById('map').children.length
+        ), 2000);
+        if (!mapInitialize) {
+            setMapLoader(true);
+        }
     })
 
     const onChangeDate = (date) => {
@@ -118,7 +130,13 @@ export default function createOrders() {
                         <div className='w-full mb-4 relative' style={{
                             height: '400px'
                         }}>
-                            <div id='map' ref={mapRef}></div>
+                            {mapLoader ? (
+                                <div className="text-center flex flex-col h-[400px] justify-center">
+                                    <Spinner aria-label="Center-aligned spinner example" />
+                                    <h1 className='mt-6'>Карта загружается...</h1>
+                                </div>
+                            ): (<div id='map' ref={mapRef}></div>)
+                            }
                             <Script
                                 id="yandex-maps"
                                 src="https://api-maps.yandex.ru/2.1/?apikey=0fb09044-5132-48a3-8653-02425b40b298&lang=ru_RU"
@@ -131,6 +149,12 @@ export default function createOrders() {
                                             controls: ['routePanelControl']
                                         });
                                         let control = myMap.controls.get('routePanelControl');
+                                        control.routePanel.options.set({
+                                            types: {
+                                                auto: true,
+                                                pedestrian: false,
+                                            }
+                                        });
                                         let multiRoutePromise = control.routePanel.getRouteAsync();
                                         multiRoutePromise.then(function(multiRoute) {
                                             multiRoute.model.events.add('requestsuccess', function() {
@@ -184,6 +208,7 @@ export default function createOrders() {
                                 yearDropdownItemNumber={100}
                                 scrollableYearDropdown
                                 minDate={new Date()}
+                                locale={ru}
                             />
                             </div>
                         <div className='input-container'>

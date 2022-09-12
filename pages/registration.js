@@ -258,8 +258,25 @@ export default function Registration () {
                             </InputMask>
                         </div>
                         {role === 'driver' && (
-                            <>
-                            <div className='input-container'>
+                            <div>
+                                <div className='mb-6 block'>
+                                    <Checkbox.Group
+                                        value={selected}
+                                        onChange={setSelected}
+                                        color='success'
+                                        defaultValue={["buenos-aires"]}
+                                        label="Выберите список документов"
+                                    >
+                                        <Checkbox value="mdp">Книжка МДП или ТИР Карнет</Checkbox>
+                                        <Checkbox value="cmr">Международная товарно-транспортная накладная</Checkbox>
+                                        <Checkbox value="t1">Транзитная декларация</Checkbox>
+                                        <Checkbox value="ex1">Экспортная декларация</Checkbox>
+                                        <Checkbox value="invoice">Инвойс (Дозвол)</Checkbox>
+                                        <Checkbox value="list">Упаковочный лист</Checkbox>
+                                        <Checkbox value="permission">Спец. разрешение</Checkbox>
+                                    </Checkbox.Group>
+                                </div>
+                                <div className='input-container'>
                                 <div className='block'>
                                     <Label htmlFor="transport" value='Выберите тип транспорта' />
                                 </div>
@@ -272,24 +289,7 @@ export default function Registration () {
                                     isSearchable={false}
                                 />
                             </div>
-                            <div className='mb-6 block'>
-                                <Checkbox.Group
-                                    value={selected}
-                                    onChange={setSelected}
-                                    color='success'
-                                    defaultValue={["buenos-aires"]}
-                                    label="Выберите список документов"
-                                >
-                                    <Checkbox value="mdp">Книжка МДП или ТИР Карнет</Checkbox>
-                                    <Checkbox value="cmr">Международная товарно-транспортная накладная</Checkbox>
-                                    <Checkbox value="t1">Транзитная декларация</Checkbox>
-                                    <Checkbox value="ex1">Экспортная декларация</Checkbox>
-                                    <Checkbox value="invoice">Инвойс</Checkbox>
-                                    <Checkbox value="list">Упаковочный лист</Checkbox>
-                                    <Checkbox value="certificate">Сертификат происхождения товара</Checkbox>
-                                </Checkbox.Group>
                             </div>
-                            </>
                         )}
                         {showError && (
                             <h2 className='flex items-center gap-2'>
