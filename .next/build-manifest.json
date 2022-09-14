@@ -25,10 +25,10 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/createOrders": [
+    "/createDriverOrders": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/createOrders.js"
+      "static/chunks/pages/createDriverOrders.js"
     ],
     "/home": [
       "static/chunks/webpack.js",

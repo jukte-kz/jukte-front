@@ -1,18 +1,18 @@
 export const transport = [
     {
         value: 1,
+        label: 'Рефрижератор',
+        price: 500
+    },
+    {
+        value: 2,
         label: 'Самосвал',
         price: 27
     },
     {
-        value: 2,
+        value: 3,
         label: 'Тралл',
         price: 1000
-    },
-    {
-        value: 3,
-        label: 'Рефрижератор',
-        price: 500
     },
     {
         value: 4,

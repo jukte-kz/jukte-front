@@ -8,7 +8,6 @@ import qs from "qs";
 import {useRouter} from "next/router";
 import {transport} from "../public/assets/data/transportType";
 import Select from "react-select";
-import { Checkbox } from "@nextui-org/react";
 
 export default function Registration () {
     const phoneMask = '+7-(999)-999-99-99';
@@ -28,7 +27,6 @@ export default function Registration () {
     const [otpCheckComplete, setOtpCheckComplete] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [successText, setSuccessText] = useState(false);
-    const [selected, setSelected] = useState([]);
 
     const router = useRouter();
 
@@ -80,7 +78,7 @@ export default function Registration () {
                 role: role,
                 name: name,
                 surname: surname,
-                iin: iin
+                iin: iin,
             }),
         }).then((res) => {
             if (res.data) {
@@ -212,7 +210,7 @@ export default function Registration () {
                                     value={iin}
                                     id="iin"
                                     type='tel'
-                                    placeholder="Номер документа"
+                                    placeholder=""
                                     required={true}
                                     sizing="lg"
                                 />
@@ -259,23 +257,6 @@ export default function Registration () {
                         </div>
                         {role === 'driver' && (
                             <div>
-                                <div className='mb-6 block'>
-                                    <Checkbox.Group
-                                        value={selected}
-                                        onChange={setSelected}
-                                        color='success'
-                                        defaultValue={["buenos-aires"]}
-                                        label="Выберите список документов"
-                                    >
-                                        <Checkbox value="mdp">Книжка МДП или ТИР Карнет</Checkbox>
-                                        <Checkbox value="cmr">Международная товарно-транспортная накладная</Checkbox>
-                                        <Checkbox value="t1">Транзитная декларация</Checkbox>
-                                        <Checkbox value="ex1">Экспортная декларация</Checkbox>
-                                        <Checkbox value="invoice">Инвойс (Дозвол)</Checkbox>
-                                        <Checkbox value="list">Упаковочный лист</Checkbox>
-                                        <Checkbox value="permission">Спец. разрешение</Checkbox>
-                                    </Checkbox.Group>
-                                </div>
                                 <div className='input-container'>
                                 <div className='block'>
                                     <Label htmlFor="transport" value='Выберите тип транспорта' />

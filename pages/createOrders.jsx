@@ -29,8 +29,7 @@ export default function createOrders() {
     const [checkCalc, setCheckCalc] = useState(false);
     const [checkSendOrder, setCheckSendOrder] = useState(false);
     const [showModal, setShowModal] = useState(false);
-    const [mapInitialize, setMapInitialize] = useState(null);
-    const [mapLoader, setMapLoader] = useState(false);
+    const [showLawError, setShowLawError] = useState(false);
 
     const mapRef = useRef();
     const router = useRouter();
@@ -56,11 +55,12 @@ export default function createOrders() {
     })
 
     useEffect(() => {
-        setMapInitialize()
-        setTimeout(() => setMapInitialize(document.getElementById('map').children.length
-        ), 2000);
-        if (!mapInitialize) {
-            setMapLoader(true);
+        if (parseInt(weight) > 22) {
+            if (transportType !== 'Тралл' && transportType !== 'Самосвал') {
+                setShowLawError(true);
+            }
+        } else {
+            setShowLawError(false);
         }
     })
 
@@ -68,7 +68,7 @@ export default function createOrders() {
         setDate(date);
     }
     const onChangeSelect = (e) => {
-        setTransportType(e.label)
+        setTransportType(e.label);
     }
 
     const sendOrderData = () => {
@@ -130,13 +130,7 @@ export default function createOrders() {
                         <div className='w-full mb-4 relative' style={{
                             height: '400px'
                         }}>
-                            {mapLoader ? (
-                                <div className="text-center flex flex-col h-[400px] justify-center">
-                                    <Spinner aria-label="Center-aligned spinner example" />
-                                    <h1 className='mt-6'>Карта загружается...</h1>
-                                </div>
-                            ): (<div id='map' ref={mapRef}></div>)
-                            }
+                            <div id='map' ref={mapRef}></div>
                             <Script
                                 id="yandex-maps"
                                 src="https://api-maps.yandex.ru/2.1/?apikey=0fb09044-5132-48a3-8653-02425b40b298&lang=ru_RU"
@@ -243,6 +237,11 @@ export default function createOrders() {
                                     />
                                 )}
                             </InputMask>
+                            {showLawError && (
+                                <div className="mt-4 rounded p-2 bg-red-600 text-white">
+                                    <p>Внимание! Груз свыше 22 тонн нельзя транспортировать по законодательству РК.</p>
+                                </div>
+                            )}
                         </div>
                         <div className='input-container'>
                                 <div className="mb-2 block">

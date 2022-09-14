@@ -13,6 +13,7 @@ import Script from "next/script";
 import {useRouter} from "next/router";
 import {transport} from "../public/assets/data/transportType";
 import {ru} from "date-fns/locale";
+import {transportUp} from "../public/assets/data/transportUp";
 
 export default function createDriverOrders() {
     const weightMask = '99 тонн';
@@ -130,6 +131,12 @@ export default function createDriverOrders() {
         router.push('/home');
     }
 
+    useEffect(() => {
+        if (userInfo) {
+            console.log(userInfo);
+        }
+    })
+
     return (
         <div>
             <Header removeUrl='/home' text='На главную' />
@@ -141,11 +148,11 @@ export default function createDriverOrders() {
                         <div className='w-full mb-4 relative' style={{
                             height: '400px'
                         }}>
-                            <div id='map' ref={mapRef}><p>asd</p></div>
+                            <div id='map' ref={mapRef}></div>
                             <Script
                                 id="yandex-maps"
                                 src="https://api-maps.yandex.ru/2.1/?apikey=0fb09044-5132-48a3-8653-02425b40b298&lang=ru_RU"
-                                onReady={() => {
+                                onLoad={() => {
                                     ymaps.ready(init);
                                     function init(){
                                         let myMap = new ymaps.Map(mapRef.current, {
@@ -154,6 +161,12 @@ export default function createDriverOrders() {
                                             controls: ['routePanelControl']
                                         });
                                         let control = myMap.controls.get('routePanelControl');
+                                        control.routePanel.options.set({
+                                            types: {
+                                                auto: true,
+                                                pedestrian: false,
+                                            }
+                                        });
                                         let multiRoutePromise = control.routePanel.getRouteAsync();
                                         multiRoutePromise.then(function(multiRoute) {
                                             multiRoute.model.events.add('requestsuccess', function() {
@@ -207,20 +220,16 @@ export default function createDriverOrders() {
                             />
                         </div>
                         <div className='input-container'>
-                            <div className="mb-2 block">
-                                <Label
-                                    htmlFor="product"
-                                    value="Тип погрузки"
-                                />
+                            <div className='mb-2 block'>
+                                <Label htmlFor="transport" value='Выберите тип погрузки' />
                             </div>
-                            <TextInput
-                                id="product"
-                                type="text"
-                                placeholder=''
-                                required={true}
-                                sizing="lg"
-                                value={product}
-                                onChange={onChangeProduct}
+                            <Select
+                                className="react-select block w-full border focus\:ring-blue-500:focus disabled:cursor-not-allowed disabled:opacity-50 bg-gray-50 border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-lg sm:text-md p-2"
+                                classNamePrefix="name"
+                                placeholder='Выберите тип погрузки'
+                                options={transportUp}
+                                onChange={onChangeSelect}
+                                isSearchable={false}
                             />
                         </div>
                         <div className='input-container'>

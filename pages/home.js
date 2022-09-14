@@ -20,10 +20,15 @@ export default function Home () {
     const [userInfo, setUserInfo] = useState();
     const [myOrders, setMyOrders] = useState(Array);
     const [openOrders, setOpenOrders] = useState(Array);
+    const [showAskUser, setShowAskUser] = useState(false);
 
     const [userSuccessMessage, setUserSuccessMessage] = useState('');
 
     const router = useRouter();
+
+    const toAskUser = () => {
+        setShowAskUser(!showAskUser);
+    }
 
     const goToSuccess = () => {
         router.push('/settings');
@@ -102,6 +107,7 @@ export default function Home () {
             <Header removeUrl='/login' text='Выйти'></Header>
             {loading ? (
                 <div className='p-4'>
+                    <h1 className='mb-6 font-bold text-lg'>Личный кабинет</h1>
                     <div className='w-full info-title-container'>
                         {userInfo && (
                             <h2>{userInfo.surname + ' ' + userInfo.name}</h2>
@@ -213,6 +219,7 @@ export default function Home () {
                                         openOrders.slice(0,1).map((data, index) => {
                                             return (
                                                 <OpenCard
+                                                    onClick={toAskUser}
                                                     key={index}
                                                     product={data.product}
                                                     price={data.price}
@@ -285,6 +292,26 @@ export default function Home () {
                     </div>
                 </div>
             )}
+            <Modal show={showAskUser} style={{width: '100%'}} position="center">
+                <Modal.Body style={{width: '100%'}}>
+                    <div className="space-y-6">
+                        <Header removeUrl='/home' />
+                        <p className="text-base leading-relaxed">
+                            Вы договорились по поводу заявки ?
+                        </p>
+                    </div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <div className='flex justify-between items-center w-full gap-4'>
+                        <button className='w-full redirect-button' onClick={toAskUser}>
+                            Да
+                        </button>
+                        <button className='w-full redirect-button' onClick={toAskUser}>
+                            Нет
+                        </button>
+                    </div>
+                </Modal.Footer>
+            </Modal>
             <Modal
                 show={userSuccess}
             >

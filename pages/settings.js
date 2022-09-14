@@ -38,6 +38,7 @@ export default function Settings () {
     const [disabledCompanyBin, setDisabledCompanyBin] = useState(false);
     const [disabledCompanyIban, setDisabledCompanyIban] = useState(false);
     const [disabledCarNumber, setDisabledCarNumber] = useState(false);
+    const [disabledPhone, setDisabledPhone] = useState(false);
 
     const toEndSettings = () => {
         router.push('/home')
@@ -93,6 +94,7 @@ export default function Settings () {
                     token: Cookies.get('accessToken')
                 }
             }).then((res) => {
+                console.log(res);
                 setUserInfo(res.data);
                 setCancelReq(true);
                 setLoading(true);
@@ -129,6 +131,9 @@ export default function Settings () {
             }
             if (userInfo.company.director.name) {
                 setDisabledCarNumber(true);
+            }
+            if (userInfo.phone) {
+                setDisabledPhone(true);
             }
         }
     })
@@ -259,7 +264,7 @@ export default function Settings () {
                                                 value="Введите номер телефона"
                                             />
                                         </div>
-                                        <InputMask value={phone} maskChar={null} onChange={onChangePhone} mask={phoneMask}>
+                                        <InputMask value={phone} maskChar={null} disabled={disabledPhone} onChange={onChangePhone} mask={phoneMask}>
                                             {(inputProps) => (
                                                 <TextInput
                                                     {...inputProps}
