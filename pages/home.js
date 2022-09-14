@@ -261,6 +261,7 @@ export default function Home () {
                                         openOrders.slice(0,1).map((data, index) => {
                                             return (
                                                 <DriverCard
+                                                    onClick={toAskUser}
                                                     key={index}
                                                     shipment={data.product}
                                                     price={data.price}
