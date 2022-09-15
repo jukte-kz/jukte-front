@@ -82,7 +82,7 @@ export default function driverOrders() {
                                 }
                             </div>
                         ) : (
-                            <p className='mt-4'>На данный открытых машин нету</p>
+                            <p className='mt-4'>На данный момент открытых машин нету</p>
                         )}
                     </div>
                 )}
