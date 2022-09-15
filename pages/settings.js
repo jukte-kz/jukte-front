@@ -156,7 +156,7 @@ export default function Settings () {
                     bin: bin,
                     director: {
                         name: directorName,
-                        surname: directorSurname.join(','),
+                        surname: directorSurname,
                         iin: '981103350587',
                     },
                     contacts: {
