@@ -177,7 +177,8 @@ export default function Home () {
                                             ) : (
                                                 <DriverCard
                                                     key={index}
-                                                    shipment={data.product}
+                                                    shipment={data.loadingType}
+                                                    logPrice={data.logPrice}
                                                     price={data.price}
                                                     weight={data.weight}
                                                     date={data.date}
@@ -190,6 +191,7 @@ export default function Home () {
                                                     role={userInfo.role}
                                                     phone={data.ownerPhone}
                                                     id={data._id}
+                                                    product={data.product}
                                                 />
                                             )
                                         )
@@ -263,7 +265,8 @@ export default function Home () {
                                                 <DriverCard
                                                     onClick={toAskUser}
                                                     key={index}
-                                                    shipment={data.product}
+                                                    shipment={data.loadingType}
+                                                    logPrice={data.logPrice}
                                                     price={data.price}
                                                     weight={data.weight}
                                                     date={data.date}
@@ -275,6 +278,7 @@ export default function Home () {
                                                     status={data.status}
                                                     role={Cookies.get('role')}
                                                     phone={data.ownerPhone}
+                                                    product={data.product}
                                                 />
                                             )
                                         })

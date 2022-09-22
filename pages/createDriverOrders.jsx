@@ -1,5 +1,5 @@
 import Header from "../components/atoms/Header/component";
-import {Label, Modal, Spinner, TextInput} from "flowbite-react";
+import {Label, Modal, Spinner, Textarea, TextInput} from "flowbite-react";
 import InputMask from "react-input-mask";
 import {useCallback, useEffect, useRef, useState} from "react";
 import Cookies from "js-cookie";
@@ -13,11 +13,12 @@ import Script from "next/script";
 import {useRouter} from "next/router";
 import { ru } from 'date-fns/locale';
 import {transportUp} from "../public/assets/data/transportUp";
+import {transport} from "../public/assets/data/transportType";
 
 export default function createDriverOrders() {
     const weightMask = '99 тонн';
 
-    const [product, setProduct] = useState('');
+    const [product, setProduct] = useState(' ');
     const [description, setDescription] = useState('');
     const [distance, setDistance] = useState('');
     const [weight, setWeight] = useState('');
@@ -25,7 +26,9 @@ export default function createDriverOrders() {
     const [fromPoint, setFromPoint] = useState('');
     const [toPoint, setToPoint] = useState('');
     const [transportType, setTransportType] = useState('');
+    const [transportLoading, setTransportLoading] = useState('');
     const [price, setPrice] = useState('');
+    const [logPrice, setLogPrice] = useState('');
     const [checkCalc, setCheckCalc] = useState(false);
     const [checkSendOrder, setCheckSendOrder] = useState(false);
     const [showModal, setShowModal] = useState(false);
@@ -50,7 +53,6 @@ export default function createDriverOrders() {
             distance.length > 0 &&
             weight.length > 0 && date &&
             description.length > 0 &&
-            product.length &&
             parseInt(price.replace(/\s/g, '')) > 0);
     })
 
@@ -64,11 +66,15 @@ export default function createDriverOrders() {
         }
     })
 
+    useEffect(() => {
+        setTransportType(Cookies.get('transportType'))
+    })
+
     const onChangeDate = (date) => {
         setDate(date);
     }
     const onChangeSelect = (e) => {
-        setTransportType(e.label);
+        setTransportLoading(e.label);
     }
 
     const sendOrderData = () => {
@@ -84,6 +90,8 @@ export default function createDriverOrders() {
                 type: transportType,
                 from: fromPoint,
                 to: toPoint,
+                loadingType: transportLoading,
+                logPrice: parseInt(logPrice.replace(/\s/g, '')),
                 distance: parseInt(distance.replace(/\s/g, '')),
             }),
             headers: {
@@ -98,20 +106,21 @@ export default function createDriverOrders() {
     }
 
     const calcPrice = () => {
-        if (transportType) {
-            let corrDistance = parseInt(distance.replace(/\s/g, ''));
-            let transportObj = transportUp.filter(obj => {
-                return obj.label === transportType
-            })
-            let transportPrice = transportObj[0].price
-            let logPrice = (distance * transportPrice * 10) / 100;
-            if (transportPrice === 27) {
-                let totalPrice = transportPrice * parseFloat(weight) * corrDistance;
-                setPrice(totalPrice + ' ₸');
-            } else {
-                let totalPrice = corrDistance * transportPrice;
-                setPrice(totalPrice + ' ₸');
-            }
+        let corrDistance = parseInt(distance.replace(/\s/g, ''));
+        let transportObj = transport.filter(obj => {
+            return obj.label === transportType
+        })
+        let transportPrice = transportObj[0].price
+        if (transportPrice === 27) {
+            let totalPrice = transportPrice * parseFloat(weight) * corrDistance - ((transportPrice * parseFloat(weight) * corrDistance)*0.1);
+            setPrice(totalPrice + ' ₸');
+            let logPriceCalc = totalPrice*0.1;
+            setLogPrice(logPriceCalc + ' ₸');
+        } else {
+            let totalPrice = corrDistance * transportPrice - ((corrDistance * transportPrice)*0.1);
+            setPrice(totalPrice + ' ₸');
+            let logPriceCalc = totalPrice*0.1;
+            setLogPrice(logPriceCalc + ' ₸');
         }
     }
     const endCreateOrder = () => {
@@ -170,19 +179,11 @@ export default function createDriverOrders() {
                         <div className='input-container'>
                             <div className="mb-2 block">
                                 <Label
-                                    htmlFor="product"
-                                    value="Наименование товара"
+                                    htmlFor="desc"
+                                    value="Детали перевозки"
                                 />
                             </div>
-                            <TextInput
-                                id="product"
-                                type="text"
-                                placeholder=''
-                                required={true}
-                                sizing="lg"
-                                value={product}
-                                onChange={onChangeProduct}
-                            />
+                            <Textarea value={product} onChange={onChangeProduct} />
                         </div>
                         <div className='input-container'>
                             <div className="mb-2 block">
@@ -289,6 +290,22 @@ export default function createDriverOrders() {
                                 disabled
                                 id="price"
                                 value={price}
+                                placeholder='0 ₸'
+                                required={true}
+                                sizing="lg"
+                            />
+                        </div>
+                        <div className='input-container'>
+                            <div className="mb-2 block">
+                                <Label
+                                    htmlFor="price"
+                                    value="Цена за услуги логиста"
+                                />
+                            </div>
+                            <TextInput
+                                disabled
+                                id="price"
+                                value={logPrice}
                                 placeholder='0 ₸'
                                 required={true}
                                 sizing="lg"

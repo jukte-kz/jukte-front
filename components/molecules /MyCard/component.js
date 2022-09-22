@@ -16,7 +16,7 @@ export default function MyCard({product, ownerRole, price, weight, date, type, f
                                    font-semibold mr-2 px-2.5 py-0.5 rounded
                                    dark:bg-green-200 dark:text-green-900"
                         >
-                            {status}
+                            Открытая заявка
                         </span>
                     )}
                 </div>

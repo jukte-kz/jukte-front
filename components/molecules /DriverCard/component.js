@@ -1,12 +1,13 @@
 import moment from "moment";
 import Link from "next/link";
 
-export default function DriverCard({shipment, price, weight, date, type, from, to, distance, description, status, phone, role, id, onClick}) {
+export default function DriverCard({shipment, product, price, logPrice, weight, date, type, from, to, distance, description, status, phone, role, id, onClick}) {
     return (
         <div className="rounded shadow-sm bg-white w-full myCard-container p-4">
             <div className='pb-2 mb-4 border-b-2 flex items-start justify-between'>
                 <div>
                     <h1 className='font-bold'>Цена: {price} ₸</h1>
+                    <h1 className='font-bold'>Услуги логиста: {logPrice} ₸</h1>
                 </div>
                 <div>
                     {status === 'open' && (
@@ -15,7 +16,7 @@ export default function DriverCard({shipment, price, weight, date, type, from, t
                                    font-semibold mr-2 px-2.5 py-0.5 rounded
                                    dark:bg-green-200 dark:text-green-900"
                         >
-                            {status}
+                            открытая
                         </span>
                     )}
                 </div>
@@ -48,6 +49,10 @@ export default function DriverCard({shipment, price, weight, date, type, from, t
                 <div className='flex items-center'>
                     <img className='mr-2' src="/assets/icon/carShipment.svg" alt=""/>
                     <p>{shipment}</p>
+                </div>
+                <div className='items-center'>
+                    <p className="font-bold">Детали перевозки:</p>
+                    <p>{product}</p>
                 </div>
             </div>
             {role === 'driver' ? (

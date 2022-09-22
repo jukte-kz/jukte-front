@@ -4,11 +4,15 @@ import {useCallback, useEffect, useState} from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import {Pagination, Spinner} from "flowbite-react";
+import DriverCard from "../components/molecules /DriverCard/component";
 
 export default function MyOrders() {
+    const [userSuccess, setUserSuccess] = useState(false);
     const [myOrders, setMyOrders] = useState(Array);
     const [cancelArchive, setCancelArchive] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [cancel, setCancel] = useState(false);
+    const [userInfo, setUserInfo] = useState();
 
     useEffect(() => {
         if(!cancelArchive) {
@@ -25,6 +29,33 @@ export default function MyOrders() {
                 }
                 setLoading(false)
                 setCancelArchive(true)
+            })
+        }
+    })
+    useEffect(() => {
+        if (!cancel) {
+            axios({
+                method: 'get',
+                url: 'https://api.jukte.kz/user/info',
+                headers: {
+                    'content-type': 'application/x-www-form-urlencoded;charset=utf-8',
+                    token: Cookies.get('accessToken')
+                }
+            }).then((res) => {
+                setUserInfo(res.data)
+                setCancel(true)
+                setLoading(true)
+                Cookies.set('role',res.data.role)
+                if (JSON.stringify(res.data.company.director) === '{}') {
+                    setUserSuccess(true)
+                }
+            }).catch((err) => {
+                if (err) {
+                    setCancel(true)
+                }
+                if (err.response.data.message === 'User has not access') {
+                    Cookies.set('userSuccess', userSuccess)
+                }
             })
         }
     })
@@ -57,30 +88,60 @@ export default function MyOrders() {
                 ):(
                     <div>
                         {myOrders.length > 0 ? (
-                            <div className='flex flex-col gap-2 mt-4 bg-gray-400 p-4'>
-                                {
-                                    myOrders.slice(0,4).map((data, index) => {
-                                        return (
-                                            <MyCard
-                                                key={index}
-                                                product={data.product}
-                                                price={data.price}
-                                                weight={data.weight}
-                                                date={data.date}
-                                                type={data.type}
-                                                from={data.from}
-                                                to={data.to}
-                                                distance={data.distance}
-                                                description={data.description}
-                                                status={data.status}
-                                                role={Cookies.get('role')}
-                                                phone={data.ownerPhone}
-                                                id={data._id}
-                                            />
-                                        )
-                                    })
-                                }
-                            </div>
+                            userInfo.role === 'logistician' && (
+                                <div className='flex flex-col gap-2 mt-4 bg-gray-400 p-4'>
+                                    {
+                                        myOrders.slice(0,4).map((data, index) => {
+                                            return (
+                                                <MyCard
+                                                    key={index}
+                                                    product={data.product}
+                                                    price={data.price}
+                                                    weight={data.weight}
+                                                    date={data.date}
+                                                    type={data.type}
+                                                    from={data.from}
+                                                    to={data.to}
+                                                    distance={data.distance}
+                                                    description={data.description}
+                                                    status={data.status}
+                                                    role={Cookies.get('role')}
+                                                    phone={data.ownerPhone}
+                                                    id={data._id}
+                                                />
+                                            )
+                                        })
+                                    }
+                                </div>
+                            ) ||
+                            userInfo.role === 'driver' && (
+                                <div className='flex flex-col gap-2 mt-4 bg-gray-400 p-4'>
+                                    {
+                                        myOrders.slice(0,4).map((data, index) => {
+                                            return (
+                                                <DriverCard
+                                                    key={index}
+                                                    shipment={data.loadingType}
+                                                    logPrice={data.logPrice}
+                                                    price={data.price}
+                                                    weight={data.weight}
+                                                    date={data.date}
+                                                    type={data.type}
+                                                    from={data.from}
+                                                    to={data.to}
+                                                    distance={data.distance}
+                                                    description={data.description}
+                                                    status={data.status}
+                                                    role={userInfo.role}
+                                                    phone={data.ownerPhone}
+                                                    id={data._id}
+                                                    product={data.product}
+                                                />
+                                            )
+                                        })
+                                    }
+                                </div>
+                            )
                         ) : (
                             <p className='mt-4'>На данный момент у вас нету заявок</p>
                         )}
