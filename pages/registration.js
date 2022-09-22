@@ -8,6 +8,7 @@ import qs from "qs";
 import {useRouter} from "next/router";
 import {transport} from "../public/assets/data/transportType";
 import Select from "react-select";
+import Cookies from "js-cookie";
 
 export default function Registration () {
     const phoneMask = '+7-(999)-999-99-99';
@@ -83,6 +84,7 @@ export default function Registration () {
         }).then((res) => {
             if (res.data) {
                 setShowModal(true)
+                Cookies.set('transportType', transportType);
             }
             setShowError(false)
         }).catch((err) => {

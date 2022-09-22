@@ -1,5 +1,5 @@
 import Header from "../components/atoms/Header/component";
-import {Label, Modal, TextInput} from "flowbite-react";
+import {Label, Modal, Spinner, TextInput} from "flowbite-react";
 import InputMask from "react-input-mask";
 import {useCallback, useEffect, useRef, useState} from "react";
 import Cookies from "js-cookie";
@@ -11,14 +11,12 @@ import Select from 'react-select';
 import React from "react";
 import Script from "next/script";
 import {useRouter} from "next/router";
-import {transport} from "../public/assets/data/transportType";
-import {ru} from "date-fns/locale";
+import { ru } from 'date-fns/locale';
 import {transportUp} from "../public/assets/data/transportUp";
 
 export default function createDriverOrders() {
     const weightMask = '99 тонн';
-    const [cancel, setCancel] = useState(false);
-    const [userInfo, setUserInfo] = useState();
+
     const [product, setProduct] = useState('');
     const [description, setDescription] = useState('');
     const [distance, setDistance] = useState('');
@@ -31,8 +29,9 @@ export default function createDriverOrders() {
     const [checkCalc, setCheckCalc] = useState(false);
     const [checkSendOrder, setCheckSendOrder] = useState(false);
     const [showModal, setShowModal] = useState(false);
+    const [showLawError, setShowLawError] = useState(false);
 
-    const mapRef = useRef()
+    const mapRef = useRef();
     const router = useRouter();
 
     const onChangeDescription = useCallback((event) => {
@@ -46,7 +45,7 @@ export default function createDriverOrders() {
     })
 
     useEffect(() => {
-        setCheckCalc(distance.length > 0 && weight.length > 0 && transportType.length > 0)
+        setCheckCalc(distance.length > 0 && weight.length > 0)
         setCheckSendOrder(
             distance.length > 0 &&
             weight.length > 0 && date &&
@@ -56,31 +55,20 @@ export default function createDriverOrders() {
     })
 
     useEffect(() => {
-        if (!cancel) {
-            axios({
-                method: 'get',
-                url: 'https://api.jukte.kz/user/info',
-                headers: {
-                    'content-type': 'application/x-www-form-urlencoded;charset=utf-8',
-                    token: Cookies.get('accessToken')
-                }
-            }).then((res) => {
-                setCancel(true)
-                setUserInfo(res.data)
-            }).catch((err) => {
-                if (err) {
-                    setCancel(true)
-                }
-            })
+        if (parseInt(weight) > 22) {
+            if (transportType !== 'Тралл' && transportType !== 'Самосвал') {
+                setShowLawError(true);
+            }
+        } else {
+            setShowLawError(false);
         }
     })
-
 
     const onChangeDate = (date) => {
         setDate(date);
     }
     const onChangeSelect = (e) => {
-        setTransportType(e.label)
+        setTransportType(e.label);
     }
 
     const sendOrderData = () => {
@@ -112,7 +100,7 @@ export default function createDriverOrders() {
     const calcPrice = () => {
         if (transportType) {
             let corrDistance = parseInt(distance.replace(/\s/g, ''));
-            let transportObj = transport.filter(obj => {
+            let transportObj = transportUp.filter(obj => {
                 return obj.label === transportType
             })
             let transportPrice = transportObj[0].price
@@ -130,12 +118,6 @@ export default function createDriverOrders() {
         setShowModal(false);
         router.push('/home');
     }
-
-    useEffect(() => {
-        if (userInfo) {
-            console.log(userInfo);
-        }
-    })
 
     return (
         <div>
@@ -188,6 +170,23 @@ export default function createDriverOrders() {
                         <div className='input-container'>
                             <div className="mb-2 block">
                                 <Label
+                                    htmlFor="product"
+                                    value="Наименование товара"
+                                />
+                            </div>
+                            <TextInput
+                                id="product"
+                                type="text"
+                                placeholder=''
+                                required={true}
+                                sizing="lg"
+                                value={product}
+                                onChange={onChangeProduct}
+                            />
+                        </div>
+                        <div className='input-container'>
+                            <div className="mb-2 block">
+                                <Label
                                     htmlFor="surname"
                                     value="Выберите дату отправления"
                                 />
@@ -204,19 +203,6 @@ export default function createDriverOrders() {
                                 scrollableYearDropdown
                                 minDate={new Date()}
                                 locale={ru}
-                            />
-                        </div>
-                        <div className='input-container'>
-                            <div className='mb-2 block'>
-                                <Label htmlFor="transport" value='Выберите тип транспорта' />
-                            </div>
-                            <Select
-                                className="react-select block w-full border focus\:ring-blue-500:focus disabled:cursor-not-allowed disabled:opacity-50 bg-gray-50 border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-lg sm:text-md p-2"
-                                classNamePrefix="name"
-                                placeholder='Выберите тип транспорта'
-                                options={transport}
-                                onChange={onChangeSelect}
-                                isSearchable={false}
                             />
                         </div>
                         <div className='input-container'>
@@ -251,6 +237,11 @@ export default function createDriverOrders() {
                                     />
                                 )}
                             </InputMask>
+                            {showLawError && (
+                                <div className="mt-4 rounded p-2 bg-red-600 text-white">
+                                    <p>Внимание! Груз свыше 22 тонн нельзя транспортировать по законодательству РК.</p>
+                                </div>
+                            )}
                         </div>
                         <div className='input-container'>
                             <div className="mb-2 block">

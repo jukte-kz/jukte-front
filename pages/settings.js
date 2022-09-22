@@ -29,7 +29,7 @@ export default function Settings () {
     const [iban, setIban] = useState('');
 
     const [directorName, setDirectorName] = useState('');
-    const [directorSurname, setDirectorSurname] = useState([]);
+    const [directorSurname, setDirectorSurname] = useState('');
 
     const [carNumber, setCarNumber] = useState('');
 
@@ -76,9 +76,6 @@ export default function Settings () {
     const onChangeDirectorSurname = useCallback((event) => {
         setDirectorSurname(event.target.value);
     }, []);
-    const onChangeDirectorPhone = useCallback((event) => {
-        setDirectorPhone(event.target.value);
-    }, []);
 
     const onChangeCarNumber = useCallback((event) => {
         setCarNumber(event.target.value);
@@ -108,7 +105,6 @@ export default function Settings () {
                 setIban(res.data.company.account);
                 setDirectorName(res.data.company.director.name);
                 setDirectorSurname(res.data.company.director.surname);
-                setDirectorPhone(res.data.company.director.phone);
                 setCarNumber(Cookies.get('carNumber'));
             }).catch((err) => {
                 if (err) {
@@ -400,22 +396,6 @@ export default function Settings () {
                                                 required={true}
                                                 sizing="lg"
                                             />
-                                        </div>
-                                        <div className='mb-6 block z-0'>
-                                            <Checkbox.Group
-                                                value={directorSurname}
-                                                onChange={setDirectorSurname}
-                                                color='success'
-                                                label="Выберите список документов"
-                                            >
-                                                <Checkbox value="mdp">Книжка МДП или ТИР Карнет</Checkbox>
-                                                <Checkbox value="cmr">Международная товарно-транспортная накладная</Checkbox>
-                                                <Checkbox value="t1">Транзитная декларация</Checkbox>
-                                                <Checkbox value="ex1">Экспортная декларация</Checkbox>
-                                                <Checkbox value="invoice">Инвойс</Checkbox>
-                                                <Checkbox value="list">Упаковочный лист</Checkbox>
-                                                <Checkbox value="certificate">Сертификат происхождения товара</Checkbox>
-                                            </Checkbox.Group>
                                         </div>
                                     </div>
                                 ) : (
