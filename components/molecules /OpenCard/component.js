@@ -1,13 +1,14 @@
 import moment from "moment";
 import Link from "next/link";
 
-export default function OpenCard({product, price, weight, date, type, from, to, distance, description, status, phone, role, onClick}) {
+export default function OpenCard({product, price, logPrice, weight, date, type, from, to, distance, description, status, phone, role, onClick}) {
     return (
         <div className="rounded shadow-sm bg-white w-full myCard-container p-4">
             <div className='pb-2 mb-4 border-b-2 flex items-start justify-between'>
                 <div>
                     <h2 className='mb-2'>{product}</h2>
                     <h1>Цена: {price} ₸</h1>
+                    <h1>Услуги логиста: {logPrice} ₸</h1>
                 </div>
             </div>
             <div className='flex flex-col gap-2'>

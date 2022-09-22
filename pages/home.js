@@ -234,6 +234,7 @@ export default function Home () {
                                                     description={data.description}
                                                     status={data.status}
                                                     phone={data.ownerPhone}
+                                                    logPrice={data.logPrice}
                                                 />
                                             )
                                         })
@@ -266,7 +267,7 @@ export default function Home () {
                                                     onClick={toAskUser}
                                                     key={index}
                                                     shipment={data.loadingType}
-                                                    logPrice={data.logPrice}
+                                                      logPrice={data.logPrice}
                                                     price={data.price}
                                                     weight={data.weight}
                                                     date={data.date}
