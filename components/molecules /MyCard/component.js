@@ -1,7 +1,10 @@
 import moment from "moment";
 import Link from "next/link";
 
-export default function MyCard({product, ownerRole, price, weight, date, type, from, to, distance, description, status, phone, role, id}) {
+export default function MyCard({
+                                   shipment, product, cub, price, logPrice, weight, date, type, from, to, distance,
+                                   description, status, phone, role, id,
+}) {
     return (
         <div className="rounded shadow-sm bg-white w-full myCard-container p-4">
             <div className='pb-2 mb-4 border-b-2 flex items-start justify-between'>

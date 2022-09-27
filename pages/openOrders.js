@@ -59,7 +59,7 @@ export default function MyOrders() {
                         {openOrders.length > 0 ? (
                             <div className='flex flex-col gap-2 mt-4 bg-gray-400 p-4'>
                                 {
-                                    openOrders.slice(0,4).map((data, index) => {
+                                    openOrders.slice(0,6).map((data, index) => {
                                         return (
                                             <OpenCard
                                                 key={index}
@@ -86,7 +86,7 @@ export default function MyOrders() {
                     </div>
                 )}
             </div>
-            {openOrders.length > 4 && (
+            {openOrders.length > 6 && (
                 <div className='flex justify-center mb-6'>
                     <Pagination
                         currentPage={1}

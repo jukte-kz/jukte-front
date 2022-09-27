@@ -1,5 +1,5 @@
 import Header from "../components/atoms/Header/component";
-import {Label, Modal, Spinner, TextInput} from "flowbite-react";
+import {Label, Modal, Spinner, Textarea, TextInput} from "flowbite-react";
 import InputMask from "react-input-mask";
 import {useCallback, useEffect, useRef, useState} from "react";
 import Cookies from "js-cookie";
@@ -184,6 +184,15 @@ export default function createOrders() {
                                     onChange={onChangeProduct}
                                 />
                             </div>
+                        <div className='input-container'>
+                            <div className="mb-2 block">
+                                <Label
+                                    htmlFor="desc"
+                                    value="Детали перевозки"
+                                />
+                            </div>
+                            <Textarea value={product} onChange={onChangeProduct} />
+                        </div>
                         <div className='input-container'>
                             <div className="mb-2 block">
                                 <Label

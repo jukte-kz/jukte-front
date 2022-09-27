@@ -22,12 +22,14 @@ export default function Registration () {
     const [password, setPassword] = useState('');
     const [transportType, setTransportType] = useState('');
     const [role, setRole] = useState('');
+    const [lawData, setLawData] = useState(false);
     const [showError, setShowError] = useState(false);
     const [errMessage, setErrMesage] = useState('');
     const [checkComplete, setCheckComplete] = useState(false);
     const [otpCheckComplete, setOtpCheckComplete] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [successText, setSuccessText] = useState(false);
+    const [showTeleErr, setShowTeleErr] = useState(false);
 
     const router = useRouter();
 
@@ -62,6 +64,9 @@ export default function Registration () {
     const onChangeRole = (e) => {
         setRole(e.target.value)
     }
+    const onChangeLawData = () => {
+        setLawData(!lawData)
+    }
     const toEndRegister = () => {
         setShowModal(false);
         router.push('/login');
@@ -89,8 +94,11 @@ export default function Registration () {
             setShowError(false)
         }).catch((err) => {
             if (err.response.data.message.includes('E11000')) {
-                setShowError(true)
+                setShowError(true);
                 setErrMesage('Такой пользователь уже зарегестрирован')
+            }
+            if (err.response.data.message === 'can\'t to deliver') {
+                setShowTeleErr(true);
             }
         })
     }
@@ -140,6 +148,16 @@ export default function Registration () {
                             Внимание! ИИН вводятся один раз!
                             Просим вас вводить данные <b>корректно</b>.
                         </p>
+                    </div>
+                </div>
+                <div className='py-2 mt-2 mb-4 rounded bg-blue-50'>
+                    <div className='flex gap-2 radio-button-container'>
+                        <div className="w-full flex items-center px-4">
+                            <input id="default-checkbox" type="checkbox" value=""
+                                   className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
+                            <label htmlFor="bordered-radio-0"
+                                   className="py-4 ml-4 w-full text-md font-medium dark:text-gray-300">Я даю свое согласие на обработку личных данных</label>
+                        </div>
                     </div>
                 </div>
                 <div className='py-2 mt-2 mb-4 rounded bg-blue-50'>
@@ -286,6 +304,21 @@ export default function Registration () {
                     </button>
                 </form>
             </div>
+            <Modal
+                show={showTeleErr}
+                position='center'>
+                <Modal.Header onClick={() => {
+                    setShowTeleErr(false)
+                }}>
+                    Ошибка шлюза
+                </Modal.Header>
+                <Modal.Body>
+                    <p className="text-center">
+                        К сожалению на данный момент мы не можем обслужить абонентов Tele2/Altel.
+                        Для регистраций можете написать в техническую поддержку <a href="" className="text-[#4f52ff]">ПО ССЫЛКЕ</a> !
+                    </p>
+                </Modal.Body>
+            </Modal>
             <Modal
                 show={showModal}
                 position="center"

@@ -17,11 +17,13 @@ import {transport} from "../public/assets/data/transportType";
 
 export default function createDriverOrders() {
     const weightMask = '99 тонн';
+    const cubMask = '999 кубометров (м3)';
 
     const [product, setProduct] = useState(' ');
     const [description, setDescription] = useState('');
     const [distance, setDistance] = useState('');
     const [weight, setWeight] = useState('');
+    const [cubProduct, setCubProduct] = useState('');
     const [date, setDate] = useState(null);
     const [fromPoint, setFromPoint] = useState('');
     const [toPoint, setToPoint] = useState('');
@@ -33,6 +35,7 @@ export default function createDriverOrders() {
     const [checkSendOrder, setCheckSendOrder] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [showLawError, setShowLawError] = useState(false);
+    const [cancel, setCancel] = useState(false);
 
     const mapRef = useRef();
     const router = useRouter();
@@ -45,6 +48,9 @@ export default function createDriverOrders() {
     }, []);
     const onChangeWeight = useCallback((event) => {
         setWeight(event.target.value);
+    })
+    const onChangeCubProduct = useCallback((event) =>  {
+        setCubProduct(event.target.value);
     })
 
     useEffect(() => {
@@ -64,10 +70,6 @@ export default function createDriverOrders() {
         } else {
             setShowLawError(false);
         }
-    })
-
-    useEffect(() => {
-        setTransportType(Cookies.get('transportType'))
     })
 
     const onChangeDate = (date) => {
@@ -90,7 +92,8 @@ export default function createDriverOrders() {
                 type: transportType,
                 from: fromPoint,
                 to: toPoint,
-                loadingType: transportLoading,
+                loadType: transportLoading,
+                cubProduct: cubProduct,
                 logPrice: parseInt(logPrice.replace(/\s/g, '')),
                 distance: parseInt(distance.replace(/\s/g, '')),
             }),
@@ -104,6 +107,27 @@ export default function createDriverOrders() {
             }
         })
     }
+
+    useEffect(() => {
+        if (!cancel) {
+            axios({
+                method: 'get',
+                url: 'https://api.jukte.kz/user/info',
+                headers: {
+                    'content-type': 'application/x-www-form-urlencoded;charset=utf-8',
+                    token: Cookies.get('accessToken')
+                }
+            }).then((res) => {
+                console.log(res.data.transport.type)
+                setTransportType(res.data.transport.type);
+                setCancel(true)
+            }).catch((err) => {
+                if (err) {
+                    setCancel(true)
+                }
+            })
+        }
+    })
 
     const calcPrice = () => {
         let corrDistance = parseInt(distance.replace(/\s/g, ''));
@@ -243,6 +267,27 @@ export default function createDriverOrders() {
                                     <p>Внимание! Груз свыше 22 тонн нельзя транспортировать по законодательству РК.</p>
                                 </div>
                             )}
+                        </div>
+                        <div className='input-container'>
+                            <div className="mb-2 block">
+                                <Label
+                                    htmlFor="cubProduct"
+                                    value="Кубометр груза"
+                                />
+                            </div>
+                            <InputMask value={cubProduct} maskChar={null} onChange={onChangeCubProduct} mask={cubMask}>
+                                {(inputProps) => (
+                                    <TextInput
+                                        {...inputProps}
+                                        onChange={onChangeCubProduct}
+                                        value={cubProduct}
+                                        id="distance"
+                                        type="tel"
+                                        placeholder='0 кубометров (м3)'
+                                        sizing="lg"
+                                    />
+                                )}
+                            </InputMask>
                         </div>
                         <div className='input-container'>
                             <div className="mb-2 block">

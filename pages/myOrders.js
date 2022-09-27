@@ -91,7 +91,7 @@ export default function MyOrders() {
                             userInfo.role === 'logistician' && (
                                 <div className='flex flex-col gap-2 mt-4 bg-gray-400 p-4'>
                                     {
-                                        myOrders.slice(0,4).map((data, index) => {
+                                        myOrders.slice(0,6).map((data, index) => {
                                             return (
                                                 <MyCard
                                                     key={index}
@@ -117,11 +117,11 @@ export default function MyOrders() {
                             userInfo.role === 'driver' && (
                                 <div className='flex flex-col gap-2 mt-4 bg-gray-400 p-4'>
                                     {
-                                        myOrders.slice(0,4).map((data, index) => {
+                                        myOrders.slice(0,6).map((data, index) => {
                                             return (
                                                 <DriverCard
                                                     key={index}
-                                                    shipment={data.loadingType}
+                                                    shipment={data.loadType}
                                                     logPrice={data.logPrice}
                                                     price={data.price}
                                                     weight={data.weight}
@@ -136,6 +136,7 @@ export default function MyOrders() {
                                                     phone={data.ownerPhone}
                                                     id={data._id}
                                                     product={data.product}
+                                                    cub={data.cubProduct}
                                                 />
                                             )
                                         })
@@ -148,7 +149,7 @@ export default function MyOrders() {
                     </div>
                 )}
             </div>
-            {myOrders.length > 4 && (
+            {myOrders.length > 6 && (
                 <div className='flex justify-center mb-6'>
                     <Pagination
                         currentPage={1}

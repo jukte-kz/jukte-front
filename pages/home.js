@@ -107,7 +107,9 @@ export default function Home () {
             <Header removeUrl='/login' text='Выйти'></Header>
             {loading ? (
                 <div className='p-4'>
-                    <h1 className='mb-6 font-bold text-lg'>Личный кабинет</h1>
+                    <div className='flex mb-6 justify-between items-center'>
+                        <h1 className='font-bold text-lg'>Личный кабинет</h1>
+                    </div>
                     <div className='w-full info-title-container'>
                         {userInfo && (
                             <h2>{userInfo.surname + ' ' + userInfo.name}</h2>
@@ -140,6 +142,7 @@ export default function Home () {
                     )}
                     <LinkBlock removeUrl='/settings' title='Настройки' image='/assets/icon/settings.svg' />
                     <LinkBlock removeUrl='/faq' title='Вопросы и ответы' image='/assets/icon/faq.svg' />
+                    <LinkBlock removeUrl='' title='Техническая поддержка' image='/assets/icon/tech.svg' />
                     <div className='my-orders-container py-8'>
                         <div className='flex w-full justify-between items-center'>
                             <h2>Мои заявки</h2>
@@ -160,6 +163,9 @@ export default function Home () {
                                             data.ownerRole === 'logistician' ? (
                                                 <MyCard
                                                     key={index}
+                                                    shipment={data.loadType}
+                                                    cub={data.cubProduct}
+                                                    logPrice={data.logPrice}
                                                     product={data.product}
                                                     price={data.price}
                                                     weight={data.weight}
@@ -177,7 +183,8 @@ export default function Home () {
                                             ) : (
                                                 <DriverCard
                                                     key={index}
-                                                    shipment={data.loadingType}
+                                                    shipment={data.loadType}
+                                                    cub={data.cubProduct}
                                                     logPrice={data.logPrice}
                                                     price={data.price}
                                                     weight={data.weight}
@@ -266,7 +273,7 @@ export default function Home () {
                                                 <DriverCard
                                                     onClick={toAskUser}
                                                     key={index}
-                                                    shipment={data.loadingType}
+                                                    shipment={data.loadType}
                                                       logPrice={data.logPrice}
                                                     price={data.price}
                                                     weight={data.weight}

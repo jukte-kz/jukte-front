@@ -1,5 +1,5 @@
 import Header from "../components/atoms/Header/component";
-import {Label, Modal, TextInput} from "flowbite-react";
+import {Label, Modal, Textarea, TextInput} from "flowbite-react";
 import InputMask from "react-input-mask";
 import {useCallback, useEffect, useRef, useState} from "react";
 import Cookies from "js-cookie";
@@ -12,6 +12,7 @@ import React from "react";
 import Script from "next/script";
 import {useRouter} from "next/router";
 import moment from "moment/moment";
+import {transportUp} from "../public/assets/data/transportUp";
 
 export const transport = [
     {
@@ -73,26 +74,31 @@ export const transport = [
 
 export default function createOrders() {
     const weightMask = '99 тонн';
+    const cubMask = '999 кубометров (м3)';
 
     const [product, setProduct] = useState('');
     const [description, setDescription] = useState('');
     const [distance, setDistance] = useState('');
     const [weight, setWeight] = useState('');
+    const [cubProduct, setCubProduct] = useState('');
     const [date, setDate] = useState(null);
     const [fromPoint, setFromPoint] = useState('');
     const [toPoint, setToPoint] = useState('');
     const [transportType, setTransportType] = useState('');
     const [showErrorLabel, setShowErrorLabel] = useState(false);
     const [price, setPrice] = useState('');
+    const [logPrice, setLogPrice] = useState('');
+    const [transportLoading, setTransportLoading] = useState('');
     const [checkCalc, setCheckCalc] = useState(false);
     const [checkSendOrder, setCheckSendOrder] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [myOrderRedact, setMyOrderRedact] = useState(null);
     const [roud, setRoud] = useState(null);
+    const [role, setRole] = useState(null);
+    const [showLawError, setShowLawError] = useState(false);
 
     const [myOrders, setMyOrders] = useState(Array);
     const [cancelArchive, setCancelArchive] = useState(false);
-    const [currentOrders, setCurrentOrders] = useState(null);
 
     const mapRef = useRef()
     const router = useRouter();
@@ -103,6 +109,9 @@ export default function createOrders() {
     const onChangeProduct = useCallback((event) => {
         setProduct(event.target.value);
     }, []);
+    const onChangeCubProduct = useCallback((event) =>  {
+        setCubProduct(event.target.value);
+    })
     const onChangeWeight = useCallback((event) => {
         setWeight(event.target.value);
         if (parseFloat(event.target.value) > 20) {
@@ -128,6 +137,30 @@ export default function createOrders() {
                 }
                 setCancelArchive(true)
             })
+            axios({
+                method: 'get',
+                url: 'https://api.jukte.kz/user/info',
+                headers: {
+                    'content-type': 'application/x-www-form-urlencoded;charset=utf-8',
+                    token: Cookies.get('accessToken')
+                }
+            }).then((res) => {
+                if (res.data) {
+                    setCancelArchive(true)
+                    setRole(res.data.role)
+                    setTransportType(res.data.transport.type)
+                }
+            })
+        }
+    })
+
+    useEffect(() => {
+        if (parseInt(weight) > 22) {
+            if (transportType !== 'Тралл' && transportType !== 'Самосвал') {
+                setShowLawError(true);
+            }
+        } else {
+            setShowLawError(false);
         }
     })
 
@@ -154,7 +187,7 @@ export default function createOrders() {
         setDate(date);
     }
     const onChangeSelect = (e) => {
-        setTransportType(e.label)
+        setTransportLoading(e.label)
     }
 
     const sendOrderData = () => {
@@ -170,6 +203,9 @@ export default function createOrders() {
                 type: transportType,
                 from: fromPoint,
                 to: toPoint,
+                loadType: transportLoading,
+                cubProduct: cubProduct,
+                logPrice: parseInt(logPrice.replace(/\s/g, '')),
                 distance: parseInt(distance.replace(/\s/g, '')),
             }),
             headers: {
@@ -184,20 +220,21 @@ export default function createOrders() {
     }
 
     const calcPrice = () => {
-        if (transportType) {
-            let corrDistance = parseInt(distance.replace(/\s/g, ''));
-            let transportObj = transport.filter(obj => {
-                return obj.label === transportType
-            })
-            let transportPrice = transportObj[0].price
-            let logPrice = (distance * transportPrice * 10) / 100;
-            if (transportPrice === 27) {
-                let totalPrice = transportPrice * parseFloat(weight) * corrDistance;
-                setPrice(totalPrice + ' ₸');
-            } else {
-                let totalPrice = corrDistance * transportPrice;
-                setPrice(totalPrice + ' ₸');
-            }
+        let corrDistance = parseInt(distance.replace(/\s/g, ''));
+        let transportObj = transport.filter(obj => {
+            return obj.label === transportType
+        })
+        let transportPrice = transportObj[0].price
+        if (transportPrice === 27) {
+            let totalPrice = transportPrice * parseFloat(weight) * corrDistance - ((transportPrice * parseFloat(weight) * corrDistance)*0.1);
+            setPrice(totalPrice + ' ₸');
+            let logPriceCalc = totalPrice*0.1;
+            setLogPrice(logPriceCalc + ' ₸');
+        } else {
+            let totalPrice = corrDistance * transportPrice - ((corrDistance * transportPrice)*0.1);
+            setPrice(totalPrice + ' ₸');
+            let logPriceCalc = totalPrice*0.1;
+            setLogPrice(logPriceCalc + ' ₸');
         }
     }
     const endCreateOrder = () => {
@@ -229,6 +266,12 @@ export default function createOrders() {
                                             controls: ['routePanelControl']
                                         });
                                         let control = myMap.controls.get('routePanelControl');
+                                        control.routePanel.options.set({
+                                            types: {
+                                                auto: true,
+                                                pedestrian: false,
+                                            }
+                                        });
                                         let multiRoutePromise = control.routePanel.getRouteAsync();
                                         multiRoutePromise.then(function(multiRoute) {
                                             multiRoute.model.events.add('requestsuccess', function() {
@@ -247,23 +290,36 @@ export default function createOrders() {
                                 }}
                             />
                         </div>
+                        {role !== 'driver' && (
+                            <div className='input-container'>
+                                <div className="mb-2 block">
+                                    <Label
+                                        htmlFor="product"
+                                        value="Наименование товара"
+                                    />
+                                </div>
+                                {myOrderRedact && (
+                                    <TextInput
+                                        id="product"
+                                        type="text"
+                                        placeholder={myOrderRedact.product}
+                                        required={true}
+                                        sizing="lg"
+                                        value={product}
+                                        onChange={onChangeProduct}
+                                    />
+                                )}
+                            </div>
+                        )}
                         <div className='input-container'>
                             <div className="mb-2 block">
                                 <Label
-                                    htmlFor="product"
-                                    value="Наименование товара"
+                                    htmlFor="desc"
+                                    value="Детали перевозки"
                                 />
                             </div>
                             {myOrderRedact && (
-                                <TextInput
-                                    id="product"
-                                    type="text"
-                                    placeholder={myOrderRedact.product}
-                                    required={true}
-                                    sizing="lg"
-                                    value={product}
-                                    onChange={onChangeProduct}
-                                />
+                                <Textarea value={product} onChange={onChangeProduct} placeholder={myOrderRedact.product} />
                             )}
                         </div>
                         <div className='input-container'>
@@ -290,14 +346,14 @@ export default function createOrders() {
                         </div>
                         <div className='input-container'>
                             <div className='mb-2 block'>
-                                <Label htmlFor="transport" value='Выберите тип транспорта' />
+                                <Label htmlFor="transport" value='Выберите тип погрузки' />
                             </div>
                             {myOrderRedact && (
                                 <Select
                                     className="react-select block w-full border focus\:ring-blue-500:focus disabled:cursor-not-allowed disabled:opacity-50 bg-gray-50 border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-lg sm:text-md p-2"
                                     classNamePrefix="name"
-                                    placeholder={myOrderRedact.type}
-                                    options={transport}
+                                    placeholder={myOrderRedact.loadType}
+                                    options={transportUp}
                                     onChange={onChangeSelect}
                                     isSearchable={false}
                                 />
@@ -325,6 +381,34 @@ export default function createOrders() {
                                                     Согласно законадательству РК. груз недолжен превышать 20 тонн
                                                 </p>
                                             )}
+                                        />
+                                    )}
+                                </InputMask>
+                            )}
+                            {showLawError && (
+                                <div className="mt-4 rounded p-2 bg-red-600 text-white">
+                                    <p>Внимание! Груз свыше 22 тонн нельзя транспортировать по законодательству РК.</p>
+                                </div>
+                            )}
+                        </div>
+                        <div className='input-container'>
+                            <div className="mb-2 block">
+                                <Label
+                                    htmlFor="cubProduct"
+                                    value="Кубометр груза"
+                                />
+                            </div>
+                            {myOrderRedact && (
+                                <InputMask value={cubProduct} maskChar={null} onChange={onChangeCubProduct} mask={cubMask}>
+                                    {(inputProps) => (
+                                        <TextInput
+                                            {...inputProps}
+                                            onChange={onChangeCubProduct}
+                                            value={cubProduct}
+                                            id="distance"
+                                            type="tel"
+                                            placeholder={myOrderRedact.cubProduct}
+                                            sizing="lg"
                                         />
                                     )}
                                 </InputMask>
@@ -382,6 +466,24 @@ export default function createOrders() {
                                     id="price"
                                     value={price}
                                     placeholder={myOrderRedact.price + ' ₸'}
+                                    required={true}
+                                    sizing="lg"
+                                />
+                            )}
+                        </div>
+                        <div className='input-container'>
+                            <div className="mb-2 block">
+                                <Label
+                                    htmlFor="price"
+                                    value="Цена за услуги логиста"
+                                />
+                            </div>
+                            {myOrderRedact && (
+                                <TextInput
+                                    disabled
+                                    id="price"
+                                    value={logPrice}
+                                    placeholder={myOrderRedact.logPrice + ' ₸'}
                                     required={true}
                                     sizing="lg"
                                 />
