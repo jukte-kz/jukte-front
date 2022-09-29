@@ -9,12 +9,8 @@ export default function DriverCard({
     const [show, setShow] = useState(false);
     return (
         <div className="rounded shadow-sm bg-white w-full myCard-container p-4">
-            <div className='pb-2 mb-4 border-b-2 flex items-start justify-between'>
-                <div>
-                    <h1 className='font-bold'>Цена: {price} ₸</h1>
-                    <h1 className='font-bold'>Услуги логиста: {logPrice} ₸</h1>
-                </div>
-                <div>
+            <div className='pb-2 mb-4 border-b-2 items-start justify-between'>
+                <div className='mb-2'>
                     {status === 'open' && (
                         <span
                             className="bg-green-100 text-green-800 text-xs
@@ -25,13 +21,17 @@ export default function DriverCard({
                         </span>
                     )}
                 </div>
+                <div className='flex items-center'>
+                    <img className='mr-2' src="/assets/icon/distance.svg" alt=""/>
+                    <p className='font-bold'>{from} - {to}</p>
+                </div>
             </div>
             {show && (
                 <div>
                     <div className='flex flex-col gap-2'>
                         <div className='flex items-center'>
-                            <img className='mr-2' src="/assets/icon/distance.svg" alt=""/>
-                            <p className='font-bold'>{from} - {to}</p>
+                            <img className='mr-2' src="/assets/icon/tenge.svg" alt=""/>
+                            <h1>Цена: {price} ₸ <br/> Услуги логиста: {logPrice} ₸</h1>
                         </div>
                         <div className='flex items-center'>
                             <img className='mr-2' src="/assets/icon/weight.svg" alt=""/>
