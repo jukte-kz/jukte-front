@@ -11,7 +11,7 @@ export default function Welcome({toLogin}) {
                 <p className='text-center'>Вас ожидают объявления от физ лиц и официальных грузоотправителей</p>
             </div>
             <div className='w-full'>
-                <p className='mb-4 register-text'>Если у вас у вас уже есть аккаунт: <Link href="/login">Войти</Link></p>
+                <p className='mb-4 register-text'>Если у вас уже есть аккаунт: <Link href="/login">Войти</Link></p>
                 <button onClick={toLogin} className='flex items-center justify-center px-4'>
                     <p className='w-full'>Зарегестрироваться</p>
                     <Image width={24} height={24} alt='arrow-icon' src='/assets/icon/right-arrow.svg'></Image>
