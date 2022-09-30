@@ -95,7 +95,8 @@ export default function MyOrders() {
                                             return (
                                                 <MyCard
                                                     key={index}
-                                                    product={data.product}
+                                                    shipment={data.loadType}
+                                                    logPrice={data.logPrice}
                                                     price={data.price}
                                                     weight={data.weight}
                                                     date={data.date}
@@ -105,9 +106,12 @@ export default function MyOrders() {
                                                     distance={data.distance}
                                                     description={data.description}
                                                     status={data.status}
-                                                    role={Cookies.get('role')}
+                                                    role={userInfo.role}
                                                     phone={data.ownerPhone}
                                                     id={data._id}
+                                                    product={data.product}
+                                                    cub={data.cubProduct}
+                                                    detail={data.detail}
                                                 />
                                             )
                                         })

@@ -60,7 +60,7 @@ export default function driverOrders() {
                         {myOrders.length > 0 ? (
                             <div className='flex flex-col gap-2 mt-4 bg-gray-400 p-4'>
                                 {
-                                    myOrders.slice(0,4).map((data, index) => {
+                                    myOrders.slice(0,6).map((data, index) => {
                                         return (
                                             <DriverCard
                                                 key={index}
@@ -87,7 +87,7 @@ export default function driverOrders() {
                     </div>
                 )}
             </div>
-            {myOrders.length > 4 && (
+            {myOrders.length > 6 && (
                 <div className='flex justify-center mb-6'>
                     <Pagination
                         currentPage={1}

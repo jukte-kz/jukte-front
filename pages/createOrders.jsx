@@ -13,20 +13,26 @@ import Script from "next/script";
 import {useRouter} from "next/router";
 import {transport} from "../public/assets/data/transportType";
 import { ru } from 'date-fns/locale';
+import {transportUp} from "../public/assets/data/transportUp";
 
 export default function createOrders() {
     const weightMask = '99 тонн';
+    const cubMask = '999 кубометров (м3)';
 
     const [product, setProduct] = useState('');
+    const [detail, setDetail] = useState('');
     const [description, setDescription] = useState('');
     const [distance, setDistance] = useState('');
     const [weight, setWeight] = useState('');
+    const [cubProduct, setCubProduct] = useState('');
     const [date, setDate] = useState(null);
     const [fromPoint, setFromPoint] = useState('');
     const [toPoint, setToPoint] = useState('');
     const [transportType, setTransportType] = useState('');
+    const [transportLoading, setTransportLoading] = useState('');
     const [price, setPrice] = useState('');
     const [checkCalc, setCheckCalc] = useState(false);
+    const [logPrice, setLogPrice] = useState('');
     const [checkSendOrder, setCheckSendOrder] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [showLawError, setShowLawError] = useState(false);
@@ -40,8 +46,14 @@ export default function createOrders() {
     const onChangeProduct = useCallback((event) => {
         setProduct(event.target.value);
     }, []);
+    const onChangeDetail = useCallback((event) => {
+        setDetail(event.target.value);
+    }, []);
     const onChangeWeight = useCallback((event) => {
         setWeight(event.target.value);
+    })
+    const onChangeCubProduct = useCallback((event) =>  {
+        setCubProduct(event.target.value);
     })
 
     useEffect(() => {
@@ -70,6 +82,9 @@ export default function createOrders() {
     const onChangeSelect = (e) => {
         setTransportType(e.label);
     }
+    const onChangeSelectLoadTransport = (e) => {
+        setTransportLoading(e.label);
+    }
 
     const sendOrderData = () => {
         axios({
@@ -84,7 +99,11 @@ export default function createOrders() {
                 type: transportType,
                 from: fromPoint,
                 to: toPoint,
+                loadType: transportLoading,
+                cubProduct: cubProduct,
+                logPrice: parseInt(logPrice.replace(/\s/g, '')),
                 distance: parseInt(distance.replace(/\s/g, '')),
+                detail: detail,
             }),
             headers: {
                 'content-type': 'application/x-www-form-urlencoded;charset=utf-8',
@@ -98,20 +117,21 @@ export default function createOrders() {
     }
 
     const calcPrice = () => {
-        if (transportType) {
-            let corrDistance = parseInt(distance.replace(/\s/g, ''));
-            let transportObj = transport.filter(obj => {
-                return obj.label === transportType
-            })
-            let transportPrice = transportObj[0].price
-            let logPrice = (distance * transportPrice * 10) / 100;
-            if (transportPrice === 27) {
-                let totalPrice = transportPrice * parseFloat(weight) * corrDistance;
-                setPrice(totalPrice + ' ₸');
-            } else {
-                let totalPrice = corrDistance * transportPrice;
-                setPrice(totalPrice + ' ₸');
-            }
+        let corrDistance = parseInt(distance.replace(/\s/g, ''));
+        let transportObj = transport.filter(obj => {
+            return obj.label === transportType
+        })
+        let transportPrice = transportObj[0].price
+        if (transportPrice === 27) {
+            let totalPrice = transportPrice * parseFloat(weight) * corrDistance - ((transportPrice * parseFloat(weight) * corrDistance)*0.1);
+            setPrice(totalPrice + ' ₸');
+            let logPriceCalc = totalPrice*0.1;
+            setLogPrice(logPriceCalc + ' ₸');
+        } else {
+            let totalPrice = corrDistance * transportPrice - ((corrDistance * transportPrice)*0.1);
+            setPrice(totalPrice + ' ₸');
+            let logPriceCalc = totalPrice*0.1;
+            setLogPrice(logPriceCalc + ' ₸');
         }
     }
     const endCreateOrder = () => {
@@ -191,7 +211,7 @@ export default function createOrders() {
                                     value="Детали перевозки"
                                 />
                             </div>
-                            <Textarea value={product} onChange={onChangeProduct} />
+                            <Textarea value={detail} onChange={onChangeDetail} />
                         </div>
                         <div className='input-container'>
                             <div className="mb-2 block">
@@ -228,6 +248,19 @@ export default function createOrders() {
                             />
                         </div>
                         <div className='input-container'>
+                            <div className='mb-2 block'>
+                                <Label htmlFor="transportLoad" value='Выберите тип погрузки' />
+                            </div>
+                            <Select
+                                className="react-select block w-full border focus\:ring-blue-500:focus disabled:cursor-not-allowed disabled:opacity-50 bg-gray-50 border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-lg sm:text-md p-2"
+                                classNamePrefix="name"
+                                placeholder='Выберите тип погрузки'
+                                options={transportUp}
+                                onChange={onChangeSelectLoadTransport}
+                                isSearchable={false}
+                            />
+                        </div>
+                        <div className='input-container'>
                             <div className="mb-2 block">
                                 <Label
                                     htmlFor="weight"
@@ -251,6 +284,27 @@ export default function createOrders() {
                                     <p>Внимание! Груз свыше 22 тонн нельзя транспортировать по законодательству РК.</p>
                                 </div>
                             )}
+                        </div>
+                        <div className='input-container'>
+                            <div className="mb-2 block">
+                                <Label
+                                    htmlFor="cubProduct"
+                                    value="Кубометр груза"
+                                />
+                            </div>
+                            <InputMask value={cubProduct} maskChar={null} onChange={onChangeCubProduct} mask={cubMask}>
+                                {(inputProps) => (
+                                    <TextInput
+                                        {...inputProps}
+                                        onChange={onChangeCubProduct}
+                                        value={cubProduct}
+                                        id="distance"
+                                        type="tel"
+                                        placeholder='0 кубометров (м3)'
+                                        sizing="lg"
+                                    />
+                                )}
+                            </InputMask>
                         </div>
                         <div className='input-container'>
                                 <div className="mb-2 block">
@@ -298,6 +352,22 @@ export default function createOrders() {
                                 disabled
                                 id="price"
                                 value={price}
+                                placeholder='0 ₸'
+                                required={true}
+                                sizing="lg"
+                            />
+                        </div>
+                        <div className='input-container'>
+                            <div className="mb-2 block">
+                                <Label
+                                    htmlFor="price"
+                                    value="Цена за услуги логиста"
+                                />
+                            </div>
+                            <TextInput
+                                disabled
+                                id="price"
+                                value={logPrice}
                                 placeholder='0 ₸'
                                 required={true}
                                 sizing="lg"

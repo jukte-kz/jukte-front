@@ -15,6 +15,11 @@
   ],
   "rootMainFiles": [],
   "pages": {
+    "/[slug]": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/[slug].js"
+    ],
     "/_app": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
@@ -25,10 +30,15 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/createDriverOrders": [
+    "/driverOrders": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/createDriverOrders.js"
+      "static/chunks/pages/driverOrders.js"
+    ],
+    "/myOrders": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/myOrders.js"
     ]
   },
   "ampFirstPages": []
