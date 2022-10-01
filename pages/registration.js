@@ -315,7 +315,7 @@ export default function Registration () {
                 <Modal.Body>
                     <p className="text-center">
                         К сожалению на данный момент мы не можем обслужить абонентов Tele2/Altel.
-                        Для регистраций можете написать в техническую поддержку <a href="" className="text-[#4f52ff]">ПО ССЫЛКЕ</a> !
+                        Для регистраций можете написать в техническую поддержку <a href="https://telegram.me/jukte/" className="text-[#4f52ff]">ПО ССЫЛКЕ</a> !
                     </p>
                 </Modal.Body>
             </Modal>

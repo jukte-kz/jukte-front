@@ -142,7 +142,7 @@ export default function Home () {
                     )}
                     <LinkBlock removeUrl='/settings' title='Настройки' image='/assets/icon/settings.svg' />
                     <LinkBlock removeUrl='/faq' title='Вопросы и ответы' image='/assets/icon/faq.svg' />
-                    <LinkBlock removeUrl='' title='Техническая поддержка' image='/assets/icon/tech.svg' />
+                    <LinkBlock removeUrl='https://telegram.me/jukte/' title='Техническая поддержка' image='/assets/icon/tech.svg' />
                     <div className='my-orders-container py-8'>
                         <div className='flex w-full justify-between items-center'>
                             <h2>Мои заявки</h2>
