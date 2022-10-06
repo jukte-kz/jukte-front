@@ -107,6 +107,14 @@ export default function Home () {
             <Header removeUrl='/login' text='Выйти'></Header>
             {loading ? (
                 <div className='p-4'>
+                    <div className='mb-4'>
+                        <div className='flex mb-3 justify-between items-center'>
+                            <h1 className='font-bold text-lg'>Акций</h1>
+                        </div>
+                        <div className='w-full'>
+                            <h4>Акций временно отсутсвуют</h4>
+                        </div>
+                    </div>
                     <div className='flex mb-6 justify-between items-center'>
                         <h1 className='font-bold text-lg'>Личный кабинет</h1>
                     </div>
