@@ -2,13 +2,18 @@ import Header from "../components/atoms/Header/component";
 import {useCallback, useEffect, useState} from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
-import {Pagination, Spinner} from "flowbite-react";
+import {Modal, Pagination, Spinner} from "flowbite-react";
 import OpenCard from "../components/molecules /OpenCard/component";
 
 export default function MyOrders() {
     const [openOrders, setOpenOrders] = useState(Array);
     const [cancelArchive, setCancelArchive] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [showAskUser, setShowAskUser] = useState(false);
+
+    const toAskUser = () => {
+        setShowAskUser(!showAskUser);
+    }
 
     useEffect(() => {
         if(!cancelArchive) {
@@ -62,6 +67,10 @@ export default function MyOrders() {
                                     openOrders.slice(0,6).map((data, index) => {
                                         return (
                                             <OpenCard
+                                                onClick={() => {
+                                                    console.log(data._id)
+                                                    toAskUser
+                                                }}
                                                 key={index}
                                                 product={data.product}
                                                 price={data.price}
@@ -75,6 +84,7 @@ export default function MyOrders() {
                                                 status={data.status}
                                                 role={Cookies.get('role')}
                                                 phone={data.ownerPhone}
+                                                id = {data._id}
                                             />
                                         )
                                     })
@@ -96,6 +106,26 @@ export default function MyOrders() {
                     />
                 </div>
             )}
+            <Modal show={showAskUser} id="modal-width" position="center">
+                <Modal.Body style={{width: '100%'}}>
+                    <div className="space-y-6" style={{width: '100%'}}>
+                        <Header removeUrl='/home' />
+                        <p className="text-base leading-relaxed">
+                            Вы договорились по поводу заявки ?
+                        </p>
+                    </div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <div className='flex justify-between items-center w-full gap-4'>
+                        <button className='w-full redirect-button' onClick={toAskUser}>
+                            Да
+                        </button>
+                        <button className='w-full redirect-button' onClick={toAskUser}>
+                            Нет
+                        </button>
+                    </div>
+                </Modal.Footer>
+            </Modal>
         </div>
     )
 }

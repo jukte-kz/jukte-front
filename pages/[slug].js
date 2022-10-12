@@ -73,8 +73,8 @@ export const transport = [
 ];
 
 export default function createOrders() {
-    const weightMask = '99 тонн';
-    const cubMask = '999 кубометров (м3)';
+    const weightMask = 'тонн | 99';
+    const cubMask = 'м3 | 999';
 
     const [product, setProduct] = useState('');
     const [description, setDescription] = useState('');
@@ -373,22 +373,12 @@ export default function createOrders() {
                                             {...inputProps}
                                             id="distance"
                                             type="tel"
-                                            placeholder={myOrderRedact.weight + ' тонн'}
+                                            placeholder={'тонн | ' + myOrderRedact.weight}
                                             required={true}
                                             sizing="lg"
-                                            helperText={showErrorLabel && (
-                                                <p className="text-sm text-red-600 dark:text-red-500">
-                                                    Согласно законадательству РК. груз недолжен превышать 20 тонн
-                                                </p>
-                                            )}
                                         />
                                     )}
                                 </InputMask>
-                            )}
-                            {showLawError && (
-                                <div className="mt-4 rounded p-2 bg-red-600 text-white">
-                                    <p>Внимание! Груз свыше 22 тонн нельзя транспортировать по законодательству РК.</p>
-                                </div>
                             )}
                         </div>
                         <div className='input-container'>
@@ -407,7 +397,7 @@ export default function createOrders() {
                                             value={cubProduct}
                                             id="distance"
                                             type="tel"
-                                            placeholder={myOrderRedact.cubProduct}
+                                            placeholder={'м3 | ' + myOrderRedact.cubProduct}
                                             sizing="lg"
                                         />
                                     )}

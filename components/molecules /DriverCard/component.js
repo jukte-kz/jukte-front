@@ -35,7 +35,7 @@ export default function DriverCard({
                         </div>
                         <div className='flex items-center'>
                             <img className='mr-2' src="/assets/icon/weight.svg" alt=""/>
-                            <p>{weight} тонн {cub && ( '/ ' + cub)}</p>
+                            <p>{weight} тонн {cub && ( '/ ' + cub + ' м3')}</p>
                         </div>
                         <div className='flex items-center'>
                             <img className='mr-2' src="/assets/icon/date.svg" alt=""/>

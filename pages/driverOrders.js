@@ -5,11 +5,33 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import {Pagination, Spinner} from "flowbite-react";
 import DriverCard from "../components/molecules /DriverCard/component";
+import qs from "qs";
 
 export default function driverOrders() {
     const [myOrders, setMyOrders] = useState(Array);
     const [cancelArchive, setCancelArchive] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [showAskUser, setShowAskUser] = useState(false);
+
+    const toAskUser = () => {
+        setShowAskUser(!showAskUser);
+    }
+
+    const matchOrder = (orderID) => {
+        axios({
+            method: 'put',
+            url: `https://api.jukte.kz/orders/match/${orderID}`,
+            data: qs.stringify({}),
+            headers: {
+                'content-type': 'application/x-www-form-urlencoded;charset=utf-8',
+                token: Cookies.get('accessToken')
+            }
+        }).then((res) => {
+            if (res.status === 200) {
+                console.log("congrats")
+            }
+        })
+    }
 
     useEffect(() => {
         if(!cancelArchive) {
@@ -63,8 +85,14 @@ export default function driverOrders() {
                                     myOrders.slice(0,6).map((data, index) => {
                                         return (
                                             <DriverCard
+                                                onClick={() => {
+                                                    toAskUser
+                                                    matchOrder(data._id)
+                                                }}
+                                                cub={data.cubProduct}
                                                 key={index}
-                                                shipment={data.product}
+                                                shipment={data.loadType}
+                                                logPrice={data.logPrice}
                                                 price={data.price}
                                                 weight={data.weight}
                                                 date={data.date}
@@ -76,6 +104,7 @@ export default function driverOrders() {
                                                 status={data.status}
                                                 role={Cookies.get('role')}
                                                 phone={data.ownerPhone}
+                                                product={data.product}
                                             />
                                         )
                                     })

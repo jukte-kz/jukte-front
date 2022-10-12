@@ -9,6 +9,7 @@ import LinkBlock from "../components/atoms/LinkBlock/component";
 import MyCard from "../components/molecules /MyCard/component";
 import OpenCard from "../components/molecules /OpenCard/component";
 import DriverCard from "../components/molecules /DriverCard/component";
+import qs from "qs";
 
 export default function Home () {
     const [userSuccess, setUserSuccess] = useState(false);
@@ -28,6 +29,22 @@ export default function Home () {
 
     const toAskUser = () => {
         setShowAskUser(!showAskUser);
+    }
+
+    const matchOrder = (orderID) => {
+        axios({
+            method: 'put',
+            url: `https://api.jukte.kz/orders/match/${orderID}`,
+            data: qs.stringify({}),
+            headers: {
+                'content-type': 'application/x-www-form-urlencoded;charset=utf-8',
+                token: Cookies.get('accessToken')
+            }
+        }).then((res) => {
+            if (res.status === 200) {
+                console.log("congrats")
+            }
+        })
     }
 
     const goToSuccess = () => {
@@ -236,9 +253,13 @@ export default function Home () {
                                         openOrders.slice(0,1).map((data, index) => {
                                             return (
                                                 <OpenCard
-                                                    onClick={toAskUser}
+                                                    onClick={() => {
+                                                        toAskUser
+                                                        matchOrder(data._id)
+                                                    }}
                                                     key={index}
                                                     product={data.product}
+                                                    cub={data.cubProduct}
                                                     price={data.price}
                                                     weight={data.weight}
                                                     date={data.date}
@@ -279,10 +300,14 @@ export default function Home () {
                                         openOrders.slice(0,1).map((data, index) => {
                                             return (
                                                 <DriverCard
-                                                    onClick={toAskUser}
+                                                    onClick={() => {
+                                                        toAskUser
+                                                        matchOrder(data._id)
+                                                    }}
                                                     key={index}
                                                     shipment={data.loadType}
-                                                      logPrice={data.logPrice}
+                                                    cub={data.cubProduct}
+                                                    logPrice={data.logPrice}
                                                     price={data.price}
                                                     weight={data.weight}
                                                     date={data.date}
@@ -313,7 +338,7 @@ export default function Home () {
                     </div>
                 </div>
             )}
-            <Modal show={showAskUser} style={{width: '100%'}} position="center">
+            <Modal show={showAskUser} style={{width: '100%'}} id="modal-width" position="center">
                 <Modal.Body style={{width: '100%'}}>
                     <div className="space-y-6">
                         <Header removeUrl='/home' />

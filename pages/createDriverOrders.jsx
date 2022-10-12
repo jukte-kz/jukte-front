@@ -16,8 +16,8 @@ import {transportUp} from "../public/assets/data/transportUp";
 import {transport} from "../public/assets/data/transportType";
 
 export default function createDriverOrders() {
-    const weightMask = '99 тонн';
-    const cubMask = '999 кубометров (м3)';
+    const weightMask = 'тонн | 99';
+    const cubMask = 'м3 | 999';
 
     const [product, setProduct] = useState(' ');
     const [description, setDescription] = useState('');
@@ -256,17 +256,12 @@ export default function createDriverOrders() {
                                         {...inputProps}
                                         id="distance"
                                         type="tel"
-                                        placeholder='0 тонн'
+                                        placeholder='тонн | 0'
                                         required={true}
                                         sizing="lg"
                                     />
                                 )}
                             </InputMask>
-                            {showLawError && (
-                                <div className="mt-4 rounded p-2 bg-red-600 text-white">
-                                    <p>Внимание! Груз свыше 22 тонн нельзя транспортировать по законодательству РК.</p>
-                                </div>
-                            )}
                         </div>
                         <div className='input-container'>
                             <div className="mb-2 block">
@@ -283,7 +278,7 @@ export default function createDriverOrders() {
                                         value={cubProduct}
                                         id="distance"
                                         type="tel"
-                                        placeholder='0 кубометров (м3)'
+                                        placeholder='м3 | 0'
                                         sizing="lg"
                                     />
                                 )}

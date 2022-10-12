@@ -9,6 +9,26 @@ export default function MyCard({
     const [show, setShow] = useState(false);
     return (
         <div className="rounded shadow-sm bg-white w-full myCard-container p-4">
+            <div className='mb-2'>
+                {status === 'open' && (
+                    <span
+                        className="bg-green-100 text-green-800 text-xs
+                                   font-semibold mr-2 px-2.5 py-0.5 rounded
+                                   dark:bg-green-200 dark:text-green-900"
+                    >
+                            открытая
+                        </span>
+                )}
+                {status === 'inProgress' && (
+                    <span
+                        className="bg-yellow-100 text-green-800 text-xs
+                                   font-semibold mr-2 px-2.5 py-0.5 rounded
+                                   dark:bg-yellow-200 dark:text-yellow-900"
+                    >
+                            В процессе
+                        </span>
+                )}
+            </div>
             <div className='pb-2 mb-4 border-b-2 flex items-start justify-between'>
                 <div>
                     <div className='flex items-center'>
@@ -30,7 +50,7 @@ export default function MyCard({
                         </div>
                         <div className='flex items-center'>
                             <img className='mr-2' src="/assets/icon/weight.svg" alt=""/>
-                            <p>{weight} тонн {cub && ( '/ ' + cub)}</p>
+                            <p>{weight} тонн {cub && ( '/ ' + cub + ' м3')}</p>
                         </div>
                         <div className='flex items-center'>
                             <img className='mr-2' src="/assets/icon/date.svg" alt=""/>
