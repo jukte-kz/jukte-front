@@ -50,7 +50,7 @@ export default function createOrders() {
         setDetail(event.target.value);
     }, []);
     const onChangeWeight = useCallback((event) => {
-        setWeight(event.target.value);
+        setWeight(event.target.value.split(' ')[2]);
     })
     const onChangeCubProduct = useCallback((event) =>  {
         setCubProduct(event.target.value);

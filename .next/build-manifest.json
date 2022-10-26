@@ -25,15 +25,20 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/driverOrders": [
+    "/createOrders": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/driverOrders.js"
+      "static/chunks/pages/createOrders.js"
     ],
     "/home": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/home.js"
+    ],
+    "/login": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/login.js"
     ]
   },
   "ampFirstPages": []

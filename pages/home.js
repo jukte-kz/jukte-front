@@ -41,9 +41,7 @@ export default function Home () {
                 token: Cookies.get('accessToken')
             }
         }).then((res) => {
-            if (res.status === 200) {
-                console.log("congrats")
-            }
+            if (res.status === 200) {}
         })
     }
 

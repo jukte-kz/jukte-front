@@ -47,7 +47,7 @@ export default function createDriverOrders() {
         setProduct(event.target.value);
     }, []);
     const onChangeWeight = useCallback((event) => {
-        setWeight(event.target.value);
+        setWeight(event.target.value.split(' ')[2]);
     })
     const onChangeCubProduct = useCallback((event) =>  {
         setCubProduct(event.target.value);
@@ -118,7 +118,6 @@ export default function createDriverOrders() {
                     token: Cookies.get('accessToken')
                 }
             }).then((res) => {
-                console.log(res.data.transport.type)
                 setTransportType(res.data.transport.type);
                 setCancel(true)
             }).catch((err) => {

@@ -113,7 +113,7 @@ export default function createOrders() {
         setCubProduct(event.target.value);
     })
     const onChangeWeight = useCallback((event) => {
-        setWeight(event.target.value);
+        setWeight(event.target.value.split(' ')[2]);
         if (parseFloat(event.target.value) > 20) {
             setShowErrorLabel(true)
         } else {
