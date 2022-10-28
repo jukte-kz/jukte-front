@@ -14,6 +14,7 @@ import {useRouter} from "next/router";
 import { ru } from 'date-fns/locale';
 import {transportUp} from "../public/assets/data/transportUp";
 import {transport} from "../public/assets/data/transportType";
+import moment from "moment";
 
 export default function createDriverOrders() {
     const weightMask = 'тонн | 99';
@@ -24,7 +25,8 @@ export default function createDriverOrders() {
     const [distance, setDistance] = useState('');
     const [weight, setWeight] = useState('');
     const [cubProduct, setCubProduct] = useState('');
-    const [date, setDate] = useState(null);
+    const [dateRange, setDateRange] = useState([null, null]);
+    const [date, endDate] = dateRange;
     const [fromPoint, setFromPoint] = useState('');
     const [toPoint, setToPoint] = useState('');
     const [transportType, setTransportType] = useState('');
@@ -50,7 +52,7 @@ export default function createDriverOrders() {
         setWeight(event.target.value.split(' ')[2]);
     })
     const onChangeCubProduct = useCallback((event) =>  {
-        setCubProduct(event.target.value);
+        setCubProduct(event.target.value.split(' ')[2]);
     })
 
     useEffect(() => {
@@ -72,8 +74,8 @@ export default function createDriverOrders() {
         }
     })
 
-    const onChangeDate = (date) => {
-        setDate(date);
+    const onChangeDate = (update) => {
+        setDateRange(update);
     }
     const onChangeSelect = (e) => {
         setTransportLoading(e.label);
@@ -88,7 +90,7 @@ export default function createDriverOrders() {
                 description: description,
                 price: parseInt(price.replace(/\s/g, '')),
                 weight: parseInt(weight.replace(/\s/g, '')),
-                date: date,
+                date: `${moment(date).format('L')} - ${moment(endDate).format('L')}`,
                 type: transportType,
                 from: fromPoint,
                 to: toPoint,
@@ -219,13 +221,19 @@ export default function createDriverOrders() {
                                 selected={date}
                                 dateFormat="dd.MM.yyyy"
                                 onChange={onChangeDate}
-                                placeholderText="ДД.ММ.ГГГГ"
+                                startDate={date}
+                                endDate={endDate}
+                                placeholderText="ДД.ММ.ГГГГ - ДД.ММ.ГГГГ"
                                 dateFormatCalendar="MMMM"
                                 className='block w-full border focus\:ring-blue-500:focus disabled:cursor-not-allowed disabled:opacity-50 bg-gray-50 border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-lg sm:text-md p-4'
-                                customInput={<MaskedInput mask="11.11.1111" placeholder="dd.MM.yyyy" />}
                                 yearDropdownItemNumber={100}
                                 scrollableYearDropdown
                                 minDate={new Date()}
+                                selectsRange={true}
+                                isClearable={true}
+                                onChange={(update) => {
+                                    setDateRange(update);
+                                }}
                                 locale={ru}
                             />
                         </div>

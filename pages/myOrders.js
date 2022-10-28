@@ -93,26 +93,28 @@ export default function MyOrders() {
                                     {
                                         myOrders.slice(0,6).map((data, index) => {
                                             return (
-                                                <MyCard
-                                                    key={index}
-                                                    shipment={data.loadType}
-                                                    logPrice={data.logPrice}
-                                                    price={data.price}
-                                                    weight={data.weight}
-                                                    date={data.date}
-                                                    type={data.type}
-                                                    from={data.from}
-                                                    to={data.to}
-                                                    distance={data.distance}
-                                                    description={data.description}
-                                                    status={data.status}
-                                                    role={userInfo.role}
-                                                    phone={data.ownerPhone}
-                                                    id={data._id}
-                                                    product={data.product}
-                                                    cub={data.cubProduct}
-                                                    detail={data.detail}
-                                                />
+                                                <>
+                                                    <MyCard
+                                                        key={index}
+                                                        shipment={data.loadType}
+                                                        cub={data.cubProduct}
+                                                        logPrice={data.logPrice}
+                                                        product={data.product}
+                                                        price={data.price}
+                                                        weight={data.weight}
+                                                        date={data.date}
+                                                        type={data.type}
+                                                        from={data.from}
+                                                        to={data.to}
+                                                        distance={data.distance}
+                                                        detail={data.detail}
+                                                        description={data.description}
+                                                        status={data.status}
+                                                        role={userInfo.role}
+                                                        phone={data.ownerPhone}
+                                                        id={data._id}
+                                                    />
+                                                </>
                                             )
                                         })
                                     }
@@ -126,7 +128,9 @@ export default function MyOrders() {
                                                 <DriverCard
                                                     key={index}
                                                     shipment={data.loadType}
+                                                    cub={data.cubProduct}
                                                     logPrice={data.logPrice}
+                                                    product={data.product}
                                                     price={data.price}
                                                     weight={data.weight}
                                                     date={data.date}
@@ -134,13 +138,12 @@ export default function MyOrders() {
                                                     from={data.from}
                                                     to={data.to}
                                                     distance={data.distance}
+                                                    detail={data.detail}
                                                     description={data.description}
                                                     status={data.status}
                                                     role={userInfo.role}
                                                     phone={data.ownerPhone}
                                                     id={data._id}
-                                                    product={data.product}
-                                                    cub={data.cubProduct}
                                                 />
                                             )
                                         })

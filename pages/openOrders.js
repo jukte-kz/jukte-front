@@ -4,12 +4,14 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import {Modal, Pagination, Spinner} from "flowbite-react";
 import OpenCard from "../components/molecules /OpenCard/component";
+import qs from "qs";
 
 export default function MyOrders() {
     const [openOrders, setOpenOrders] = useState(Array);
     const [cancelArchive, setCancelArchive] = useState(false);
     const [loading, setLoading] = useState(true);
     const [showAskUser, setShowAskUser] = useState(false);
+    const [ownerId, setOwnerId] = useState('');
 
     const toAskUser = () => {
         setShowAskUser(!showAskUser);
@@ -34,6 +36,22 @@ export default function MyOrders() {
         }
     })
 
+    const matchOrder = (orderID) => {
+        axios({
+            method: 'put',
+            url: `https://api.jukte.kz/orders/match/${orderID}`,
+            data: qs.stringify({}),
+            headers: {
+                'content-type': 'application/x-www-form-urlencoded;charset=utf-8',
+                token: Cookies.get('accessToken')
+            }
+        }).then((res) => {
+            if (res.status === 200) {
+                window.location.reload(false);
+            }
+        })
+    }
+
     const onPageChange = useCallback(() => {
         const previous = () => {
             alert('Previous btn clicked. Make a call to your server to fetch data.');
@@ -48,7 +66,7 @@ export default function MyOrders() {
             <Header removeUrl='/home' text='На главную'></Header>
             <div className='p-4 pb-2'>
                 <div className='flex w-full justify-between items-center'>
-                    <h2>Мои заявки</h2>
+                    <h2>Открыте заявки</h2>
                     <div className="inline-flex shrink-0 items-center justify-center rounded bg-blue-50">
                         <p className='p-2'>Количество: {openOrders.length}</p>
                     </div>
@@ -68,10 +86,13 @@ export default function MyOrders() {
                                         return (
                                             <OpenCard
                                                 onClick={() => {
-                                                    console.log(data._id)
-                                                    toAskUser
+                                                    setOwnerId(data._id);
+                                                    toAskUser();
                                                 }}
                                                 key={index}
+                                                shipment={data.loadType}
+                                                cub={data.cubProduct}
+                                                logPrice={data.logPrice}
                                                 product={data.product}
                                                 price={data.price}
                                                 weight={data.weight}
@@ -80,11 +101,11 @@ export default function MyOrders() {
                                                 from={data.from}
                                                 to={data.to}
                                                 distance={data.distance}
+                                                detail={data.detail}
                                                 description={data.description}
                                                 status={data.status}
-                                                role={Cookies.get('role')}
                                                 phone={data.ownerPhone}
-                                                id = {data._id}
+                                                id={data._id}
                                             />
                                         )
                                     })
@@ -117,7 +138,12 @@ export default function MyOrders() {
                 </Modal.Body>
                 <Modal.Footer>
                     <div className='flex justify-between items-center w-full gap-4'>
-                        <button className='w-full redirect-button' onClick={toAskUser}>
+                        <button className='w-full redirect-button' onClick={() => {
+                            if (ownerId) {
+                                matchOrder(ownerId);
+                            }
+                            toAskUser();
+                        }}>
                             Да
                         </button>
                         <button className='w-full redirect-button' onClick={toAskUser}>

@@ -43,3 +43,26 @@ a {
     width: 100%;
   }
 }
+.react-datepicker__day--keyboard-selected, .react-datepicker__day--in-range {
+  background-color: #4F52FF!important;
+}
+.react-datepicker__close-icon {
+  right: 8px!important;
+}
+.react-datepicker__close-icon::after {
+  background-color: #4F52FF!important;
+  cursor: pointer!important;
+  color: #fff!important;
+  border-radius: 50%!important;
+  height: 18px!important;
+  width: 18px!important;
+  padding: 0 0 2px 0!important;
+  font-size: 12px!important;
+  line-height: 0!important;
+  text-align: center!important;
+  vertical-align: middle!important;
+  content: "×"!important;
+  display: flex!important;
+  align-items: center!important;
+  justify-content: center!important;
+}

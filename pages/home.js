@@ -22,6 +22,7 @@ export default function Home () {
     const [myOrders, setMyOrders] = useState(Array);
     const [openOrders, setOpenOrders] = useState(Array);
     const [showAskUser, setShowAskUser] = useState(false);
+    const [ownerId, setOwnerId] = useState('');
 
     const [userSuccessMessage, setUserSuccessMessage] = useState('');
 
@@ -41,7 +42,9 @@ export default function Home () {
                 token: Cookies.get('accessToken')
             }
         }).then((res) => {
-            if (res.status === 200) {}
+            if (res.status === 200) {
+                window.location.reload(false);
+            }
         })
     }
 
@@ -155,7 +158,7 @@ export default function Home () {
                         <LinkBlock removeUrl='/createOrders' title='Создать заявку' image='/assets/icon/createOrders.svg' />
                     )}
                     {userInfo.role === 'logistician' && (
-                        <LinkBlock removeUrl='/driverOrders' title='Открыте машины' image='/assets/icon/openCar.svg' />
+                        <LinkBlock removeUrl='/driverOrders' title='Открытые машины' image='/assets/icon/openCar.svg' />
                     )}
                     {userInfo.role === 'driver' && (
                         <LinkBlock removeUrl='/openOrders' title='Открытые заявки' image='/assets/icon/createOrders.svg' />
@@ -197,6 +200,7 @@ export default function Home () {
                                                     from={data.from}
                                                     to={data.to}
                                                     distance={data.distance}
+                                                    detail={data.detail}
                                                     description={data.description}
                                                     status={data.status}
                                                     role={userInfo.role}
@@ -252,12 +256,14 @@ export default function Home () {
                                             return (
                                                 <OpenCard
                                                     onClick={() => {
-                                                        toAskUser
-                                                        matchOrder(data._id)
+                                                        setOwnerId(data._id);
+                                                        toAskUser();
                                                     }}
                                                     key={index}
-                                                    product={data.product}
+                                                    shipment={data.loadType}
                                                     cub={data.cubProduct}
+                                                    logPrice={data.logPrice}
+                                                    product={data.product}
                                                     price={data.price}
                                                     weight={data.weight}
                                                     date={data.date}
@@ -265,10 +271,12 @@ export default function Home () {
                                                     from={data.from}
                                                     to={data.to}
                                                     distance={data.distance}
+                                                    detail={data.detail}
                                                     description={data.description}
                                                     status={data.status}
+                                                    role={userInfo.role}
                                                     phone={data.ownerPhone}
-                                                    logPrice={data.logPrice}
+                                                    id={data._id}
                                                 />
                                             )
                                         })
@@ -299,8 +307,8 @@ export default function Home () {
                                             return (
                                                 <DriverCard
                                                     onClick={() => {
-                                                        toAskUser
-                                                        matchOrder(data._id)
+                                                        setOwnerId(data._id);
+                                                        toAskUser()
                                                     }}
                                                     key={index}
                                                     shipment={data.loadType}
@@ -318,6 +326,7 @@ export default function Home () {
                                                     role={Cookies.get('role')}
                                                     phone={data.ownerPhone}
                                                     product={data.product}
+                                                    detail={data.detail}
                                                 />
                                             )
                                         })
@@ -347,7 +356,13 @@ export default function Home () {
                 </Modal.Body>
                 <Modal.Footer>
                     <div className='flex justify-between items-center w-full gap-4'>
-                        <button className='w-full redirect-button' onClick={toAskUser}>
+
+                        <button className='w-full redirect-button' onClick={() => {
+                            if (ownerId) {
+                                matchOrder(ownerId);
+                            }
+                            toAskUser()
+                        }}>
                             Да
                         </button>
                         <button className='w-full redirect-button' onClick={toAskUser}>

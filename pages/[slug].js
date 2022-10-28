@@ -13,6 +13,7 @@ import Script from "next/script";
 import {useRouter} from "next/router";
 import moment from "moment/moment";
 import {transportUp} from "../public/assets/data/transportUp";
+import {ru} from "date-fns/locale";
 
 export const transport = [
     {
@@ -77,11 +78,13 @@ export default function createOrders() {
     const cubMask = 'м3 | 999';
 
     const [product, setProduct] = useState('');
+    const [detail, setDetail] = useState('');
     const [description, setDescription] = useState('');
     const [distance, setDistance] = useState('');
     const [weight, setWeight] = useState('');
     const [cubProduct, setCubProduct] = useState('');
-    const [date, setDate] = useState(null);
+    const [dateRange, setDateRange] = useState([null, null]);
+    const [date, endDate] = dateRange;
     const [fromPoint, setFromPoint] = useState('');
     const [toPoint, setToPoint] = useState('');
     const [transportType, setTransportType] = useState('');
@@ -109,8 +112,11 @@ export default function createOrders() {
     const onChangeProduct = useCallback((event) => {
         setProduct(event.target.value);
     }, []);
+    const onChangeDetail = useCallback((event) => {
+        setDetail(event.target.value);
+    }, []);
     const onChangeCubProduct = useCallback((event) =>  {
-        setCubProduct(event.target.value);
+        setCubProduct(event.target.value.split(' ')[2]);
     })
     const onChangeWeight = useCallback((event) => {
         setWeight(event.target.value.split(' ')[2]);
@@ -183,8 +189,8 @@ export default function createOrders() {
         }
     })
 
-    const onChangeDate = (date) => {
-        setDate(date);
+    const onChangeDate = (update) => {
+        setDateRange(update);
     }
     const onChangeSelect = (e) => {
         setTransportLoading(e.label)
@@ -199,7 +205,7 @@ export default function createOrders() {
                 description: description,
                 price: parseInt(price.replace(/\s/g, '')),
                 weight: parseInt(weight.replace(/\s/g, '')),
-                date: date,
+                date: `${moment(date).format('L')} - ${moment(endDate).format('L')}`,
                 type: transportType,
                 from: fromPoint,
                 to: toPoint,
@@ -319,7 +325,7 @@ export default function createOrders() {
                                 />
                             </div>
                             {myOrderRedact && (
-                                <Textarea value={product} onChange={onChangeProduct} placeholder={myOrderRedact.product} />
+                                <Textarea value={detail} onChange={onChangeDetail} placeholder={myOrderRedact.detail} />
                             )}
                         </div>
                         <div className='input-container'>
@@ -334,16 +340,40 @@ export default function createOrders() {
                                     selected={date}
                                     dateFormat="dd.MM.yyyy"
                                     onChange={onChangeDate}
-                                    placeholderText={moment(myOrderRedact.date).format('L')}
+                                    startDate={date}
+                                    endDate={endDate}
+                                    placeholderText={myOrderRedact.date}
                                     dateFormatCalendar="MMMM"
                                     className='block w-full border focus\:ring-blue-500:focus disabled:cursor-not-allowed disabled:opacity-50 bg-gray-50 border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-lg sm:text-md p-4'
-                                    customInput={<MaskedInput mask="11.11.1111" placeholder="dd.MM.yyyy" />}
                                     yearDropdownItemNumber={100}
                                     scrollableYearDropdown
                                     minDate={new Date()}
+                                    selectsRange={true}
+                                    isClearable={true}
+                                    onChange={(update) => {
+                                        setDateRange(update);
+                                    }}
+                                    locale={ru}
                                 />
                             )}
                         </div>
+                        {role === 'logistician' && (
+                            <div className='input-container'>
+                                <div className='mb-2 block'>
+                                    <Label htmlFor="transport" value='Выберите тип транспорта' />
+                                </div>
+                                {myOrderRedact && (
+                                    <Select
+                                        className="react-select block w-full border focus\:ring-blue-500:focus disabled:cursor-not-allowed disabled:opacity-50 bg-gray-50 border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-lg sm:text-md p-2"
+                                        classNamePrefix="name"
+                                        placeholder={myOrderRedact.type}
+                                        options={transport}
+                                        onChange={onChangeSelect}
+                                        isSearchable={false}
+                                    />
+                                )}
+                            </div>
+                        )}
                         <div className='input-container'>
                             <div className='mb-2 block'>
                                 <Label htmlFor="transport" value='Выберите тип погрузки' />

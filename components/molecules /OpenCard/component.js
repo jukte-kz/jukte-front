@@ -34,7 +34,7 @@ export default function OpenCard({
                         </div>
                         <div className='flex items-center'>
                             <img className='mr-2' src="/assets/icon/date.svg" alt=""/>
-                            <p>{moment(date).format('L')}</p>
+                            <p>{date}</p>
                         </div>
                         <div className='flex items-center'>
                             <img className='mr-2' src="/assets/icon/truck.svg" alt=""/>

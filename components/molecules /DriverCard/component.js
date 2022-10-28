@@ -20,6 +20,15 @@ export default function DriverCard({
                             открытая
                         </span>
                     )}
+                    {status === 'inProgress' && (
+                        <span
+                            className="bg-yellow-100 text-green-800 text-xs
+                                   font-semibold mr-2 px-2.5 py-0.5 rounded
+                                   dark:bg-yellow-200 dark:text-yellow-900"
+                        >
+                            В процессе
+                        </span>
+                    )}
                 </div>
                 <div className='flex items-center'>
                     <img className='mr-2' src="/assets/icon/distance.svg" alt=""/>
@@ -39,7 +48,7 @@ export default function DriverCard({
                         </div>
                         <div className='flex items-center'>
                             <img className='mr-2' src="/assets/icon/date.svg" alt=""/>
-                            <p>{moment(date).format('L')}</p>
+                            <p>{date}</p>
                         </div>
                         <div className='flex items-center'>
                             <img className='mr-2' src="/assets/icon/truck.svg" alt=""/>
@@ -63,17 +72,21 @@ export default function DriverCard({
                         </div>
                     </div>
                     {role === 'driver' ? (
-                        <Link href={{
-                            pathname: '/[slug]',
-                            as: '/slug-1',
-                            query: {
-                                slug: id
-                            }
-                        }}>
-                            <div className='mt-4 w-full flex justify-center link-button rounded'>
-                                Редактировать
-                            </div>
-                        </Link>
+                        status !== 'inProgress' ? (
+                            <Link href={{
+                                pathname: '/[slug]',
+                                as: '/slug-1',
+                                query: {
+                                    slug: id
+                                }
+                            }}>
+                                <div className='mt-4 w-full flex justify-center link-button rounded'>
+                                    Редактировать
+                                </div>
+                            </Link>
+                        ):(
+                            <></>
+                        )
                     ): (
                         <div onClick={onClick}>
                             <Link href={'tel:+'+phone}>
