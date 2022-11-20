@@ -34,6 +34,10 @@ Font load
 /*=========
 Color Code
 ===========*/
+
+html, body {
+  scroll-behavior: smooth!important;
+}
 .ft-testimonial-slider-area .slick-dots, .ft-project-slider-area .slick-dots, .ft-service-slider-2 .slick-dots, .ft-service-slider-wrapper .slick-dots {
   margin-top: 55px;
   position: static;
@@ -319,7 +323,7 @@ select:visited {
   position: fixed;
   border-radius: 100%;
   line-height: 55px;
-  background-color: #ea1e00;
+  background-color: #4f52ff;
 }
 .scrollup i {
   color: #fff;
@@ -3140,16 +3144,16 @@ select:visited {
   font-weight: 700;
   padding: 15px 30px;
   margin-right: 25px;
-  font-family: "Poppins";
-  border: 2px solid #fa3b0e;
+  font-family: 'Montserrat', sans-serif;
+  border: 2px solid #4f52ff;
 }
 .ft-about-text-3 .ft-about-btn-group a i {
   margin-left: 5px;
 }
 .ft-about-text-3 .ft-about-btn-group a:hover {
   color: #fff;
-  border: 2px solid #008eff;
-  background-color: #008eff;
+  border: 2px solid #4f52ff;
+  background-color: #4f52ff;
 }
 
 @-webkit-keyframes icon-bounce {
@@ -4524,7 +4528,7 @@ select:visited {
   padding-left: 35px;
   margin-bottom: 15px;
   position: relative;
-  font-family: "Poppins";
+  font-family: 'Montserrat', sans-serif;
 }
 .ft-why-choose-list-wrapper li:last-child {
   margin-bottom: 0;
@@ -4533,7 +4537,7 @@ select:visited {
   top: 2px;
   left: 0;
   font-size: 18px;
-  color: #008eff;
+  color: #4f52ff;
   content: "";
   font-weight: 900;
   position: absolute;
@@ -5649,7 +5653,7 @@ select:visited {
   transition: 500ms all ease;
 }
 .ft-case-study-items .ft-case-study-text .serial-no {
-  color: #fa4318;
+  color: #4f52ff;
   font-size: 20px;
   font-weight: 500;
 }
@@ -5687,7 +5691,7 @@ select:visited {
   opacity: 1;
 }
 .ft-case-study-items:hover .ft-case-study-img:before {
-  background-color: rgba(0, 67, 135, 0.85);
+  background-color: rgba(79, 82, 255, 0.85);
 }
 
 .ft-thx-project-section {
@@ -8886,7 +8890,7 @@ select:visited {
   margin: 0 auto;
   margin-bottom: 40px;
   border-radius: 100%;
-  background-color: #3b6aff;
+  background-color: #4f52ff;
 }
 .ft-funfact-inner-items .ft-funfact-inner-icon:after {
   left: 25px;
@@ -8895,7 +8899,7 @@ select:visited {
   position: absolute;
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
-  border-top: 10px solid #3b6aff;
+  border-top: 10px solid #4f52ff;
 }
 .ft-funfact-inner-items .ft-funfact-inner-icon i {
   color: #fff;
@@ -8903,7 +8907,7 @@ select:visited {
   line-height: 0.75;
 }
 .ft-funfact-inner-items .ft-funfact-inner-text h3 {
-  color: #fa4318;
+  color: #4f52ff;
   font-size: 36px;
   font-weight: 700;
 }
@@ -8920,7 +8924,7 @@ select:visited {
   color: #000000;
 }
 .ft-funfact-slug-text span a {
-  color: #008eff;
+  color: #4f52ff;
   font-weight: 700;
   text-decoration: underline;
 }
@@ -9254,10 +9258,10 @@ select:visited {
   height: 50px;
   font-size: 14px;
   font-weight: 700;
-  background-color: #008eff;
+  background-color: #4f52ff;
 }
 .ft-footer-section-3 .ft-newslatter-section-3 .ft-newslatter-btn a:hover {
-  background-color: #fa4318;
+  background-color: #008eff;
 }
 
 .ft-footer-copyright {
@@ -9304,7 +9308,7 @@ select:visited {
   line-height: 35px;
   overflow: hidden;
   display: inline-block;
-  background-color: #008eff;
+  background-color: #4f52ff;
   -webkit-transition: 0.3s all ease-in-out;
   transition: 0.3s all ease-in-out;
 }
@@ -9312,7 +9316,7 @@ select:visited {
   background-color: #fff;
 }
 .ft-footer-content-wrap-3 .ft-footer-widget .ft-footer-logo-widget .footer-logo-btn:hover {
-  background-color: #fa4318;
+  background-color: #008eff;
 }
 .ft-footer-content-wrap-3 .ft-footer-widget .ft-footer-newslatter-widget p {
   color: #9d9d9d;
@@ -9377,19 +9381,16 @@ select:visited {
   transition: 0.3s all ease-in-out;
 }
 .ft-footer-content-wrap-3 .ft-footer-widget .ft-footer-newslatter-widget .ft-footer-social li a:hover {
-  color: #008eff;
+  color: #4f52ff;
 }
 .ft-footer-content-wrap-3 .ft-footer-widget .ft-footer-info-widget {
   padding-left: 20px;
-}
-.ft-footer-content-wrap-3 .ft-footer-widget .ft-footer-info-widget ul {
-  padding-top: 15px;
 }
 .ft-footer-content-wrap-3 .ft-footer-widget .ft-footer-info-widget i {
   float: left;
   font-size: 14px;
   margin-top: 5px;
-  color: #008eff;
+  color: #4f52ff;
   margin-right: 10px;
 }
 .ft-footer-content-wrap-3 .ft-footer-widget .ft-footer-info-widget a {
