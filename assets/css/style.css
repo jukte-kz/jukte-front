@@ -1971,7 +1971,7 @@ select:visited {
   display: block;
   font-weight: 600;
   font-size: 14px;
-  font-family: "Poppins";
+  font-family: 'Montserrat', sans-serif;
   text-transform: uppercase;
   padding: 10px 30px 10px 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.25);
@@ -2073,7 +2073,7 @@ select:visited {
           transform: rotate(90deg);
 }
 .mobile_menu .mobile_menu_close {
-  color: #d60606;
+  color: #4f52ff;
   cursor: pointer;
   top: 25px;
   right: 25px;
@@ -5689,6 +5689,9 @@ select:visited {
 }
 .ft-case-study-items:hover .ft-case-study-text p {
   opacity: 1;
+}
+.ft-case-study-items:hover .serial-no {
+  color: #fff;
 }
 .ft-case-study-items:hover .ft-case-study-img:before {
   background-color: rgba(79, 82, 255, 0.85);
@@ -16335,6 +16338,7 @@ ul li {
 
   .ft-footer-widget {
     margin-bottom: 30px;
+    display: flex;
   }
 
   .ft-booking-form-content .booking-form-input-wrapper label {
@@ -16483,6 +16487,8 @@ ul li {
 
   .ft-footer-content-wrap-3 .ft-footer-widget .ft-footer-info-widget ul {
     padding-top: 0;
+    display: flex;
+    flex-direction: column;
   }
 
   .ft-footer-content-wrap-3 .ft-footer-widget .ft-footer-newslatter-widget form {
@@ -17279,7 +17285,7 @@ ul li {
   }
 
   .ft-header-section.header-style-three .ft-header-cta-btn {
-    margin-right: 30px;
+    margin-right: 48px;
   }
 
   .ft-header-section.header-style-three .ft-brand-logo {
@@ -17407,7 +17413,7 @@ ul li {
   }
 
   .ft-footer-section-3 .ft-newslatter-section-3 .ft-newslatter-btn a {
-    width: 150px;
+    width: 220px;
   }
 
   .ft-footer-section-3 .ft-newslatter-section-3 .ft-newslatter-text h3 {
