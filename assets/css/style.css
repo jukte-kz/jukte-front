@@ -1041,7 +1041,7 @@ select:visited {
   display: none;
 }
 .ft-header-section.header-style-three .ft-header-top li i {
-  color: #0090ff;
+  color: #4f52ff;
   margin-right: 5px;
 }
 .ft-header-section.header-style-three .ft-main-navigation li {
@@ -3845,6 +3845,13 @@ select:visited {
   -webkit-transform: rotate(-13deg);
           transform: rotate(-13deg);
 }
+.btn-design {
+  background-color: #4f52ff;
+  padding: 10px 15px;
+  font-family: 'Montserrat', sans-serif;
+  color: #fff!important;
+  border-radius: 2px;
+}
 .ft-service-innerbox-3 .ft-service-icon {
   right: 30px;
   top: -100px;
@@ -3853,7 +3860,7 @@ select:visited {
   height: 95px;
   border-radius: 100%;
   background-color: #fff;
-  border: 15px solid #4f52ff;
+  border: 10px solid #4f52ff;
   -webkit-transition: 500ms all ease;
   transition: 500ms all ease;
 }
@@ -16068,6 +16075,10 @@ ul li {
 
   .ft-header-section.header-style-three .ft-header-cta-btn a:before {
     left: -39px;
+  }
+
+ .rs-parallax-wrap {
+    left: 600px!important;
   }
 
   #slider-29-slide-76-layer-5,
