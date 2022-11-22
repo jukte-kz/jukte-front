@@ -16077,8 +16077,10 @@ ul li {
     left: -39px;
   }
 
- .rs-parallax-wrap {
-    left: 600px!important;
+  @media screen and (min-width: 820px) and (max-width: 1400px) {
+    .rs-parallax-wrap {
+      left: 600px!important;
+    }
   }
 
   #slider-29-slide-76-layer-5,
