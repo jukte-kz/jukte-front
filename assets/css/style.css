@@ -3834,17 +3834,6 @@ select:visited {
   overflow: hidden;
   height: 310px;
 }
-.ft-service-innerbox-3 .ft-service-img:before {
-  left: -15px;
-  width: 110%;
-  content: "";
-  height: 100px;
-  bottom: -57px;
-  position: absolute;
-  background-color: #f2f3f5;
-  -webkit-transform: rotate(-13deg);
-          transform: rotate(-13deg);
-}
 .btn-design {
   background-color: #4f52ff;
   padding: 10px 15px;
@@ -3869,6 +3858,11 @@ select:visited {
   font-size: 40px;
   line-height: 0.75;
 }
+@media screen and (min-width: 800px) {
+  .ft-service-text-icon {
+    height: 274px;
+  }
+}
 .ft-service-innerbox-3 .ft-service-text-icon {
   top: -70px;
   max-width: 90%;
@@ -3880,27 +3874,6 @@ select:visited {
   background-color: white;
   -webkit-box-shadow: 0px 0px 29px 0px rgba(12, 12, 12, 0.07);
           box-shadow: 0px 0px 29px 0px rgba(12, 12, 12, 0.07);
-}
-.ft-service-innerbox-3 .ft-service-text-icon:before {
-  left: 0;
-  top: -70px;
-  content: "";
-  position: absolute;
-  -webkit-transition: 500ms all ease;
-  transition: 500ms all ease;
-  border-bottom: 70px solid #fff;
-  border-left: 339px solid rgba(255, 255, 255, 0);
-}
-.ft-service-innerbox-3 .ft-service-text-icon:after {
-  top: -36px;
-  left: -4px;
-  width: 103%;
-  content: "";
-  height: 15px;
-  position: absolute;
-  background-color: #4f52ff;
-  -webkit-transform: rotate(-12deg) skew(-15deg);
-          transform: rotate(-12deg) skew(-15deg);
 }
 .ft-service-innerbox-3 .ft-service-text h3 {
   color: #121213;
@@ -4509,6 +4482,14 @@ select:visited {
   z-index: 1;
   overflow: hidden;
   padding: 115px 0px 250px;
+}
+.ft-why-choose-section-2 .why-choose-img-2-left {
+  left: 10%;
+  bottom: 200px;
+}
+.driver {
+  right: 10%!important;
+  top: 150px!important;
 }
 .ft-why-choose-section-2 .why-choose-img-2 {
   right: 0;
@@ -15976,7 +15957,7 @@ ul li {
   }
 
   .ft-why-choose-section-2 .why-choose-img-2 {
-    right: -280px;
+    left: -280px;
   }
 
   .pr-sx-about-exp {
@@ -15998,6 +15979,10 @@ ul li {
 
   .ft-service-innerbox-3 .ft-service-text-icon {
     padding: 59px 30px 75px;
+  }
+
+  .ft-why-choose-section-2 .why-choose-img-2-left {
+    display: none;
   }
 
   .ft-why-choose-section-2 .why-choose-img-2 {
