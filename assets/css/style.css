@@ -3146,6 +3146,13 @@ select:visited {
   margin-right: 25px;
   font-family: 'Montserrat', sans-serif;
   border: 2px solid #4f52ff;
+  box-shadow: 3px 3px 6px #4f52ff;
+  animation: pulsate 1s ease-out infinite;
+}
+@-webkit-keyframes pulsate {
+  0%   { box-shadow: 0 0 0 #4f52ff; }
+  50%  { box-shadow: 3px 3px 6px #4f52ff; }
+  100% { box-shadow: 0 0 0 #4f52ff; }
 }
 .ft-about-text-3 .ft-about-btn-group a i {
   margin-left: 5px;
