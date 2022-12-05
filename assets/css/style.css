@@ -1045,7 +1045,7 @@ select:visited {
   margin-right: 5px;
 }
 .ft-header-section.header-style-three .ft-main-navigation li {
-  margin-left: 60px;
+  margin-left: 40px;
 }
 .ft-header-section.header-style-three .ft-main-navigation li a {
   color: #fff;
@@ -1054,10 +1054,10 @@ select:visited {
   font-family: 'Montserrat', sans-serif;
 }
 .ft-header-section.header-style-three .dropdown:after {
-  color: #fa4216;
+  color: #4f52ff;
 }
 .ft-header-section.header-style-three .dropdown-menu a:before {
-  background-color: #fa4216;
+  background-color: #4f52ff;
 }
 .ft-header-section.header-style-three .ft-header-cta-btn {
   margin-left: 55px;
@@ -3842,11 +3842,15 @@ select:visited {
   height: 310px;
 }
 .btn-design {
-  background-color: #4f52ff;
-  padding: 10px 15px;
+  color: #141415!important;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 15px 30px;
+  margin-right: 25px;
   font-family: 'Montserrat', sans-serif;
-  color: #fff!important;
-  border-radius: 2px;
+  border: 2px solid #4f52ff;
+  box-shadow: 3px 3px 6px #4f52ff;
+  animation: pulsate 1s ease-out infinite;
 }
 .ft-service-innerbox-3 .ft-service-icon {
   right: 30px;
@@ -4488,7 +4492,7 @@ select:visited {
 .ft-why-choose-section-2 {
   z-index: 1;
   overflow: hidden;
-  padding: 115px 0px 250px;
+  padding: 85px 0 145px;
 }
 .ft-why-choose-section-2 .why-choose-img-2-left {
   left: 10%;
@@ -15964,7 +15968,18 @@ ul li {
   }
 
   .ft-why-choose-section-2 .why-choose-img-2 {
-    left: -280px;
+    right: 0;
+  }
+
+  .ft-why-choose-section-2 .why-choose-img-2-left {
+    left: 4%;
+    bottom: 15%;
+  }
+
+  .driver {
+    top: 15% !important;
+    right: 4% !important;
+    bottom: 15% !important;
   }
 
   .pr-sx-about-exp {
