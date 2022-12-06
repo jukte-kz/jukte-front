@@ -1370,12 +1370,18 @@ select:visited {
   top: -62px;
   z-index: 5;
   color: #fff;
-  display: none;
+  display: none!important;
   font-size: 24px;
   cursor: pointer;
   line-height: 38px;
   position: absolute;
   text-align: center;
+}
+
+@media screen and (max-width: 1000px) {
+  .mobile_menu_button {
+    display: flex!important;
+  }
 }
 
 .mobile_menu .mobile-main-navigation .navbar-nav li a:after {
@@ -3144,6 +3150,15 @@ select:visited {
   font-weight: 700;
   padding: 15px 30px;
   margin-right: 25px;
+  font-family: 'Montserrat', sans-serif;
+  border: 2px solid #4f52ff;
+  box-shadow: 3px 3px 6px #4f52ff;
+  animation: pulsate 1s ease-out infinite;
+}
+.heading-btn-group a {
+  color: #141415;
+  font-size: 14px;
+  font-weight: 700;
   font-family: 'Montserrat', sans-serif;
   border: 2px solid #4f52ff;
   box-shadow: 3px 3px 6px #4f52ff;
@@ -16457,7 +16472,8 @@ ul li {
 
   .ft-header-section.header-style-three .ft-header-cta-btn {
     margin-left: 0;
-    margin-right: 40px;
+    margin-right: 120px;
+    display: none;
   }
 
   .ft-header-section.header-style-three .mobile_menu_button {
@@ -16468,7 +16484,7 @@ ul li {
     top: 0;
   }
   .ft-header-section.sticky-on.header-style-three .mobile_menu_button {
-    top: -45px;
+    top: -40px;
   }
 
   .ft-service-innerbox-3 {
@@ -17301,11 +17317,11 @@ ul li {
   }
 
   .ft-header-section.header-style-three .mobile_menu_button {
-    top: -40px;
+    top: -37px;
   }
 
   .ft-header-section.header-style-three .ft-header-cta-btn {
-    margin-right: 48px;
+    margin-right: 100px;
   }
 
   .ft-header-section.header-style-three .ft-brand-logo {
