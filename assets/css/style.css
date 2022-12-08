@@ -16099,7 +16099,7 @@ ul li {
     left: -39px;
   }
 
-  @media screen and (min-width: 820px) and (max-width: 1400px) {
+  @media screen and (min-width: 1000px) and (max-width: 1400px) {
     .rs-parallax-wrap {
       left: 600px!important;
     }
@@ -17740,6 +17740,20 @@ ul li {
 
   .ft-blog-post-feed-innerbox .ft-blog-post-feed-text-wrapper .blog-meta a {
     margin-right: 15px;
+  }
+}
+.mob-lang {
+  display: flex;
+}
+@media screen and (min-width: 540px) {
+  .mob-lang {
+    right: 14% !important;
+    top: 3% !important;
+  }
+}
+@media screen and (min-width: 999px) {
+  .mob-lang {
+    display: none!important;
   }
 }
 /*---------------------------------------------------- */
