@@ -80,7 +80,7 @@ export const LoginView = () => {
   }
 
   return (
-    <div className="w-full h-[80vh]">
+    <div className="w-full">
       <div className="flex flex-col h-full justify-between">
         <div>
           <div className="mb-6 flex items-center relative">
@@ -168,7 +168,7 @@ export const LoginView = () => {
             </Link>
           </Typography>
         </div>
-        <div>
+        <div className="mt-10">
           <Typography variant="body1" className="mb-4">
             У вас еще нету аккаунта? <Link href="/registration" className="text-[#00abc2]">Зарегистрироваться</Link>
           </Typography>
