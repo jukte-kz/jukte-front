@@ -22,7 +22,7 @@ export const MyOrdersView = () => {
 
   useEffect(() => {
     if (totalOrders>0) {
-      setCountPage(Math.ceil(totalOrders/5));
+      setCountPage(Math.ceil(totalOrders/10));
     }
   },[totalOrders]);
 
@@ -132,7 +132,7 @@ export const MyOrdersView = () => {
               </Typography>
             )}
           </div>
-          {totalOrders > 5 && (
+          {totalOrders > 10 && (
             <div className='flex justify-center mt-8'>
               <Pagination
                 count={countPage}

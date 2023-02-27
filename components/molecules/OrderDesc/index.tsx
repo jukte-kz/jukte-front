@@ -174,6 +174,7 @@ export const OrderDesc = ({
             yearDropdownItemNumber={100}
             scrollableYearDropdown
             minDate={startDate}
+            withPortal
             onChange={(date: Date) => {
               setStartDate(date);
               getStartDate(moment(date).format('DD/MM/YYYY'));
@@ -194,6 +195,7 @@ export const OrderDesc = ({
             yearDropdownItemNumber={100}
             scrollableYearDropdown
             minDate={startDate}
+            withPortal
             onChange={(date: Date) => {
               setEndDate(date);
               getEndDate(moment(date).format('DD/MM/YYYY'));
