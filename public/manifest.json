@@ -1,0 +1,37 @@
+{
+  "theme_color": "#00abc2",
+  "background_color": "#c1c1c1",
+  "display": "fullscreen",
+  "scope": "https://jukte.kz",
+  "start_url": "https://jukte.kz",
+  "name": "Jukte.kz",
+  "orientation": "portrait",
+  "short_name": "Jukte",
+  "description": "\u0421\u0430\u0439\u0442 \u0434\u043b\u044f \u0433\u0440\u0443\u0437\u043e\u043f\u0435\u0440\u0435\u0432\u043e\u0437\u043e\u043a",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-256x256.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
