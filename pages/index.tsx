@@ -1,12 +1,19 @@
 import type { NextPage } from 'next'
 import React, { useState, useEffect } from "react";
 import { ThemeProvider, createTheme, PaletteMode } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
 import CssBaseline from '@mui/material/CssBaseline';
 import { WelcomeView } from "../components/organisms/Welcome";
 import { motion } from "framer-motion"
+import { getCookie } from "cookies-next";
+import { useRouter } from "next/router";
 
 const Home: NextPage = () => {
   const [theme , setTheme] = useState<PaletteMode>('light');
+  const token = getCookie('jukteAccessToken');
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const router = useRouter();
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -14,6 +21,14 @@ const Home: NextPage = () => {
       setTheme(darkMode ? 'dark' : 'light');
     }
   }, [theme]);
+
+  useEffect(() => {
+    if (token) {
+      router.push('/main');
+    } else {
+      setLoading(false);
+    }
+  }, [token]);
 
   const variants = {
     hidden: { opacity: 0, x: -200, y: 0 },
@@ -40,7 +55,13 @@ const Home: NextPage = () => {
             transition={{ type: 'linear' }}
             className=""
           >
-            <WelcomeView />
+            {loading ? (
+              <div className="w-full h-screen flex justify-center items-center">
+                <CircularProgress />
+              </div>
+              ) : (
+              <WelcomeView />
+            )}
           </motion.main>
         </div>
       </ThemeProvider>

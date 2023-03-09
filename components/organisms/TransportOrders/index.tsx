@@ -8,7 +8,7 @@ import { Orders } from "../Main/types/Orders";
 import { TransportOrder } from "../../atoms/TransportOrder";
 
 export const TransportOrdersView = () => {
-  const token = getCookie('accessToken');
+  const token = getCookie('jukteAccessToken');
   const [archiveOrder, setArchiveOrder] = useState<Orders>();
   const [totalOrders, setTotalOrders] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);

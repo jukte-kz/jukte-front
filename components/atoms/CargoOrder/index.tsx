@@ -22,7 +22,7 @@ import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import ProductionQuantityLimitsIcon from "@mui/icons-material/ProductionQuantityLimits";
 
 export const CargoOrder = ({order}: CargoOrderProps) => {
-  const token = getCookie('accessToken');
+  const token = getCookie('jukteAccessToken');
   const [expanded, setExpanded] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);

@@ -63,7 +63,7 @@ export const LoginView = () => {
     });
     const toSend = await response.json();
     if (response.ok) {
-      setCookie('accessToken', toSend.accessToken);
+      setCookie('jukteAccessToken', toSend.accessToken);
       await router.push('/main');
       setLoading(false);
       setError(false);

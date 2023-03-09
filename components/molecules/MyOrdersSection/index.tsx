@@ -10,7 +10,7 @@ import {Orders} from "../../organisms/Main/types/Orders";
 import {MyOrdersSectionProps} from "./types";
 
 export const MyOrdersSection = ({onSetStep}: MyOrdersSectionProps) => {
-  const token = getCookie('accessToken');
+  const token = getCookie('jukteAccessToken');
   const [archiveOrder, setArchiveOrder] = useState<Orders>();
   const [totalOrders, setTotalOrders] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);

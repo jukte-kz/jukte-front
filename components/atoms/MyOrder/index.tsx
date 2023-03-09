@@ -20,7 +20,7 @@ import { getCookie } from "cookies-next";
 import Looks3Icon from "@mui/icons-material/Looks3";
 
 export const MyOrder = ({order}: MyOrderProps) => {
-  const token = getCookie('accessToken');
+  const token = getCookie('jukteAccessToken');
   const myPhone = getCookie('myPhone');
   const role = getCookie('role');
   const [expanded, setExpanded] = useState<boolean>(false);

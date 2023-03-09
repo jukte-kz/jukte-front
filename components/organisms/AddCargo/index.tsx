@@ -14,7 +14,7 @@ import { ItemTypeProps } from "../../molecules/NavList/type/itemType";
 
 export const AddCargo = ({onSetStep, currentStep}: AddCargoProps) => {
   const [activeStep, setActiveStep] = useState<number>(0);
-  const token = getCookie('accessToken');
+  const token = getCookie('jukteAccessToken');
   const ownerCompany = getCookie('ownerCompany');
   const maxSteps = 3;
 

@@ -22,7 +22,7 @@ import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import Looks3Icon from '@mui/icons-material/Looks3';
 
 export const TransportOrder = ({order}: TransportOrderProps) => {
-  const token = getCookie('accessToken');
+  const token = getCookie('jukteAccessToken');
   const [expanded, setExpanded] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);

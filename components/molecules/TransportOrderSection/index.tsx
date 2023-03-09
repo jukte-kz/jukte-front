@@ -10,7 +10,7 @@ import {TransportOrder} from "../../atoms/TransportOrder";
 import {TransportOrdersSectionProps} from "./types";
 
 export const TransportOrderSection = ({onSetStep}: TransportOrdersSectionProps) => {
-  const token = getCookie('accessToken');
+  const token = getCookie('jukteAccessToken');
   const [cargoOrders, setCargoOrders] = useState<Orders>();
   const [totalOrders, setTotalOrders] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);

@@ -23,7 +23,7 @@ import {AddCargo} from "../AddCargo";
 import {TransportOrdersView} from "../TransportOrders";
 
 export const MainView = () => {
-  const token = getCookie('accessToken');
+  const token = getCookie('jukteAccessToken');
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(true);
   const [exitModal, setExitModal] = useState<boolean>(false);
@@ -72,7 +72,6 @@ export const MainView = () => {
     getUser().then(r => {
       setCookie('myPhone', r.phone);
       setCookie('myTransport', r.transport.type);
-      setCookie('companyName', r.company.name);
       setCookie('role', r.role);
       setCookie('ownerCompany', `${r.name} ${r.surname}`);
       setUserInfo(r);
@@ -174,6 +173,7 @@ export const MainView = () => {
                 setExitModal(false);
                 setLoading(true);
                 router.push('/');
+                setCookie('jukteAccessToken', '');
               }}
             >
               Да
