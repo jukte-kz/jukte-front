@@ -163,7 +163,7 @@ export const LoginView = () => {
             </div>
           )}
           <Typography variant="body1" className="mt-6 text-[#00abc2]">
-            <Link href="components/Login#">
+            <Link href="/changePasswordPage">
               Забыли пароль?
             </Link>
           </Typography>

@@ -161,7 +161,7 @@ export const MainView = () => {
         >
           <div className="text-center flex items-center justify-center">
             <Typography variant="h6">
-              Вам точно хотите выйти ?
+              Вы точно хотите выйти ?
             </Typography>
           </div>
           <div className="flex items-center justify-center gap-8">

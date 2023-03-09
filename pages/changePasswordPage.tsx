@@ -1,11 +1,11 @@
-import type { NextPage } from 'next'
-import React, { useState, useEffect } from "react";
-import { ThemeProvider, createTheme, PaletteMode } from "@mui/material";
-import CssBaseline from '@mui/material/CssBaseline';
-import { RegistrationView } from "../components/organisms/Registration";
-import { motion } from "framer-motion"
+import type { NextPage } from 'next';
+import React, {useEffect, useState} from "react";
+import {createTheme, PaletteMode, ThemeProvider} from "@mui/material";
+import CssBaseline from "@mui/material/CssBaseline";
+import {motion} from "framer-motion";
+import {ChangePasswordView} from "../components/organisms/ChangePassword";
 
-const Registration: NextPage = () => {
+const ChangePasswordPage: NextPage = () => {
   const [theme , setTheme] = useState<PaletteMode>('light');
 
   useEffect(() => {
@@ -15,22 +15,22 @@ const Registration: NextPage = () => {
     }
   }, [theme]);
 
-  const darkTheme = createTheme({
-    palette: {
-      mode: `${theme}`,
-    },
-  });
-
   const variants = {
     hidden: { opacity: 0, x: -200, y: 0 },
     enter: { opacity: 1, x: 0, y: 0 },
     exit: { opacity: 0, x: 0, y: -100 },
   }
 
+  const darkTheme = createTheme({
+    palette: {
+      mode: `${theme}`,
+    },
+  });
+
   return (
     <div className="bg-white dark:bg-[#0a0a0a]">
       <ThemeProvider theme={darkTheme}>
-        <div className="min-h-screen py-4">
+        <div className="min-h-screen p-4">
           <CssBaseline />
           <motion.main
             variants={variants}
@@ -40,7 +40,7 @@ const Registration: NextPage = () => {
             transition={{ type: 'linear' }}
             className=""
           >
-            <RegistrationView />
+            <ChangePasswordView />
           </motion.main>
         </div>
       </ThemeProvider>
@@ -48,4 +48,4 @@ const Registration: NextPage = () => {
   )
 }
 
-export default Registration;
+export default ChangePasswordPage;

@@ -532,9 +532,9 @@ export const RegistrationView = () => {
             variant="outlined"
             className="mt-4 w-full text-[#00abc2] border-[#00abc2] disabled:border-[#e0e0e0] disabled:bg-[#e0e0e0] disabled:text-[#e0e0e0] dark:disabled:bg-[#232323] dark:disabled:text-[#232323]"
             fullWidth
-            href="/"
+            href="/login"
           >
-            Зайти в аккаунт
+            Войти в аккаунт
           </Button>
         </DialogContent>
       </Dialog>
