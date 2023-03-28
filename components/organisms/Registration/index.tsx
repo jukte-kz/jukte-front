@@ -343,7 +343,7 @@ export const RegistrationView = () => {
         variant="contained"
         className="w-full bg-[#00abc2] text-white disabled:bg-[#e0e0e0] dark:disabled:bg-[#232323] dark:disabled:text-[#626262]"
         onClick={() => {
-          toSetOtp()
+          toSetOtp();
         }}
       >
         Пройти верификацию

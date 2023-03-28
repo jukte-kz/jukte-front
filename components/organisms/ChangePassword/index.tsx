@@ -4,7 +4,6 @@ import Fab from "@mui/material/Fab";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
-import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import LoadingButton from "@mui/lab/LoadingButton";
 import PasswordIcon from "@mui/icons-material/Password";
 import IconButton from "@mui/material/IconButton";
@@ -14,15 +13,28 @@ import DialogContent from "@mui/material/DialogContent";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import WarningIcon from "@mui/icons-material/Warning";
+import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
+// @ts-ignore
+import InputMask from "react-input-mask";
+import CircularProgress from "@mui/material/CircularProgress";
+import {MuiOtpInput} from "mui-one-time-password-input";
 
 export const ChangePasswordView = () => {
   const [disabled, setDisabled] = useState<boolean>(true);
   const [password, setPassword] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
-  const [iin, setIin] = useState<string>('');
+  const [phone, setPhone] = useState<string>('');
   const [successModal, setSuccessModal] = useState<boolean>(false);
   const [errMessage, setErrMessage] = useState<string>('');
+  const [afterBiometriaView, setAfterBiometriaView] = useState<boolean>(false);
+  const [showOtp, setShowOtp] = useState(false);
+  const [randomOtp, setRandomOtp] = useState<string>('');
+  const [otp, setOtp] = useState<string>('');
+  const [errMessageOtp, setErrMessageOtp] = useState<string>('');
+  const [resentOtp, setResentOtp] = useState(false);
+  const [otpCounter, setOtpCounter] = useState<number>(60);
+  const apiKey = 'kzaf5ccca10bc38a352dd68acafdf67b9f100ef92471a59672a249c347a6082317103d';
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -30,18 +42,85 @@ export const ChangePasswordView = () => {
     event.preventDefault();
   };
 
-  const onChangeIin = useCallback((event: React.ChangeEvent< HTMLInputElement>) => {
-    setIin(event.target.value);
+  const onChangePhone = useCallback((event: React.ChangeEvent< HTMLInputElement>) => {
+    setPhone(event.target.value.replace(/(-)|\+|\(|\)|(_)/g, ''));
   }, []);
 
   const onChangePassword = useCallback((event: React.ChangeEvent< HTMLInputElement>) => {
     setPassword(event.target.value);
   }, []);
 
-  const toChangePassword = async (iin: string, newPassword: string) => {
+  const handleChangeOtp = (newValue: string) => {
+    setOtp(newValue);
+  };
+
+  const onCompleteOtp = (value: string) => {
+    setOtp(value);
+    if (randomOtp === value) {
+      setShowOtp(false);
+      toChangePassword(phone, password);
+    } else {
+      setErrMessageOtp('Вы ввели неверный код');
+      setResentOtp(true);
+    }
+  };
+
+  const toCheckRegistration = async (phone: string) => {
     setErrMessage('');
     setLoading(true);
-    const response = await fetch(`https://api.jukte.kz/user/changePassword/${iin}`, {
+    setAfterBiometriaView(true);
+    const response = await fetch(`https://api.jukte.kz/user/checkRegistration/${phone}`, {});
+    const result = await response.json();
+
+    if (response.ok) {
+      setLoading(false);
+      setShowOtp(false);
+      toSetOtp();
+    } else if (result.message === 'User not found') {
+      setAfterBiometriaView(false);
+      setLoading(false);
+      setSuccessModal(false);
+      setErrMessage('Такого пользователя не существует');
+    } else {
+      setAfterBiometriaView(false);
+      setLoading(false);
+      setSuccessModal(false);
+    }
+  };
+
+  const toSetOtp = async () => {
+    setOtp('');
+    setResentOtp(false);
+    setErrMessageOtp('');
+    setOtpCounter(60);
+    const randomNumber = Math.floor(100000 + Math.random() * 900000);
+    const smsData = {
+      recipient: phone, // Номер телефона получателя
+      text: `Для подтверждения регистрации введите код: ${randomNumber}.`, // Текст сообщения
+    };
+
+    const response = await fetch(
+      `https://api.mobizon.kz/service/message/sendsmsmessage?apiKey=${apiKey}`,
+      {
+        method: "POST",
+        mode: 'no-cors',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(smsData)
+      }
+    ).then((res) => {
+      console.log(res);
+      setShowOtp(true);
+      setRandomOtp(randomNumber.toString());
+    }).catch((err) => {
+      console.log(err);
+    });
+  };
+
+  const toChangePassword = async (phone: string, newPassword: string) => {
+    setLoading(true);
+    const response = await fetch(`https://api.jukte.kz/user/changePassword/${phone}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -65,12 +144,20 @@ export const ChangePasswordView = () => {
   };
 
   useEffect(() => {
-    if (iin && password.length === 6) {
+    if (phone && password.length === 6) {
       setDisabled(false);
     } else {
       setDisabled(true);
     }
-  }, [iin, password]);
+  }, [phone, password]);
+
+  useEffect(() => {
+    if (showOtp) {
+      const timer = otpCounter > 0 && setInterval(() => setOtpCounter(otpCounter - 1), 1000) || otpCounter < 1 && setResentOtp(true);
+      // @ts-ignore
+      return () => clearInterval(timer);
+    }
+  });
 
   return (
     <div className="w-full">
@@ -91,23 +178,28 @@ export const ChangePasswordView = () => {
         <Typography variant="body1" className="mb-8">
           Для того что бы восстановить пароль вам необходимо ввести ИИН
         </Typography>
-        <TextField
-          fullWidth
-          label="Введите ИИН"
-          value={iin}
-          onChange={onChangeIin}
-          helperText="Для нерезидентов Казахстана вводить номер документа"
-          InputProps={{
-            inputMode: 'decimal',
-            startAdornment: (
-              <InputAdornment position="start">
-                <AssignmentIndIcon />
-              </InputAdornment>
-            ),
-            type: 'tel'
-          }}
-          variant="outlined"
-        />
+        <InputMask
+          mask="+7-(999)-999-99-99"
+          value={phone}
+          onChange={onChangePhone}
+        >
+          {() => (
+            <TextField
+              fullWidth
+              label="Введите номер телефона"
+              InputProps={{
+                inputMode: 'decimal',
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <LocalPhoneIcon />
+                  </InputAdornment>
+                ),
+                type: 'tel'
+              }}
+              variant="outlined"
+            />
+          )}
+        </InputMask>
         <TextField
           fullWidth
           className="mt-8"
@@ -153,12 +245,54 @@ export const ChangePasswordView = () => {
             'w-full bg-[#00abc2] mt-8 text-white disabled:bg-[#e0e0e0] disabled:text-[#e0e0e0] dark:disabled:bg-[#232323] dark:disabled:text-[#232323]' :
             'w-full bg-[#00abc2] mt-8 text-white disabled:bg-[#e0e0e0] dark:disabled:bg-[#232323] dark:disabled:text-[#626262]'}
           onClick={() => {
-            toChangePassword(iin, password);
+            toCheckRegistration(phone);
           }}
         >
           Обновить пароль
         </LoadingButton>
       </div>
+      <Dialog
+        open={afterBiometriaView}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogContent>
+          {!showOtp ? (
+            <CircularProgress />
+          ) : (
+            <>
+              <Typography variant="subtitle1" className="mb-4 font-semibold">
+                На номер <span className="text-[#00abc2]">{phone}</span> выслан 6-значный код, введите для завершение регистрации.
+              </Typography>
+              <MuiOtpInput
+                TextFieldsProps={{
+                  type: 'tel',
+                }}
+                onComplete={onCompleteOtp}
+                value={otp}
+                length={6}
+                onChange={handleChangeOtp}
+              />
+              {errMessageOtp && (
+                <Typography variant="subtitle2" className="font-semibold mt-4" color="error">
+                  {errMessageOtp}
+                </Typography>
+              )}
+              {resentOtp ? (
+                <Button variant="outlined" className="w-full mt-6 border-[#00abc2] text-[#00abc2]" onClick={() => {
+                  toSetOtp();
+                }}>
+                  Отправить код заново
+                </Button>
+              ) : (
+                <Typography variant="body2" className="text-center mt-6">
+                  Введите код в течении: <span className="text-[#00abc2]">{otpCounter}</span>
+                </Typography>
+              )}
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
       <Dialog
         open={successModal}
         onClose={() => {
