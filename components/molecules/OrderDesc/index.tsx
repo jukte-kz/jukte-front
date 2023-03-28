@@ -52,6 +52,12 @@ export const OrderDesc = ({
     getEndDate(moment(new Date()).format('DD/MM/YYYY'));
   }, []);
 
+  useEffect(() => {
+    if (weight && distance && transport) {
+      setCalcDisabled(false);
+    }
+  }, [weight]);
+
   const onChangeProduct = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setProduct(event.target.value);
     getProduct(event.target.value);
@@ -70,9 +76,6 @@ export const OrderDesc = ({
   const onChangeWeight = useCallback((event: SelectChangeEvent) => {
     setWeight(event.target.value);
     getWeight(event.target.value);
-    if (distance.length > 0) {
-      setCalcDisabled(false);
-    }
   }, []);
 
   const onChangeTransport = useCallback((event: SelectChangeEvent) => {
@@ -85,22 +88,78 @@ export const OrderDesc = ({
     getCub(event.target.value);
   }, []);
 
-  const onCalcPrice = useCallback(() => {
+  const onCalcPrice = useCallback((weight: string) => {
     let corrDistance = parseInt(distance.replace(/\s/g, ''));
+    const chooseWeight = parseInt(weight);
     if (transport) {
-      let transportObj = transportList.filter(obj => {
+      let transportObj = transportList.find((obj: { label: string; }) => {
         return obj.label === transport;
       });
-      let transportPrice = transportObj[0].price;
-      if (transportPrice === 25) {
-        let totalPrice = transportPrice * parseFloat(weight) * corrDistance;
-        setPrice(totalPrice + ' ₸');
-        getPrice(totalPrice + ' ₸');
+      if (transport === 'Самосвал' || transport === 'Зерновоз') {
+        if (transportObj && transportObj.price) {
+          let totalPrice = transportObj.price * chooseWeight * corrDistance;
+          setPrice(totalPrice + ' ₸');
+          getPrice(totalPrice + ' ₸');
+        }
       }
-      else {
-        let totalPrice = corrDistance * transportPrice;
-        setPrice(totalPrice + ' ₸');
-        getPrice(totalPrice + ' ₸');
+      else if (transport === 'Тралл') {
+        if (chooseWeight <= 15) {
+          if (transportObj && transportObj.price15) {
+            let totalPrice = transportObj.price15 * corrDistance;
+            setPrice(totalPrice + ' ₸');
+            getPrice(totalPrice + ' ₸');
+          }
+        }
+        else {
+          if (transportObj && transportObj.price25) {
+            let totalPrice = transportObj.price25 * corrDistance;
+            setPrice(totalPrice + ' ₸');
+            getPrice(totalPrice + ' ₸');
+          }
+        }
+      } else {
+        if (chooseWeight <= 4) {
+          if (transportObj && transportObj.price4) {
+            let totalPrice = transportObj.price4 * corrDistance;
+            setPrice(totalPrice + ' ₸');
+            getPrice(totalPrice + ' ₸');
+          }
+        }
+        else if (chooseWeight <= 8) {
+          if (transportObj && transportObj.price8) {
+            let totalPrice = transportObj.price8 * corrDistance;
+            setPrice(totalPrice + ' ₸');
+            getPrice(totalPrice + ' ₸');
+          }
+        }
+        else if (chooseWeight <= 12) {
+          if (transportObj && transportObj.price12) {
+            let totalPrice = transportObj.price12 * corrDistance;
+            setPrice(totalPrice + ' ₸');
+            getPrice(totalPrice + ' ₸');
+          }
+        }
+        else if (chooseWeight <= 16) {
+          if (transportObj && transportObj.price16) {
+            let totalPrice = transportObj.price16 * corrDistance;
+            setPrice(totalPrice + ' ₸');
+            getPrice(totalPrice + ' ₸');
+          }
+        }
+        else if (chooseWeight <= 22) {
+          if (transportObj && transportObj.price22) {
+            let totalPrice = transportObj.price22 * corrDistance;
+            setPrice(totalPrice + ' ₸');
+            getPrice(totalPrice + ' ₸');
+          }
+        }
+        else if (chooseWeight <= 25) {
+          if (transportObj && transportObj.price25) {
+            let totalPrice = transportObj.price25 * corrDistance;
+            setPrice(totalPrice + ' ₸');
+            getPrice(totalPrice + ' ₸');
+          }
+        }
       }
       setCalcRes(true);
     }
@@ -245,7 +304,7 @@ export const OrderDesc = ({
           onChange={onChangeWeight}
         >
           {weightList.map((item, index) => (
-            <MenuItem key={index} value={item.value}>
+            <MenuItem key={index} value={item.label}>
               {item.label}
             </MenuItem>
           ))}
@@ -272,7 +331,9 @@ export const OrderDesc = ({
           <LoadingButton
             variant="outlined"
             disabled={calcDisabled}
-            onClick={onCalcPrice}
+            onClick={() => {
+              onCalcPrice(weight);
+            }}
           >
             Посчитать стоимость
           </LoadingButton>
