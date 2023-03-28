@@ -116,6 +116,20 @@ export const RegistrationView = () => {
     }
   }, [iin, password, role, phone]);
 
+  const toCheckRegistration = async () => {
+    setErrMessage('');
+    setAfterBiometriaView(true);
+    const response = await fetch(`https://api.jukte.kz/user/checkRegistration/${phone}`, {});
+    const result = await response.json();
+
+    if (response.ok) {
+      setAfterBiometriaView(false);
+      setErrMessage('Такой пользователь уже зарегистрирован.');
+    } else if (result.message === 'User not found') {
+      toSetOtp();
+    }
+  };
+
   const toSetOtp = async () => {
     setOtp('');
     setResentOtp(false);
@@ -239,6 +253,7 @@ export const RegistrationView = () => {
           fullWidth
           label="Введите Имя"
           value={name}
+          name="name"
           onChange={onChangeName}
           InputProps={{
             startAdornment: (
@@ -253,6 +268,7 @@ export const RegistrationView = () => {
           fullWidth
           label="Введите Фамилию"
           value={surname}
+          name="surname"
           onChange={onChangeSurname}
           InputProps={{
             startAdornment: (
@@ -289,6 +305,7 @@ export const RegistrationView = () => {
           fullWidth
           label="Введите ИИН"
           value={iin}
+          name="iin"
           onChange={onChangeIin}
           helperText="Для нерезидентов Казахстана вводить номер документа"
           InputProps={{
@@ -308,6 +325,7 @@ export const RegistrationView = () => {
           type={showPassword ? 'tel' : 'password'}
           onChange={onChangePassword}
           value={password}
+          name="password"
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -343,7 +361,7 @@ export const RegistrationView = () => {
         variant="contained"
         className="w-full bg-[#00abc2] text-white disabled:bg-[#e0e0e0] dark:disabled:bg-[#232323] dark:disabled:text-[#626262]"
         onClick={() => {
-          toSetOtp();
+          toCheckRegistration();
         }}
       >
         Пройти верификацию
