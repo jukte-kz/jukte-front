@@ -120,6 +120,20 @@ export const NavList = ({role, onSetStep, currentStep}: NavListProps) => {
             <ListItemText primary="Застраховать транспорт" />
           </ListItemButton>
         )}
+        {role === ProfileType.LOG && (
+          <ListItemButton
+            selected={selectedItem === ItemTypeProps.INSURANCE}
+            onClick={() => {
+              setSelectedItem(ItemTypeProps.INSURANCE);
+              onSetStep(ItemTypeProps.INSURANCE);
+            }}
+          >
+            <ListItemIcon>
+              <GppGoodIcon />
+            </ListItemIcon>
+            <ListItemText primary="Застраховать груз" />
+          </ListItemButton>
+        )}
         {role === ProfileType.DRIVER && (
           <ListItemButton
             selected={selectedItem === ItemTypeProps.SPARES}

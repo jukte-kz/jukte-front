@@ -36,7 +36,7 @@ export const MainView = () => {
       router.push('https://telegram.me/jukte/');
     } else if (item === ItemTypeProps.INSURANCE) {
       setLoading(true);
-      router.push('https://wa.me/77054051303');
+      router.push('https://wa.me/77717050981');
     } else if (item === ItemTypeProps.SPARES) {
       router.push('https://wa.me/77478269833');
     }
