@@ -14,10 +14,12 @@ import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import WarningIcon from "@mui/icons-material/Warning";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
+import CloseIcon from '@mui/icons-material/Close';
 // @ts-ignore
 import InputMask from "react-input-mask";
 import CircularProgress from "@mui/material/CircularProgress";
 import {MuiOtpInput} from "mui-one-time-password-input";
+import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 
 export const ChangePasswordView = () => {
   const [disabled, setDisabled] = useState<boolean>(true);
@@ -50,20 +52,16 @@ export const ChangePasswordView = () => {
     setPassword(event.target.value);
   }, []);
 
-  const handleChangeOtp = (newValue: string) => {
-    setOtp(newValue);
-  };
-
-  const onCompleteOtp = (value: string) => {
-    setOtp(value);
-    if (randomOtp === value) {
+  const handleChangeOtp = useCallback((event: React.ChangeEvent< HTMLInputElement>) => {
+    setOtp(event.target.value);
+    if (event.target.value === randomOtp) {
       setShowOtp(false);
       toChangePassword(phone, password);
-    } else {
+    } if (event.target.value !== randomOtp && event.target.value.length === 6) {
       setErrMessageOtp('Вы ввели неверный код');
       setResentOtp(true);
     }
-  };
+  }, [randomOtp, phone, password]);
 
   const toCheckRegistration = async (phone: string) => {
     setErrMessage('');
@@ -96,7 +94,7 @@ export const ChangePasswordView = () => {
     const randomNumber = Math.floor(100000 + Math.random() * 900000);
     const smsData = {
       recipient: phone, // Номер телефона получателя
-      text: `Для подтверждения регистрации введите код: ${randomNumber}.`, // Текст сообщения
+      text: `Для восстановления пароля введите код: ${randomNumber}.`, // Текст сообщения
     };
 
     const response = await fetch(
@@ -261,17 +259,30 @@ export const ChangePasswordView = () => {
             <CircularProgress />
           ) : (
             <>
+              <div className="flex items-center mb-4" onClick={() => {
+                setAfterBiometriaView(false);
+              }}>
+                <Fab variant='circular' size="small" className="bg-white dark:bg-[#232323] dark:shadow-none">
+                  <CloseIcon className="text-[#0a0a0a] dark:text-white" />
+                </Fab>
+                <Typography variant="button" className="ml-2">
+                  Закрыть
+                </Typography>
+              </div>
               <Typography variant="subtitle1" className="mb-4 font-semibold">
-                На номер <span className="text-[#00abc2]">{phone}</span> выслан 6-значный код, введите для завершение регистрации.
+                На номер <span className="text-[#00abc2]">{phone}</span> <br/> выслан 6-значный код, введите для подтверждения смены пароля.
               </Typography>
-              <MuiOtpInput
-                TextFieldsProps={{
-                  type: 'tel',
-                }}
-                onComplete={onCompleteOtp}
+              <TextField
+                fullWidth
                 value={otp}
-                length={6}
+                name="iin"
                 onChange={handleChangeOtp}
+                InputProps={{
+                  inputMode: 'numeric',
+                  autoComplete: 'one-time-code',
+                  type: 'tel'
+                }}
+                variant="outlined"
               />
               {errMessageOtp && (
                 <Typography variant="subtitle2" className="font-semibold mt-4" color="error">

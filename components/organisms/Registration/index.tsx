@@ -30,6 +30,7 @@ import WarningIcon from '@mui/icons-material/Warning';
 import InputMask from 'react-input-mask';
 import { useRouter } from "next/router";
 import { MuiOtpInput } from 'mui-one-time-password-input';
+import CloseIcon from "@mui/icons-material/Close";
 
 export const RegistrationView = () => {
   const [phone, setPhone] = useState<string>('');
@@ -84,20 +85,16 @@ export const RegistrationView = () => {
     event.preventDefault();
   };
 
-  const handleChangeOtp = (newValue: string) => {
-    setOtp(newValue);
-  };
-
-  const onCompleteOtp = (value: string) => {
-    setOtp(value);
-    if (randomOtp === value) {
+  const handleChangeOtp = useCallback((event: React.ChangeEvent< HTMLInputElement>) => {
+    setOtp(event.target.value);
+    if (event.target.value === randomOtp) {
       setShowOtp(false);
       toRegister();
-    } else {
+    } if (event.target.value !== randomOtp && event.target.value.length === 6) {
       setErrMessageOtp('Вы ввели неверный код');
       setResentOtp(true);
     }
-  };
+  }, [randomOtp, phone, password]);
 
   useEffect(() => {
     if (showOtp) {
@@ -376,17 +373,30 @@ export const RegistrationView = () => {
             <CircularProgress />
             ) : (
               <>
+                <div className="flex items-center mb-4" onClick={() => {
+                  setAfterBiometriaView(false);
+                }}>
+                  <Fab variant='circular' size="small" className="bg-white dark:bg-[#232323] dark:shadow-none">
+                    <CloseIcon className="text-[#0a0a0a] dark:text-white" />
+                  </Fab>
+                  <Typography variant="button" className="ml-2">
+                    Закрыть
+                  </Typography>
+                </div>
                 <Typography variant="subtitle1" className="mb-4 font-semibold">
                   На номер <span className="text-[#00abc2]">{phone}</span> выслан 6-значный код, введите для завершение регистрации.
                 </Typography>
-                <MuiOtpInput
-                  TextFieldsProps={{
-                    type: 'tel',
-                  }}
-                  onComplete={onCompleteOtp}
+                <TextField
+                  fullWidth
                   value={otp}
-                  length={6}
+                  name="iin"
                   onChange={handleChangeOtp}
+                  InputProps={{
+                    inputMode: 'numeric',
+                    autoComplete: 'one-time-code',
+                    type: 'tel'
+                  }}
+                  variant="outlined"
                 />
                 {errMessageOtp && (
                   <Typography variant="subtitle2" className="font-semibold mt-4" color="error">
