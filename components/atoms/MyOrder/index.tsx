@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import { MyOrderProps } from "./types";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -18,6 +18,15 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
 import { getCookie } from "cookies-next";
 import Looks3Icon from "@mui/icons-material/Looks3";
+import AvTimerIcon from '@mui/icons-material/AvTimer';
+import ReactTimeAgo from 'react-time-ago';
+import TimeAgo from 'javascript-time-ago';
+
+import en from 'javascript-time-ago/locale/en.json';
+import ru from 'javascript-time-ago/locale/ru.json';
+
+TimeAgo.addDefaultLocale(en);
+TimeAgo.addLocale(ru);
 
 export const MyOrder = ({order}: MyOrderProps) => {
   const token = getCookie('jukteAccessToken');
@@ -27,6 +36,7 @@ export const MyOrder = ({order}: MyOrderProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
   const [completedLoading, setCompletedLoading] = useState<boolean>(false);
+  const [date, setDate] = useState<Date>();
 
   const deleteOrder = async () => {
     setLoading(true);
@@ -48,6 +58,12 @@ export const MyOrder = ({order}: MyOrderProps) => {
       return await response.json();
     }
   };
+
+  useEffect(() => {
+    if (order && order.time) {
+      setDate(new Date(order.time));
+    }
+  }, [order]);
 
   const confirmOrder = async () => {
     setConfirmLoading(true);
@@ -99,24 +115,34 @@ export const MyOrder = ({order}: MyOrderProps) => {
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1bh-content"
         id="panel1bh-header"
-        className="px-2"
+        className="px-4"
       >
-        <div className="flex items-center">
-          {order.status === 'open' && (
-            <Chip label="Открытая" variant="outlined" className="border-[#00abc2] text-[#00abc2] mr-2" />
-          )}
-          {order.status === 'inProgress' && (
-            <Chip label="В процессе" variant="outlined" color="warning" className="mr-2" />
-          )}
-          {order.status === 'finished' && (
-            <Chip label="Ожидание" variant="outlined" color="warning" className="mr-2" />
-          )}
-          {order.status === 'completed' && (
-            <Chip label="Завершен" variant="outlined" color="success" className="mr-2" />
-          )}
-          <Typography variant="body2" className="">
-            {order.from} - {order.to}
-          </Typography>
+        <div>
+          <div className="flex items-center mb-2 gap-2">
+            <AvTimerIcon className="fill-[#00abc2]" />
+            <Typography variant="body1">
+              {date && (
+                <ReactTimeAgo date={date} locale="ru-RU" />
+              )}
+            </Typography>
+          </div>
+          <div className="flex items-center">
+            {order.status === 'open' && (
+              <Chip label="Открытая" variant="outlined" className="border-[#00abc2] text-[#00abc2] mr-2" />
+            )}
+            {order.status === 'inProgress' && (
+              <Chip label="В процессе" variant="outlined" color="warning" className="mr-2" />
+            )}
+            {order.status === 'finished' && (
+              <Chip label="Ожидание" variant="outlined" color="warning" className="mr-2" />
+            )}
+            {order.status === 'completed' && (
+              <Chip label="Завершен" variant="outlined" color="success" className="mr-2" />
+            )}
+            <Typography variant="body2" className="">
+              {order.from} - {order.to}
+            </Typography>
+          </div>
         </div>
       </AccordionSummary>
       <AccordionDetails className="flex flex-col gap-2">

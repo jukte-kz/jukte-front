@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import { getCookie } from "cookies-next";
 import { TransportOrderProps } from "./types";
 import Accordion from "@mui/material/Accordion";
@@ -20,12 +20,28 @@ import RvHookupIcon from '@mui/icons-material/RvHookup';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import Looks3Icon from '@mui/icons-material/Looks3';
+import AvTimerIcon from '@mui/icons-material/AvTimer';
+import ReactTimeAgo from 'react-time-ago';
+import TimeAgo from 'javascript-time-ago';
+
+import en from 'javascript-time-ago/locale/en.json';
+import ru from 'javascript-time-ago/locale/ru.json';
+
+TimeAgo.addDefaultLocale(en);
+TimeAgo.addLocale(ru);
 
 export const TransportOrder = ({order}: TransportOrderProps) => {
   const token = getCookie('jukteAccessToken');
   const [expanded, setExpanded] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [date, setDate] = useState<Date>();
+
+  useEffect(() => {
+    if (order && order.time) {
+      setDate(new Date(order.time));
+    }
+  }, [order]);
 
   const handleChange = useCallback(() => {
     setExpanded(!expanded);
@@ -65,13 +81,23 @@ export const TransportOrder = ({order}: TransportOrderProps) => {
           id="panel1bh-header"
           className="px-2"
         >
-          <div className="flex items-center">
-            {order.status === 'open' && (
-              <Chip label="Открытая" variant="outlined" className="border-[#00abc2] text-[#00abc2] mr-2" />
-            )}
-            <Typography variant="body2" className="">
-              {order.from} - {order.to}
-            </Typography>
+          <div>
+            <div className="flex items-center mb-2 gap-2">
+              <AvTimerIcon className="fill-[#00abc2]" />
+              <Typography variant="body1">
+                {date && (
+                  <ReactTimeAgo date={date} locale="ru-RU" />
+                )}
+              </Typography>
+            </div>
+            <div className="flex items-center">
+              {order.status === 'open' && (
+                <Chip label="Открытая" variant="outlined" className="border-[#00abc2] text-[#00abc2] mr-2" />
+              )}
+              <Typography variant="body2" className="">
+                {order.from} - {order.to}
+              </Typography>
+            </div>
           </div>
         </AccordionSummary>
         <AccordionDetails className="flex flex-col gap-2">
