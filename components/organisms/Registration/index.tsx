@@ -29,8 +29,9 @@ import WarningIcon from '@mui/icons-material/Warning';
 // @ts-ignore
 import InputMask from 'react-input-mask';
 import { useRouter } from "next/router";
-import { MuiOtpInput } from 'mui-one-time-password-input';
 import CloseIcon from "@mui/icons-material/Close";
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/material.css';
 
 export const RegistrationView = () => {
   const [phone, setPhone] = useState<string>('');
@@ -246,6 +247,15 @@ export const RegistrationView = () => {
         </RadioGroup>
       </FormControl>
       <div className="mt-4 flex flex-col gap-6">
+        <PhoneInput
+          specialLabel="Номер телефона"
+          inputClass={"w-100"}
+          country={'kz'}
+          value={phone}
+          onChange={phone => {
+            setPhone(phone);
+          }}
+        />
         <TextField
           fullWidth
           label="Введите Имя"
@@ -276,28 +286,6 @@ export const RegistrationView = () => {
           }}
           variant="outlined"
         />
-        <InputMask
-          mask="+7-(999)-999-99-99"
-          value={phone}
-          onChange={onChangePhone}
-        >
-          {() => (
-            <TextField
-              fullWidth
-              label="Введите номер телефона"
-              InputProps={{
-                inputMode: 'decimal',
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <LocalPhoneIcon />
-                  </InputAdornment>
-                ),
-                type: 'tel'
-              }}
-              variant="outlined"
-            />
-          )}
-        </InputMask>
         <TextField
           fullWidth
           label="Введите ИИН"
@@ -389,12 +377,10 @@ export const RegistrationView = () => {
                 <TextField
                   fullWidth
                   value={otp}
-                  name="iin"
+                  name="otp"
                   onChange={handleChangeOtp}
                   InputProps={{
                     inputMode: 'numeric',
-                    autoComplete: 'one-time-code',
-                    type: 'tel'
                   }}
                   variant="outlined"
                 />

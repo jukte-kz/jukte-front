@@ -275,12 +275,10 @@ export const ChangePasswordView = () => {
               <TextField
                 fullWidth
                 value={otp}
-                name="iin"
+                name="otp"
                 onChange={handleChangeOtp}
                 InputProps={{
                   inputMode: 'numeric',
-                  autoComplete: 'one-time-code',
-                  type: 'tel'
                 }}
                 variant="outlined"
               />

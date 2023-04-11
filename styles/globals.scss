@@ -105,3 +105,40 @@ input {
         }
     }
 }
+
+.react-tel-input {
+    .highlight {
+        background: #00abc2!important;
+        span {
+            color: white!important;
+        }
+    }
+    .country-list {
+        @apply dark:bg-[#0a0a0a] #{!important};
+        @apply border border-[#ffffff3b]
+    }
+    .form-control {
+        padding: 16.5px 14px 16.5px 58px !important;
+        width: 100% !important;
+        @apply dark:bg-transparent #{!important};
+        @apply dark:border-[#ffffff3b] #{!important};
+        &:hover {
+            border-color: #00abc2 !important;
+        }
+        &:focus {
+            box-shadow: 0 0 0 1px #00abc2 !important;
+        }
+    }
+    .special-label {
+        top: -10px !important;
+        left: 10px !important;
+        color: rgba(0, 0, 0, 0.6);
+        @apply dark:text-[#ffffffb3] #{!important};
+        @apply dark:bg-[#0a0a0a] #{!important};
+    }
+    input {
+        &:focus {
+            border-color: #00abc2 !important;
+        }
+    }
+}
