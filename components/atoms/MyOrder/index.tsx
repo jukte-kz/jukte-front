@@ -29,7 +29,6 @@ TimeAgo.addDefaultLocale(en);
 TimeAgo.addLocale(ru);
 
 export const MyOrder = ({order}: MyOrderProps) => {
-  const token = getCookie('jukteAccessToken');
   const myPhone = getCookie('myPhone');
   const role = getCookie('role');
   const [expanded, setExpanded] = useState<boolean>(false);
@@ -40,6 +39,8 @@ export const MyOrder = ({order}: MyOrderProps) => {
 
   const deleteOrder = async () => {
     setLoading(true);
+    let token;
+    token = localStorage.getItem('jukteAccessToken');
     if (token) {
       const response = await fetch(`https://api.jukte.kz/orders/delete/${order._id}`, {
         method: 'PUT',
@@ -67,6 +68,8 @@ export const MyOrder = ({order}: MyOrderProps) => {
 
   const confirmOrder = async () => {
     setConfirmLoading(true);
+    let token;
+    token = localStorage.getItem('jukteAccessToken');
     if (token) {
       const response = await fetch(`https://api.jukte.kz/orders/finish/${order._id}`, {
         method: 'PUT',
@@ -87,6 +90,8 @@ export const MyOrder = ({order}: MyOrderProps) => {
 
   const completedOrder = async () => {
     setCompletedLoading(true);
+    let token;
+    token = localStorage.getItem('jukteAccessToken');
     if (token) {
       const response = await fetch(`https://api.jukte.kz/orders/approve/${order._id}`, {
         method: 'PUT',

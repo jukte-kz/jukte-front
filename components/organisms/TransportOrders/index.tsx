@@ -3,12 +3,10 @@ import Chip from "@mui/material/Chip";
 import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 import Pagination from "@mui/material/Pagination";
-import { getCookie } from "cookies-next";
 import { Orders } from "../Main/types/Orders";
 import { TransportOrder } from "../../atoms/TransportOrder";
 
 export const TransportOrdersView = () => {
-  const token = getCookie('jukteAccessToken');
   const [archiveOrder, setArchiveOrder] = useState<Orders>();
   const [totalOrders, setTotalOrders] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
@@ -23,6 +21,8 @@ export const TransportOrdersView = () => {
 
   useEffect(() => {
     const getArchive = async () => {
+      let token;
+      token = localStorage.getItem('jukteAccessToken');
       if (token) {
         const response = await fetch(`https://api.jukte.kz/orders/?page=${paginationPage}`, {
           method: 'GET',
@@ -44,12 +44,14 @@ export const TransportOrdersView = () => {
       setArchiveOrder(r);
       setTotalOrders(r.pagination.total);
     })
-  }, [token]);
+  }, []);
 
   const handlePagination = async (event: React.ChangeEvent<unknown>, value: number) => {
     setPaginationPage(value);
     setLoading(true);
     const getArchive = async () => {
+      let token;
+      token = localStorage.getItem('jukteAccessToken');
       if (token) {
         const response = await fetch(`https://api.jukte.kz/orders/?page=${value}`, {
           method: 'GET',

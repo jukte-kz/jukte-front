@@ -3,7 +3,6 @@ import Chip from "@mui/material/Chip";
 import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 import Pagination from "@mui/material/Pagination";
-import { getCookie } from "cookies-next";
 import { Orders } from "../Main/types/Orders";
 import { MyOrder } from "../../atoms/MyOrder";
 import Divider from "@mui/material/Divider";
@@ -12,7 +11,6 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 export const MyOrdersView = () => {
-  const token = getCookie('jukteAccessToken');
   const [archiveOrder, setArchiveOrder] = useState<Orders>();
   const [totalOrders, setTotalOrders] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
@@ -28,6 +26,8 @@ export const MyOrdersView = () => {
 
   useEffect(() => {
     const getArchive = async () => {
+      let token;
+      token = localStorage.getItem('jukteAccessToken');
       if (token) {
         const response = await fetch(`https://api.jukte.kz/orders/archive/?page=${paginationPage}`, {
           method: 'GET',
@@ -49,12 +49,14 @@ export const MyOrdersView = () => {
       setArchiveOrder(r);
       setTotalOrders(r.pagination.total);
     })
-  }, [token]);
+  }, []);
 
   const handlePagination = async (event: React.ChangeEvent<unknown>, value: number) => {
     setPaginationPage(value);
     setLoading(true);
     const getArchive = async () => {
+      let token;
+      token = localStorage.getItem('jukteAccessToken');
       if (token) {
         const response = await fetch(`https://api.jukte.kz/orders/archive/?page=${value}`, {
           method: 'GET',

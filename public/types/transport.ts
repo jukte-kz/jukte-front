@@ -2,12 +2,12 @@ export const transportList = [
   {
     value: 1,
     label: 'Рефрижератор',
-    price4: 150,
-    price8: 200,
-    price12: 250,
-    price16: 300,
-    price22: 400,
-    price25: 500
+    price4: 250,
+    price8: 300,
+    price12: 350,
+    price16: 400,
+    price22: 500,
+    price25: 700
   },
   {
     value: 2,
@@ -23,52 +23,52 @@ export const transportList = [
   {
     value: 4,
     label: 'Изотерм',
-    price4: 100,
-    price8: 150,
-    price12: 200,
-    price16: 250,
-    price22: 300,
-    price25: 400
+    price4: 200,
+    price8: 250,
+    price12: 300,
+    price16: 350,
+    price22: 400,
+    price25: 500
   },
   {
     value: 5,
     label: 'Бортовой',
-    price4: 100,
-    price8: 150,
-    price12: 200,
-    price16: 250,
-    price22: 300,
-    price25: 400
+    price4: 200,
+    price8: 250,
+    price12: 300,
+    price16: 350,
+    price22: 400,
+    price25: 500
   },
   {
     value: 6,
     label: 'Крытый',
-    price4: 100,
-    price8: 150,
-    price12: 200,
-    price16: 250,
-    price22: 300,
-    price25: 400
+    price4: 200,
+    price8: 250,
+    price12: 300,
+    price16: 350,
+    price22: 400,
+    price25: 500
   },
   {
     value: 7,
     label: 'Открытый',
-    price4: 100,
-    price8: 150,
-    price12: 200,
-    price16: 250,
-    price22: 300,
-    price25: 400
+    price4: 200,
+    price8: 250,
+    price12: 300,
+    price16: 350,
+    price22: 400,
+    price25: 500
   },
   {
     value: 8,
     label: 'Тент',
-    price4: 100,
-    price8: 150,
-    price12: 200,
-    price16: 250,
-    price22: 300,
-    price25: 400
+    price4: 200,
+    price8: 250,
+    price12: 300,
+    price16: 350,
+    price22: 400,
+    price25: 500
   },
   {
     value: 9,

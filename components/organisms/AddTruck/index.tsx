@@ -14,7 +14,6 @@ import { ItemTypeProps } from "../../molecules/NavList/type/itemType";
 
 export const AddTruck = ({onSetStep, currentStep}: AddTruckProps) => {
   const [activeStep, setActiveStep] = useState<number>(0);
-  const token = getCookie('jukteAccessToken');
   const ownerCompany = getCookie('ownerCompany');
   const maxSteps = 3;
 
@@ -112,6 +111,8 @@ export const AddTruck = ({onSetStep, currentStep}: AddTruckProps) => {
   };
 
   const toCreateOrder = async () => {
+    let token;
+    token = localStorage.getItem('jukteAccessToken');
     if(token) {
       const response = await fetch('https://api.jukte.kz/orders/', {
         method: 'POST',

@@ -10,13 +10,14 @@ import {Orders} from "../../organisms/Main/types/Orders";
 import {MyOrdersSectionProps} from "./types";
 
 export const MyOrdersSection = ({onSetStep}: MyOrdersSectionProps) => {
-  const token = getCookie('jukteAccessToken');
   const [archiveOrder, setArchiveOrder] = useState<Orders>();
   const [totalOrders, setTotalOrders] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const getArchive = async () => {
+      let token;
+      token = localStorage.getItem('jukteAccessToken');
       if (token) {
         const response = await fetch('https://api.jukte.kz/orders/archive', {
           method: 'GET',
@@ -38,7 +39,7 @@ export const MyOrdersSection = ({onSetStep}: MyOrdersSectionProps) => {
       setArchiveOrder(r);
       setTotalOrders(r.pagination.total);
     })
-  }, [token]);
+  }, []);
 
   return (
     <div className="px-4">

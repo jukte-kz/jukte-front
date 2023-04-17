@@ -4,15 +4,15 @@ import Skeleton from "@mui/material/Skeleton";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { UserInfoProps } from "../Main/types/UserInfo";
-import { getCookie } from "cookies-next";
 
 export const Profile = () => {
-  const token = getCookie('jukteAccessToken');
   const [userInfo, setUserInfo] = useState<UserInfoProps>();
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const getUser = async () => {
+      let token;
+      token = localStorage.getItem('jukteAccessToken');
       if (token) {
         const response = await fetch('https://api.jukte.kz/user/info', {
           method: 'GET',
@@ -33,7 +33,7 @@ export const Profile = () => {
     getUser().then(r => {
       setUserInfo(r);
     });
-  }, [token]);
+  }, []);
 
   return (
     <div className="w-full px-4 mt-4">

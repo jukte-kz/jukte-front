@@ -1,5 +1,4 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import { getCookie } from "cookies-next";
 import { TransportOrderProps } from "./types";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -31,7 +30,6 @@ TimeAgo.addDefaultLocale(en);
 TimeAgo.addLocale(ru);
 
 export const TransportOrder = ({order}: TransportOrderProps) => {
-  const token = getCookie('jukteAccessToken');
   const [expanded, setExpanded] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -53,6 +51,8 @@ export const TransportOrder = ({order}: TransportOrderProps) => {
 
   const matchOrder = async () => {
     setLoading(true);
+    let token;
+    token = localStorage.getItem('jukteAccessToken');
     if (token) {
       const response = await fetch(`https://api.jukte.kz/orders/match/${order._id}`, {
         method: 'PUT',

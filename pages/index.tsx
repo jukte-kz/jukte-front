@@ -5,12 +5,10 @@ import CircularProgress from "@mui/material/CircularProgress";
 import CssBaseline from '@mui/material/CssBaseline';
 import { WelcomeView } from "../components/organisms/Welcome";
 import { motion } from "framer-motion"
-import { getCookie } from "cookies-next";
 import { useRouter } from "next/router";
 
 const Home: NextPage = () => {
   const [theme , setTheme] = useState<PaletteMode>('light');
-  const token = getCookie('jukteAccessToken');
   const [loading, setLoading] = useState<boolean>(true);
 
   const router = useRouter();
@@ -23,12 +21,14 @@ const Home: NextPage = () => {
   }, [theme]);
 
   useEffect(() => {
+    let token;
+    token = localStorage.getItem('jukteAccessToken');
     if (token) {
       router.push('/main');
     } else {
       setLoading(false);
     }
-  }, [token]);
+  });
 
   const variants = {
     hidden: { opacity: 0, x: -200, y: 0 },

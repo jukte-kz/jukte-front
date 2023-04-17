@@ -10,13 +10,14 @@ import {TransportOrder} from "../../atoms/TransportOrder";
 import {TransportOrdersSectionProps} from "./types";
 
 export const TransportOrderSection = ({onSetStep}: TransportOrdersSectionProps) => {
-  const token = getCookie('jukteAccessToken');
   const [cargoOrders, setCargoOrders] = useState<Orders>();
   const [totalOrders, setTotalOrders] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const getOrders = async () => {
+      let token;
+      token = localStorage.getItem('jukteAccessToken');
       if (token) {
         const response = await fetch('https://api.jukte.kz/orders/', {
           method: 'GET',
@@ -38,7 +39,7 @@ export const TransportOrderSection = ({onSetStep}: TransportOrdersSectionProps) 
       setCargoOrders(r);
       setTotalOrders(r.pagination.total);
     })
-  }, [token]);
+  }, []);
 
   return (
     <div className="px-4">

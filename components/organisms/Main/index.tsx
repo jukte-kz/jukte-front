@@ -23,7 +23,6 @@ import {AddCargo} from "../AddCargo";
 import {TransportOrdersView} from "../TransportOrders";
 
 export const MainView = () => {
-  const token = getCookie('jukteAccessToken');
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(true);
   const [exitModal, setExitModal] = useState<boolean>(false);
@@ -52,6 +51,8 @@ export const MainView = () => {
 
   useEffect(() => {
     const getUser = async () => {
+      let token;
+      token = localStorage.getItem('jukteAccessToken');
       if (token) {
         const response = await fetch('https://api.jukte.kz/user/info', {
           method: 'GET',
@@ -76,7 +77,7 @@ export const MainView = () => {
       setCookie('ownerCompany', `${r.name} ${r.surname}`);
       setUserInfo(r);
     });
-  }, [token]);
+  }, []);
 
   return (
     <>
@@ -174,6 +175,7 @@ export const MainView = () => {
                 setLoading(true);
                 router.push('/');
                 setCookie('jukteAccessToken', '');
+                localStorage.setItem('jukteAccessToken', '');
               }}
             >
               Да
