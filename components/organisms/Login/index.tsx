@@ -17,6 +17,8 @@ import InputMask from 'react-input-mask';
 import Link from "next/link";
 import { setCookie } from "cookies-next";
 import { useRouter } from "next/router";
+import PhoneInput from "react-phone-input-2";
+import 'react-phone-input-2/lib/material.css';
 
 export const LoginView = () => {
   const [showPassword, setShowPassword] = useState<boolean>(true);
@@ -101,29 +103,15 @@ export const LoginView = () => {
             Введите номер телефона и пароль для авторизации в <span className="text-[#00abc2]">Jukte.kz</span>
           </Typography>
           <div className="flex flex-col gap-8">
-            <InputMask
-              mask="+7-(999)-999-99-99"
+            <PhoneInput
+              specialLabel="Номер телефона"
+              inputClass={"w-100"}
+              country={'kz'}
               value={phone}
-              onChange={onChangePhone}
-            >
-              {() => (
-                <TextField
-                  fullWidth
-                  error={corError}
-                  label="Введите номер телефона"
-                  InputProps={{
-                    inputMode: 'decimal',
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <LocalPhoneIcon />
-                      </InputAdornment>
-                    ),
-                    type: 'tel'
-                  }}
-                  variant="outlined"
-                />
-              )}
-            </InputMask>
+              onChange={phone => {
+                setPhone(phone);
+              }}
+            />
             <TextField
               fullWidth
               label="Введите 6-значный пин-код"
