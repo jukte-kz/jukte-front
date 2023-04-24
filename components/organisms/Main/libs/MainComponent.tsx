@@ -53,7 +53,7 @@ export const MainComponent = ({name, surname, role, onSetStep} : UserMainCard) =
                 <LocalShippingIcon className="fill-white" />
               </IconButton>
               <Typography className="mt-2 text-xs" variant="body2">
-                Добавить машину
+                Добавить транспорт
               </Typography>
             </div>
           )}
@@ -65,7 +65,7 @@ export const MainComponent = ({name, surname, role, onSetStep} : UserMainCard) =
                 <LocalShippingIcon className="fill-white" />
               </IconButton>
               <Typography className="mt-2 text-xs" variant="body2">
-                Искать машину
+                Искать транспорт
               </Typography>
             </div>
           )}

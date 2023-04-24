@@ -174,7 +174,7 @@ export const AddTruck = ({onSetStep, currentStep}: AddTruckProps) => {
     <div className="w-full px-4 mt-4">
       <div className="flex items-center justify-between">
         <Typography variant="h6">
-          Добавить машину
+          Добавить транспорт
         </Typography>
         <Chip label={`Шаг: ${activeStep+1}/${maxSteps}`} variant="outlined" />
       </div>

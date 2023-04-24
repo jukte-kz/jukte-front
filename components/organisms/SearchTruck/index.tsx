@@ -54,7 +54,7 @@ export const SearchTruck = () => {
         <div className="w-full px-4 mt-4">
           <div className="flex items-center">
             <Typography variant="h6">
-              {role == 'logistician' ? 'Искать машину' : 'Искать груз'}
+              {role == 'logistician' ? 'Искать транспорт' : 'Искать груз'}
             </Typography>
           </div>
           <div className="mt-4 flex flex-col gap-4">

@@ -103,7 +103,7 @@ export const NavList = ({role, onSetStep, currentStep}: NavListProps) => {
             <ListItemIcon>
               <LocalShippingIcon />
             </ListItemIcon>
-            <ListItemText primary="Добавить машину" />
+            <ListItemText primary="Добавить транспорт" />
           </ListItemButton>
         )}
         {role === ProfileType.DRIVER && (
