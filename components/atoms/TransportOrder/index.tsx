@@ -82,13 +82,25 @@ export const TransportOrder = ({order}: TransportOrderProps) => {
           className="px-2"
         >
           <div>
-            <div className="flex items-center mb-2 gap-2">
-              <AvTimerIcon className="fill-[#00abc2]" />
-              <Typography variant="body1">
-                {date && (
-                  <ReactTimeAgo date={date} locale="ru-RU" />
+            <div className="flex items-center gap-4">
+              <div className="flex items-center mb-2 gap-2">
+                <AvTimerIcon className="fill-[#00abc2]" />
+                <Typography variant="body1">
+                  {date && (
+                    <ReactTimeAgo date={date} locale="ru-RU" />
+                  )}
+                </Typography>
+              </div>
+              <div className="flex items-center mb-2 gap-2">
+                {order.weight !== "NaN" && (
+                  <div className="flex items-center">
+                    <ScaleIcon className="mr-2 fill-[#00abc2]" />
+                    <Typography variant="body1">
+                      {order.weight}
+                    </Typography>
+                  </div>
                 )}
-              </Typography>
+              </div>
             </div>
             <div className="flex items-center">
               {order.status === 'open' && (
@@ -113,14 +125,6 @@ export const TransportOrder = ({order}: TransportOrderProps) => {
               {order.price}
             </Typography>
           </div>
-          {order.weight !== "NaN" && (
-            <div className="flex items-center">
-              <ScaleIcon className="mr-2 fill-[#00abc2]" />
-              <Typography variant="body1">
-                {order.weight} тонн
-              </Typography>
-            </div>
-          )}
           {order.cubProduct !== "" && (
             <div className="flex items-center">
               <Looks3Icon className="mr-2 fill-[#00abc2]" />
