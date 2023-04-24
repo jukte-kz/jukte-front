@@ -82,15 +82,7 @@ export const TransportOrder = ({order}: TransportOrderProps) => {
           className="px-2"
         >
           <div>
-            <div className="flex items-center gap-4">
-              <div className="flex items-center mb-2 gap-2">
-                <AvTimerIcon className="fill-[#00abc2]" />
-                <Typography variant="body1">
-                  {date && (
-                    <ReactTimeAgo date={date} locale="ru-RU" />
-                  )}
-                </Typography>
-              </div>
+            <div className="flex items-center justify-between px-2">
               <div className="flex items-center mb-2 gap-2">
                 {order.weight !== "NaN" && (
                   <div className="flex items-center">
@@ -100,6 +92,14 @@ export const TransportOrder = ({order}: TransportOrderProps) => {
                     </Typography>
                   </div>
                 )}
+              </div>
+              <div className="flex items-center mb-2 gap-2">
+                <AvTimerIcon className="fill-[#00abc2]" />
+                <Typography variant="body1">
+                  {date && (
+                    <ReactTimeAgo date={date} locale="ru-RU" />
+                  )}
+                </Typography>
               </div>
             </div>
             <div className="flex items-center">
