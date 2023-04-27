@@ -38,10 +38,6 @@ export const LoginView = () => {
     event.preventDefault();
   };
 
-  const onChangePhone = useCallback((event: React.ChangeEvent< HTMLInputElement>) => {
-    setPhone(event.target.value.replace(/(-)|\+|\(|\)|(_)/g, ''));
-  }, []);
-
   const onChangePassword = useCallback((event: React.ChangeEvent< HTMLInputElement>) => {
     setPassword(event.target.value);
     setError(false);

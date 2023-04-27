@@ -81,7 +81,7 @@ export const CargoOrder = ({order}: CargoOrderProps) => {
           id="panel1bh-header"
           className="px-4"
         >
-          <div className="flex flex-col">
+          <div className="flex flex-col w-full">
             <div className="flex items-center justify-between px-2">
               <div className="flex items-center mb-2 gap-2">
                 {order.weight !== "NaN" && (

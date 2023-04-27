@@ -8,7 +8,7 @@ import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 import SearchIcon from "@mui/icons-material/Search";
 import LoadingButton from "@mui/lab/LoadingButton";
-import {getCookie, setCookie} from "cookies-next";
+import {setCookie} from "cookies-next";
 import {UserInfoProps} from "./types/UserInfo";
 import {ItemTypeProps} from "../../molecules/NavList/type/itemType";
 import {MainComponent} from "./libs/MainComponent";
@@ -60,11 +60,14 @@ export const MainView = () => {
             'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
             token: token.toString()
           },
-        });
+        })
         if (response.ok) {
           setLoading(false);
         } else {
           setLoading(false);
+          if (response.status === 401) {
+            router.push('/login');
+          }
         }
         return await response.json();
       }
