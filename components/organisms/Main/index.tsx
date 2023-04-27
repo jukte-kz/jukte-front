@@ -65,9 +65,7 @@ export const MainView = () => {
           setLoading(false);
         } else {
           setLoading(false);
-          if (response.status === 401) {
-            router.push('/login');
-          }
+          router.push('/login');
         }
         return await response.json();
       }
