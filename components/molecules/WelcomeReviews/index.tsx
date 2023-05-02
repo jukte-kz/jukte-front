@@ -15,12 +15,12 @@ export const WelcomeReviews = () => {
       description: "Hello World!"
     },
     {
-      name: "Random Name #2",
+      name: "Random Name #3",
       role: "logistician",
       description: "Hello World!"
     },
     {
-      name: "Random Name #2",
+      name: "Random Name #4",
       role: "logistician",
       description: "Hello World!"
     }
