@@ -69,9 +69,6 @@ export const WelcomeReviews = () => {
           </div>
           <div>
             <Carousel>
-              {
-                items.map( (item, i) => <Item key={i} item={item} /> )
-              }
             </Carousel>
           </div>
         </div>
