@@ -2,6 +2,7 @@
 @import "tailwindcss/components.css";
 @import "tailwindcss/utilities.css";
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap');
 
 .Mui-focused {
     color: #00abc2!important;
@@ -26,7 +27,7 @@
 }
 
 .MuiTypography-root {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 input {
@@ -140,5 +141,80 @@ input {
         &:focus {
             border-color: #00abc2 !important;
         }
+    }
+}
+
+.button__outlined {
+    @apply rounded-full;
+    @apply capitalize;
+    border-color: #00abc2;
+    color: #00abc2;
+    &:hover {
+        border-color: #00abc2;
+        background-color: #00abc2;
+        color: white;
+    }
+}
+
+.button__contained {
+    @apply rounded-full;
+    @apply capitalize;
+    background-color: #00abc2;
+    color: white;
+
+    &:hover {
+        background-color: #00abc2;
+        @apply shadow;
+        @apply shadow-current;
+    }
+}
+
+.MuiCard-root {
+    background-image: none!important;
+    background-color: transparent!important;
+    box-shadow: none!important;
+
+    .MuiCardMedia-root {
+        border-radius: 1rem;
+        max-width: 100% !important;
+        max-height: 240px !important;
+    }
+
+    .MuiCardContent-root {
+        padding: 1rem 0!important;
+    }
+
+    p {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .MuiCardActionArea-focusHighlight {
+        border-radius: 1rem;
+    }
+
+    &:hover {
+        .MuiTypography-h5 {
+            color: #00abc2!important;
+        }
+        p {
+            background-color: #00abc2!important;
+        }
+    }
+
+    p {
+        @apply rounded-xl;
+        padding: 1rem;
+        background-color: #1d1d1d!important;
+    }
+}
+
+.link__normal {
+    color: #0a0a0a;
+    text-decoration: none;
+    &:hover {
+        color: #00abc2;
+        text-decoration: underline;
     }
 }
