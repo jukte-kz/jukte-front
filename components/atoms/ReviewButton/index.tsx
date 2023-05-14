@@ -72,7 +72,7 @@ export const ReviewButton = () => {
                   <path className="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
                 </svg>
               </div>
-              <Button variant="outlined" className="button__outlined border-white text-white hover:border-[#00abc2] text-lg px-6" onClick={toShow}>
+              <Button variant="outlined" className="capitalize border-white text-white hover:border-[#00abc2] hover:bg-[#00abc2] text-lg px-6" onClick={toShow}>
                 Закрыть
               </Button>
             </div>
@@ -139,7 +139,7 @@ export const ReviewButton = () => {
                 multiline
                 rows={4}
               />
-              <Button variant="outlined" className="button__outlined border-white text-white hover:border-[#00abc2] text-lg px-6" onClick={toShowSuccessDialog}>
+              <Button variant="outlined" className="capitalize border-white text-white hover:border-[#00abc2] hover:bg-[#00abc2] text-lg px-6" onClick={toShowSuccessDialog}>
                 Отправить
               </Button>
             </div>

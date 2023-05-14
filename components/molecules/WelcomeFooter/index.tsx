@@ -54,7 +54,7 @@ export const WelcomeFooter = () => {
           <div className="flex flex-col gap-y-3">
             <Button
               variant="contained"
-              className="button__contained py-3"
+              className="rounded-full capitalize bg-[#00abc2] text-white hover:shadow-current hover:shadow py-3"
               endIcon={
                 <ArrowForwardIosIcon />
               }
@@ -68,7 +68,7 @@ export const WelcomeFooter = () => {
             </Button>
             <Button
               variant="contained"
-              className="button__contained py-3"
+              className="rounded-full capitalize bg-[#00abc2] text-white hover:shadow-current hover:shadow py-3"
               endIcon={
                 <ArrowForwardIosIcon />
               }

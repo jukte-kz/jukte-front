@@ -49,12 +49,12 @@ export const WelcomeNav = () => {
         </div>
         <div className="flex items-center gap-4 lg:w-1/3">
           <div className="items-center justify-end gap-4 lg:w-full hidden md:flex">
-            <Button variant="outlined" className="button__outlined text-lg px-6" onClick={() => {
+            <Button variant="outlined" className="rounded-full capitalize border-[#00abc2] text-[#00abc2] hover:bg-[#00abc2] hover:border-[#00abc2] hover:text-white text-lg px-6" onClick={() => {
               router.push('/login');
             }}>
               Войти
             </Button>
-            <Button variant="outlined" className="button__outlined text-lg px-6" onClick={() => {
+            <Button variant="outlined" className="rounded-full capitalize border-[#00abc2] text-[#00abc2] hover:bg-[#00abc2] hover:border-[#00abc2] hover:text-white text-lg px-6" onClick={() => {
               router.push('/registration');
             }}>
               Регистрация

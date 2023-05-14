@@ -23,7 +23,7 @@ export const WelcomeHeadline = () => {
           </Typography>
           <Button
             variant="contained"
-            className="button__contained py-3"
+            className="rounded-full capitalize bg-[#00abc2] text-white hover:shadow-current hover:shadow py-3"
             endIcon={
               <ArrowForwardIosIcon />
             }
