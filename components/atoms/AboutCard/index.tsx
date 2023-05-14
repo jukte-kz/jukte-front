@@ -1,17 +1,18 @@
 import React from 'react';
 import { AboutCardProps } from "./type";
+import styles from './index.module.scss';
 import Typography from "@mui/material/Typography";
 
 export const AboutCard = ({number, title, description}: AboutCardProps) => {
   return (
-    <div className="rounded-3xl bg-[#363636] hover:bg-[#00abc2] p-8 flex flex-col gap-y-4">
-      <Typography variant="h4" className="font-medium text-4xl">
+    <div className={`${styles.aboutCard} rounded-xl p-4 flex flex-col gap-y-2 lg:gap-y-4`}>
+      <Typography className="font-bold text-2xl md:text-3xl text-white">
         {number}
       </Typography>
-      <Typography variant="h5" className="font-medium text-3xl">
+      <Typography className={`${styles.title} font-semibold text-lg md:text-xl`}>
         {title}
       </Typography>
-      <Typography variant="body1" className="font-medium text-xl">
+      <Typography className="font-medium text-base text-white">
         {description}
       </Typography>
     </div>

@@ -9,27 +9,31 @@ export const WelcomeHeadline = () => {
 
   return(
     <>
-      <div className="flex items-start justify-between">
-        <Typography variant="h1" className="uppercase font-bold text-8xl">
-          МЫ МОЖЕМ <span className="text-[#00abc2]">ДОСТАВИТЬ</span> В ЛЮБУЮ ТОЧКУ <span className="text-[#00abc2]">МИРА</span>.
-        </Typography>
-        <div className="rounded-3xl dark:bg-[#292929] p-4 flex flex-col gap-y-6 max-w-[384px]">
-          <Typography>
+      <div className="flex flex-col md:flex-row items-stretch justify-between gap-4">
+        <div>
+          <p className="uppercase font-bold text-3xl md:text-5xl lg:text-7xl text-white">
+            МЫ МОЖЕМ <span className="text-[#00abc2]">ДОСТАВИТЬ</span> В <br className="hidden md:block"/> ЛЮБУЮ ТОЧКУ <span className="text-[#00abc2]">МИРА</span>.
+          </p>
+        </div>
+        <div className="rounded-xl dark:bg-[#292929] p-4 flex flex-col justify-between gap-y-4 lg:gap-y-6 max-w-[384px]">
+          <Typography className="text-white text-lg md:text-xl ">
             Самый быстрый и простой
             способ управлять
             международными перевозками
           </Typography>
           <Button
             variant="contained"
-            className="button__contained"
+            className="button__contained py-3"
             endIcon={
               <ArrowForwardIosIcon />
             }
             onClick={() => {
-              router.push('/login')
+              router.push('/registration')
             }}
           >
-            Войти
+            <Typography variant="button">
+              Регистрация
+            </Typography>
           </Button>
         </div>
       </div>

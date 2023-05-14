@@ -43,9 +43,9 @@ const Home: NextPage = () => {
   });
 
   return (
-    <div className="bg-white dark:bg-[#0a0a0a]">
+    <div className="bg-[#070809]">
       <ThemeProvider theme={darkTheme}>
-        <div className="min-h-screen py-4">
+        <div className="min-h-screen">
           <CssBaseline />
           <motion.main
             variants={variants}

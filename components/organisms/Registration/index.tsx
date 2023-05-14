@@ -250,6 +250,7 @@ export const RegistrationView = () => {
           specialLabel="Номер телефона"
           inputClass={"w-100"}
           country={'kz'}
+          excludeCountries={['ru']}
           value={phone}
           onChange={phone => {
             setPhone(phone);

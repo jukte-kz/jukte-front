@@ -1,0 +1,12 @@
+.aboutCard {
+  background-color: #363636;
+  .title {
+    color: #00abc2;
+  }
+  &:hover {
+    background-color: #00abc2;
+    .title {
+      color: white;
+    }
+  }
+}

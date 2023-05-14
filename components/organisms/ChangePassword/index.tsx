@@ -18,8 +18,8 @@ import CloseIcon from '@mui/icons-material/Close';
 // @ts-ignore
 import InputMask from "react-input-mask";
 import CircularProgress from "@mui/material/CircularProgress";
-import {MuiOtpInput} from "mui-one-time-password-input";
-import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
+import styles from "../../atoms/ReviewButton/index.module.scss";
+import PhoneInput from "react-phone-input-2";
 
 export const ChangePasswordView = () => {
   const [disabled, setDisabled] = useState<boolean>(true);
@@ -176,28 +176,17 @@ export const ChangePasswordView = () => {
         <Typography variant="body1" className="mb-8">
           Для того что бы восстановить пароль вам необходимо ввести ИИН
         </Typography>
-        <InputMask
-          mask="+7-(999)-999-99-99"
+        <PhoneInput
+          specialLabel="Номер телефона"
+          containerClass={`${styles.reactTelInput}`}
+          inputClass={'w-100 border-[rgba(0,0,0,0.23)]'}
+          country={'kz'}
+          excludeCountries={['ru']}
           value={phone}
-          onChange={onChangePhone}
-        >
-          {() => (
-            <TextField
-              fullWidth
-              label="Введите номер телефона"
-              InputProps={{
-                inputMode: 'decimal',
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <LocalPhoneIcon />
-                  </InputAdornment>
-                ),
-                type: 'tel'
-              }}
-              variant="outlined"
-            />
-          )}
-        </InputMask>
+          onChange={phone => {
+            setPhone(phone);
+          }}
+        />
         <TextField
           fullWidth
           className="mt-8"

@@ -5,17 +5,33 @@ import { WelcomeHeadline } from "../../molecules/WelcomeHeadline";
 import { WelcomeAbout } from "../../molecules/WelcomeAbout";
 import { WelcomeInterest } from "../../molecules/WelcomeInterest";
 import { WelcomeReviews } from "../../molecules/WelcomeReviews";
+import {WelcomeFooter} from "../../molecules/WelcomeFooter";
 
 export const WelcomeView = () => {
   const router = useRouter();
 
   return (
-    <div className="w-full px-8 flex flex-col gap-y-9">
-      <WelcomeNav />
-      <WelcomeHeadline />
-      <WelcomeAbout />
-      <WelcomeInterest />
-      <WelcomeReviews />
-    </div>
+    <>
+      <div className="w-full p-4 lg:px-8 flex flex-col gap-y-9 relative">
+        <div id="navbar">
+          <WelcomeNav />
+        </div>
+        <div id="advantages">
+          <WelcomeHeadline />
+        </div>
+        <div id="about">
+          <WelcomeAbout />
+        </div>
+        <div id="interesting">
+          <WelcomeInterest />
+        </div>
+        <div id="reviews">
+          <WelcomeReviews />
+        </div>
+      </div>
+      <div id="footer" className="mt-9">
+        <WelcomeFooter />
+      </div>
+    </>
   )
 };

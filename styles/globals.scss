@@ -4,6 +4,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap');
 
+html, body {
+    scroll-behavior: smooth;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+    transition: background-color 600000s 0s, color 600000s 0s!important;
+}
+
 .Mui-focused {
     color: #00abc2!important;
     svg {
@@ -207,14 +216,5 @@ input {
         @apply rounded-xl;
         padding: 1rem;
         background-color: #1d1d1d!important;
-    }
-}
-
-.link__normal {
-    color: #0a0a0a;
-    text-decoration: none;
-    &:hover {
-        color: #00abc2;
-        text-decoration: underline;
     }
 }
