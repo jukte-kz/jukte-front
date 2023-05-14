@@ -20,6 +20,7 @@ import InputMask from "react-input-mask";
 import CircularProgress from "@mui/material/CircularProgress";
 import {MuiOtpInput} from "mui-one-time-password-input";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
+import PhoneInput from "react-phone-input-2";
 
 export const ChangePasswordView = () => {
   const [disabled, setDisabled] = useState<boolean>(true);
@@ -176,28 +177,16 @@ export const ChangePasswordView = () => {
         <Typography variant="body1" className="mb-8">
           Для того что бы восстановить пароль вам необходимо ввести ИИН
         </Typography>
-        <InputMask
-          mask="+7-(999)-999-99-99"
+        <PhoneInput
+          specialLabel="Номер телефона"
+          inputClass={"w-100"}
+          excludeCountries={['ru']}
+          country={'kz'}
           value={phone}
-          onChange={onChangePhone}
-        >
-          {() => (
-            <TextField
-              fullWidth
-              label="Введите номер телефона"
-              InputProps={{
-                inputMode: 'decimal',
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <LocalPhoneIcon />
-                  </InputAdornment>
-                ),
-                type: 'tel'
-              }}
-              variant="outlined"
-            />
-          )}
-        </InputMask>
+          onChange={phone => {
+            setPhone(phone);
+          }}
+        />
         <TextField
           fullWidth
           className="mt-8"
