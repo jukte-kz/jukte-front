@@ -13,14 +13,12 @@ import DialogContent from "@mui/material/DialogContent";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import WarningIcon from "@mui/icons-material/Warning";
-import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import CloseIcon from '@mui/icons-material/Close';
 // @ts-ignore
 import InputMask from "react-input-mask";
 import CircularProgress from "@mui/material/CircularProgress";
-import {MuiOtpInput} from "mui-one-time-password-input";
-import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import PhoneInput from "react-phone-input-2";
+import 'react-phone-input-2/lib/material.css';
 
 export const ChangePasswordView = () => {
   const [disabled, setDisabled] = useState<boolean>(true);
