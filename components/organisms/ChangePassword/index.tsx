@@ -17,8 +17,8 @@ import CloseIcon from '@mui/icons-material/Close';
 // @ts-ignore
 import InputMask from "react-input-mask";
 import CircularProgress from "@mui/material/CircularProgress";
+import styles from "../../atoms/ReviewButton/index.module.scss";
 import PhoneInput from "react-phone-input-2";
-import 'react-phone-input-2/lib/material.css';
 
 export const ChangePasswordView = () => {
   const [disabled, setDisabled] = useState<boolean>(true);
@@ -177,9 +177,10 @@ export const ChangePasswordView = () => {
         </Typography>
         <PhoneInput
           specialLabel="Номер телефона"
-          inputClass={"w-100"}
-          excludeCountries={['ru']}
+          containerClass={`${styles.reactTelInput}`}
+          inputClass={'w-100 border-[rgba(0,0,0,0.23)]'}
           country={'kz'}
+          excludeCountries={['ru']}
           value={phone}
           onChange={phone => {
             setPhone(phone);

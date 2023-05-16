@@ -1,0 +1,28 @@
+.btnAnimation {
+  animation-name: swipe;
+  animation-duration: 1s;
+}
+
+@media screen and (max-width: 1024px) {
+  .btnAnimation {
+    animation-name: swipeMob;
+    animation-duration: 1s;
+  }
+}
+
+@keyframes swipe {
+  0% {@apply -left-5;}
+  100% {left: 85%;}
+}
+
+@keyframes swipeMob {
+  0% {@apply -left-[1%];}
+  100% {left: 90%;}
+}
+
+.zaebal {
+  .special-label {
+    color: white!important;
+    background-color: #080808!important;
+  }
+}
