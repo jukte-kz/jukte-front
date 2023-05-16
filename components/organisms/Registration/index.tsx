@@ -251,7 +251,6 @@ export const RegistrationView = () => {
           inputClass={"w-100"}
           excludeCountries={['ru']}
           country={'kz'}
-          excludeCountries={['ru']}
           value={phone}
           onChange={phone => {
             setPhone(phone);
