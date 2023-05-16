@@ -13,7 +13,6 @@ import DialogContent from "@mui/material/DialogContent";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import WarningIcon from "@mui/icons-material/Warning";
-import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import CloseIcon from '@mui/icons-material/Close';
 // @ts-ignore
 import InputMask from "react-input-mask";

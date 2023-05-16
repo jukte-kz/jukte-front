@@ -249,6 +249,7 @@ export const RegistrationView = () => {
         <PhoneInput
           specialLabel="Номер телефона"
           inputClass={"w-100"}
+          excludeCountries={['ru']}
           country={'kz'}
           excludeCountries={['ru']}
           value={phone}
