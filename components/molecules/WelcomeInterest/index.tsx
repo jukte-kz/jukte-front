@@ -5,33 +5,14 @@ import React, {useEffect, useState} from 'react';
 import Typography from "@mui/material/Typography";
 import Pagination from '@mui/material/Pagination';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import CurrencyRubleIcon from '@mui/icons-material/CurrencyRuble';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 export const WelcomeInterest = () => {
   const router = useRouter();
   const [usd, setUsd] = useState('');
   const [eur, setEur] = useState('');
-
-  useEffect(() => {
-    fetch('https://api.apilayer.com/exchangerates_data/convert?to=KZT&from=USD&amount=1', {
-      method: 'GET',
-      redirect: 'follow',
-      headers: {
-        apikey: 'z5mN5ejro8SB212Oj3Wb8Xb5c7HVUV1t'
-      }
-    }).then(response => response.json()).then((r) => {
-      setUsd(r.result);
-    });
-    fetch('https://api.apilayer.com/exchangerates_data/convert?to=KZT&from=EUR&amount=1', {
-      method: 'GET',
-      redirect: 'follow',
-      headers: {
-        apikey: 'z5mN5ejro8SB212Oj3Wb8Xb5c7HVUV1t'
-      }
-    }).then(response => response.json()).then((r) => {
-      setEur(r.result);
-    });
-  });
+  const [rub, setRub] = useState('');
 
   const newsCardData = [
     {
@@ -50,7 +31,43 @@ export const WelcomeInterest = () => {
              На бирже отметили, что вырос интерес и к продукции, которую производят непосредственно в Казахстане.
              "В периоды масштабных изменений многие компании уже не могут ограничиваться работой с прежними партнерами и вынуждены искать новых грузоперевозчиков, а в современных условиях это проще всего делать на бирже. Поэтому нужно понимать: трехкратный рост спроса не означает аналогичного роста реального объема перевозок — здесь динамика гораздо скромнее", — считает директор казахстанского представительства международной биржи грузоперевозок "ATI.SU" Рената Зобова.`
     }
-  ]
+  ];
+  const currency = [
+    {
+      id: 1,
+      text: 'USD (продажа)',
+      icon: AttachMoneyIcon,
+      value: usd
+    },
+    {
+      id: 2,
+      text: 'EUR (продажа)',
+      icon: EuroIcon,
+      value: eur
+    },
+    {
+      id: 3,
+      text: 'RUB (продажа)',
+      icon: CurrencyRubleIcon,
+      value: rub
+    }
+  ];
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/api/migParser');
+        const data = await response.json();
+        setUsd(data.usd);
+        setEur(data.eur);
+        setRub(data.rub)
+      } catch (error) {
+        console.error('Ошибка:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div className="flex flex-col gap-y-4">
@@ -62,10 +79,11 @@ export const WelcomeInterest = () => {
           <Typography className="text-white text-2xl lg:text-4xl font-semibold">
             Новости по грузоперевозкам
           </Typography>
-          <div className="flex flex-col md:flex-row items-start justify-center gap-4">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-4 h-full">
             {newsCardData.map((card) => {
               return (
                 <NewsCard
+                  key={card.id}
                   id={card.id}
                   img={card.img}
                   title={card.title}
@@ -84,32 +102,25 @@ export const WelcomeInterest = () => {
           <div className="flex flex-col p-4 gap-y-4 bg-[#292929] rounded-xl w-full">
             <Typography className="text-2xl lg:text-3xl font-medium">Курсы валют</Typography>
             <div className="flex flex-col gap-y-1 lg:gap-y-4">
-              <div className="p-4 bg-[#363636] rounded-xl flex justify-between items-center hover:bg-[#00abc2]">
-                <div className="flex items-center gap-4">
-                  <div className="p-2 bg-white text-[#00abc2] flex items-center justify-center rounded-full">
-                    <AttachMoneyIcon />
-                  </div>
-                  <div className="flex flex-col">
-                    <Typography variant="caption" className="uppercase font-bold">USD</Typography>
-                    {usd && (
-                      <Typography variant="subtitle2" className="uppercase">{usd} ₸</Typography>
-                    )}
-                  </div>
-                </div>
-              </div>
-              <div className="p-4 bg-[#363636] rounded-xl flex justify-between items-center hover:bg-[#00abc2]">
-                <div className="flex items-center gap-4">
-                  <div className="p-2 bg-white text-[#00abc2] flex items-center justify-center rounded-full">
-                    <EuroIcon />
-                  </div>
-                  <div className="flex flex-col">
-                    <Typography variant="caption" className="uppercase font-bold">EUR</Typography>
-                    {eur && (
-                      <Typography variant="subtitle2" className="uppercase">{eur} ₸</Typography>
-                    )}
-                  </div>
-                </div>
-              </div>
+              {
+                currency.map((item) => {
+                  return(
+                    <div key={item.id} className="p-4 bg-[#363636] rounded-xl flex justify-between items-center hover:bg-[#00abc2]">
+                      <div className="flex items-center gap-4">
+                        <div className="p-2 bg-white text-[#00abc2] flex items-center justify-center rounded-full">
+                          <item.icon />
+                        </div>
+                        <div className="flex flex-col">
+                          <Typography variant="caption" className="uppercase font-bold">{item.text}</Typography>
+                          {item.value && (
+                            <Typography variant="subtitle2" className="uppercase">{item.value} ₸</Typography>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  )
+                })
+              }
             </div>
           </div>
           <div className="flex flex-col p-4 gap-y-4 bg-[#292929] rounded-xl w-full">

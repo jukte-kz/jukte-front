@@ -28,7 +28,11 @@ export const ReviewButton = () => {
 
   const toShow = useCallback(() => {
     setStartAnimation(!startAnimation);
-    setTimeout(() => {setShow(!show)}, 1100);
+    if (show) {
+      setShow(false);
+    } else {
+      setTimeout(() => {setShow(!show)}, 1100);
+    }
   }, [startAnimation,show]);
 
   const toShowSuccessDialog = useCallback(() => {
@@ -48,7 +52,7 @@ export const ReviewButton = () => {
   return (
     <>
       <div className="w-full bg-[#1d1d1d] h-6 md:h-14 rounded-b-xl relative flex items-center">
-        <div className={`${startAnimation ? styles.btnAnimation : styles.btnAnimationReverse} absolute`}>
+        <div className={`${startAnimation ? styles.btnAnimation : '-left-[1%] md:-left-4'} absolute`}>
           <IconButton onClick={toShow} className="bg-[#00abc2] md:p-4 lg:p-7 text-white">
             <ArrowForwardIcon className="w-[28px] h-[28px] md:w-[64px] md:h-[64px]" />
           </IconButton>
@@ -63,7 +67,7 @@ export const ReviewButton = () => {
         {successDialog ? (
           <div className="flex flex-col gap-4 p-4 md:p-8 bg-[#080808]">
             <div className="flex justify-between items-center">
-              <DialogTitle className="p-0">Ваш отзыв принят спасибо!</DialogTitle>
+              <DialogTitle className="p-0 text-white">Ваш отзыв принят спасибо!</DialogTitle>
             </div>
             <div className="flex flex-col gap-6">
               <div className="success-animation mt-4 mb-6">
@@ -78,21 +82,26 @@ export const ReviewButton = () => {
             </div>
           </div>
           ) : (
-          <div className="flex flex-col gap-4 p-4 md:p-8 bg-[#080808]">
+          <div className="flex flex-col gap-4 p-4 md:p-8 bg-[#080808] text-white">
             <div className="flex justify-between items-center">
               <DialogTitle className="p-0">Оставьте свой отзыв</DialogTitle>
-              <div onClick={toShow} className="flex items-center gap-x-2 cursor-pointer">
-                <p>Закрыть</p>
-                <IconButton
-                  className="shadow-xl bg-neutral-200"
-                >
-                  <CloseIcon className="text-black" />
-                </IconButton>
-              </div>
+              <IconButton
+                onClick={toShow}
+                className="shadow-xl bg-neutral-200 cursor-pointer"
+              >
+                <CloseIcon className="text-black" />
+              </IconButton>
             </div>
             <div className="flex flex-col gap-6">
               <FormControl className={styles.form}>
-                <FormLabel id="demo-controlled-radio-buttons-group" className="focus:text-white">Выберите свою деятельность</FormLabel>
+                <FormLabel
+                  id="demo-controlled-radio-buttons-group"
+                  className="text-white focus:text-white"
+                >
+                  <p>
+                    Выберите свою деятельность
+                  </p>
+                </FormLabel>
                 <RadioGroup
                   aria-labelledby="demo-controlled-radio-buttons-group"
                   name="controlled-radio-buttons-group"
@@ -100,19 +109,51 @@ export const ReviewButton = () => {
                   value={role}
                   onChange={handleChangeRole}
                 >
-                  <FormControlLabel value="logistician" control={<Radio />} label="Отправитель" />
-                  <FormControlLabel value="driver" control={<Radio />} label="Перевозчик" />
+                  <FormControlLabel
+                    value="logistician"
+                    label="Отправитель"
+                    control={
+                      <Radio classes={{
+                        root: 'text-white'
+                      }} />
+                    }
+                  />
+                  <FormControlLabel
+                    value="driver"
+                    label="Перевозчик"
+                    control={
+                      <Radio classes={{
+                        root: 'text-white'
+                      }} />
+                    }
+                  />
                 </RadioGroup>
               </FormControl>
               <TextField
+                id="darkInput"
                 fullWidth
                 label="Введите ФИО"
                 value={name}
                 name="name"
                 onChange={onChangeName}
+                InputLabelProps={{
+                  classes: {
+                    root: "text-white"
+                  }
+                }}
                 InputProps={{
+                  classes: {
+                    root: "text-white",
+                    notchedOutline: "border-white",
+                    adornedStart: "text-white"
+                  },
                   startAdornment: (
-                    <InputAdornment position="start">
+                    <InputAdornment
+                      position="start"
+                      classes={{
+                        root: 'text-white'
+                      }}
+                    >
                       <BadgeIcon />
                     </InputAdornment>
                   ),
@@ -121,8 +162,9 @@ export const ReviewButton = () => {
               />
               <PhoneInput
                 specialLabel="Номер телефона"
-                containerClass={`${styles.reactTelInput}`}
-                inputClass={'w-100 border-[rgba(0,0,0,0.23)]'}
+                containerClass="[&>.special-label]:bg-[#080808] [&>.special-label]:text-white"
+                inputClass={`w-100 border-white bg-transparent`}
+                dropdownClass={'text-black'}
                 country={'kz'}
                 excludeCountries={['ru']}
                 value={phone}
@@ -132,6 +174,18 @@ export const ReviewButton = () => {
               />
               <TextField
                 onChange={onChangeReview}
+                InputLabelProps={{
+                  classes: {
+                    root: "text-white"
+                  }
+                }}
+                InputProps={{
+                  classes: {
+                    root: "text-white",
+                    notchedOutline: "border-white",
+                    adornedStart: "text-white"
+                  }
+                }}
                 variant="outlined"
                 label="Ваш отзыв"
                 value={review}

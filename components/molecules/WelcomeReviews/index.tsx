@@ -85,6 +85,7 @@ export const WelcomeReviews = () => {
             {reviewsData.map((review) => {
               return (
                 <ReviewCard
+                  key={review.id}
                   id={review.id}
                   text={review.text}
                   role={review.role}

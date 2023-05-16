@@ -45,7 +45,7 @@ export const WelcomeFooter = () => {
             ПОЗВОЛЬТЕ НАМ <span className="text-[#00abc2]">ДОСТАВИТЬ</span> ВАШУ <span className="text-[#00abc2]">ПОСЫЛКУ</span> В ПУНКТ НАЗНАЧЕНИЯ.
           </p>
         </div>
-        <div className="rounded-xl dark:bg-[#1D1D1D] p-4 flex flex-col justify-between gap-y-8 lg:gap-y-6 max-w-[384px]">
+        <div className="rounded-xl bg-[#1D1D1D] p-4 flex flex-col justify-between gap-y-8 lg:gap-y-6 max-w-[384px]">
           <Typography className="text-white text-lg md:text-xl ">
             Самый быстрый и простой
             способ управлять
@@ -96,11 +96,11 @@ export const WelcomeFooter = () => {
               <div className="flex flex-col gap-y-4 md:gap-y-6 items-start">
                 <div className="flex flex-col gap-y-1">
                   <p className="font-semibold text-base">Адрес:</p>
-                  <p className="text-sm">Надо поставить какой нибудь адрес</p>
+                  <p className="text-sm">г.Алматы, улица Сатпаева 29д</p>
                 </div>
                 <div className="flex flex-col gap-y-1">
                   <p>Контакты:</p>
-                  <a href="tel:+77765000001" className="underline text-sm hover:text-[#00abc2]">+7-776-500-00-01</a>
+                  <a href="tel:+77770842824" className="underline text-sm hover:text-[#00abc2]">+7-777-084-28-24</a>
                   <a href="mailto:kanat.jukte@gmail.com" className="underline text-sm hover:text-[#00abc2]">kanat.jukte@gmail.com</a>
                 </div>
               </div>
@@ -119,13 +119,13 @@ export const WelcomeFooter = () => {
               <div className="flex flex-col gap-y-1">
                 <p className="font-semibold text-base">Мы в соц сетях:</p>
                 <div className="flex gap-x-2">
-                  <a href="#" className="underline text-sm hover:text-[#00abc2]">
+                  <a href="https://api.whatsapp.com/send?phone=77770842824" target="_blank" className="underline text-sm hover:text-[#00abc2]">
                     <WhatsAppIcon className="h-[24px] w-[24px]" />
                   </a>
-                  <a href="#" className="underline text-sm hover:text-[#00abc2]">
+                  <a href="https://t.me/jukte" target="_blank" className="underline text-sm hover:text-[#00abc2]">
                     <TelegramIcon className="h-[24px] w-[24px]" />
                   </a>
-                  <a href="#" className="underline text-sm hover:text-[#00abc2]">
+                  <a href="https://www.instagram.com/jukte.kz.k/" target="_blank" className="underline text-sm hover:text-[#00abc2]">
                     <InstagramIcon className="h-[24px] w-[24px]" />
                   </a>
                 </div>
@@ -135,7 +135,7 @@ export const WelcomeFooter = () => {
         </div>
         <iframe
           className="rounded-xl w-full mt-8 lg:mt-0 lg:w-1/3"
-          src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2173.8067559410397!2d76.89150391263918!3d43.20117671266704!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x388368967e2fa855%3A0x2961f68b2be8f57a!2sMEGA%20Alma-Ata!5e0!3m2!1sru!2skz!4v1684029714018!5m2!1sru!2skz"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2906.673356513865!2d76.9116044!3d43.237307699999995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3883692e11891a33%3A0x7731f6531a13f17e!2z0YPQu9C40YbQsCDQodCw0YLQv9Cw0LXQstCwIDI5INC0LCDQkNC70LzQsNGC0YsgMDUwMDAw!5e0!3m2!1sru!2skz!4v1684275066856!5m2!1sru!2skz"
           width="600" height="250" loading="lazy"
           referrerPolicy="no-referrer-when-downgrade">
         </iframe>

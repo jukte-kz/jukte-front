@@ -8,6 +8,10 @@ html, body {
     scroll-behavior: smooth;
 }
 
+#darkInput {
+    border-color: white!important;
+}
+
 input:-webkit-autofill,
 input:-webkit-autofill:focus {
     transition: background-color 600000s 0s, color 600000s 0s!important;
@@ -15,6 +19,9 @@ input:-webkit-autofill:focus {
 
 .Mui-focused {
     color: #00abc2!important;
+    p {
+        color: white;
+    }
     svg {
         fill: #00abc2;
     }
@@ -142,7 +149,7 @@ input {
     .special-label {
         top: -10px !important;
         left: 10px !important;
-        color: rgba(0, 0, 0, 0.6);
+        color: black;
         @apply dark:text-[#ffffffb3] #{!important};
         @apply dark:bg-[#0a0a0a] #{!important};
     }

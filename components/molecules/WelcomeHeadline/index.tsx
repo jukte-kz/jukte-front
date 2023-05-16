@@ -15,7 +15,7 @@ export const WelcomeHeadline = () => {
             МЫ МОЖЕМ <span className="text-[#00abc2]">ДОСТАВИТЬ</span> В <br className="hidden md:block"/> ЛЮБУЮ ТОЧКУ <span className="text-[#00abc2]">МИРА</span>.
           </p>
         </div>
-        <div className="rounded-xl dark:bg-[#292929] p-4 flex flex-col justify-between gap-y-4 lg:gap-y-6 max-w-[384px]">
+        <div className="rounded-xl bg-[#292929] p-4 flex flex-col justify-between gap-y-4 lg:gap-y-6 max-w-[384px]">
           <Typography className="text-white text-lg md:text-xl ">
             Самый быстрый и простой
             способ управлять

@@ -28,17 +28,17 @@ export const DrawerMenu = () => {
       href: '#advantages'
     },
     {
-      id: 3,
+      id: 2,
       text: 'Интересное',
       href: '#interesting'
     },
     {
-      id: 4,
+      id: 3,
       text: 'О нас',
       href: '#about'
     },
     {
-      id: 5,
+      id: 4,
       text: 'Отзывы',
       href: '#reviews'
     }
@@ -81,12 +81,12 @@ export const DrawerMenu = () => {
             <List sx={style} component="nav" aria-label="mailbox folders">
               {linksData.map((link) => {
                 return (
-                  <>
-                    <ListItemButton href={link.href} key={link.id}>
+                  <div key={link.id}>
+                    <ListItemButton href={link.href}>
                       <ListItemText primary={link.text} />
                     </ListItemButton>
                     <Divider />
-                  </>
+                  </div>
                 )
               })}
             </List>
