@@ -36,12 +36,12 @@ export const Profile = () => {
   }, []);
 
   return (
-    <div className="w-full px-4 mt-4">
+    <div className="w-full px-4 mt-4 text-black">
       {loading ? (
         <div>
-          <Skeleton animation="wave" variant="rounded" height={32} className="dark:bg-[#232323]" />
-          <Skeleton animation="wave" variant="rounded" height={308} className="dark:bg-[#232323] mt-4" />
-          <Skeleton animation="wave" variant="rounded" height={244} className="dark:bg-[#232323] mt-4" />
+          <Skeleton animation="wave" variant="rounded" height={32} className="" />
+          <Skeleton animation="wave" variant="rounded" height={308} className="mt-4" />
+          <Skeleton animation="wave" variant="rounded" height={244} className="mt-4" />
         </div>
       ) : (userInfo && (
           <>

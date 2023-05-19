@@ -42,6 +42,7 @@ export const MapComponent = ({from, transfer, transfer2, transfer3, transfer4, t
           setRefreshMap(false);
           setTimeout(() => {setRefreshMap(true)}, 1000);
         }}
+        className="text-[#00abc2] border-[#00abc2] disabled:text-transparent"
       >
         Обновить маршрут
       </LoadingButton>
@@ -50,6 +51,7 @@ export const MapComponent = ({from, transfer, transfer2, transfer3, transfer4, t
         onClick={() => {
           setShowMap(!showMap)
         }}
+        className="text-[#00abc2] border-[#00abc2]"
       >
         {showMap ? 'Закрыть маршрут' : 'Показать маршрут'}
       </Button>

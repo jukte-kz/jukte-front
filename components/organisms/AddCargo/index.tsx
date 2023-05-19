@@ -170,7 +170,7 @@ export const AddCargo = ({onSetStep, currentStep}: AddCargoProps) => {
   };
 
   return (
-    <div className="w-full px-4 mt-4">
+    <div className="w-full px-4 mt-4 text-black">
       <div className="flex items-center justify-between">
         <Typography variant="h6">
           Добавить груз
@@ -187,7 +187,7 @@ export const AddCargo = ({onSetStep, currentStep}: AddCargoProps) => {
               onNextStepStatus={getInfoNextStepStatus}
               onFreeCarStatus={getFreeCarStatus}
             />
-            <Divider className="my-4 dark:border-white" />
+            <Divider className="my-4" />
             <div className="flex gap-4 item-center justify-between">
               <Button fullWidth variant="outlined" disabled={activeStep === 0} onClick={handleBack}>
                 <KeyboardArrowLeft />
@@ -218,7 +218,7 @@ export const AddCargo = ({onSetStep, currentStep}: AddCargoProps) => {
               duration={duration}
               freeCar={freeCar}
             />
-            <Divider className="my-4 dark:border-white" />
+            <Divider className="my-4" />
             <div className="flex gap-4 item-center justify-between">
               <Button fullWidth variant="outlined" onClick={handleBack}>
                 <KeyboardArrowLeft />

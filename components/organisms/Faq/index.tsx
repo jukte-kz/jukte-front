@@ -14,7 +14,7 @@ export const Faq = () => {
   }, [expanded]);
 
   return (
-    <div className="w-full px-4 mt-4">
+    <div className="w-full px-4 mt-4 text-black">
       <div className="flex items-center">
         <Typography variant="h6">
           Вопросы и ответы

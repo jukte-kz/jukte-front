@@ -5,7 +5,7 @@ import { RegistrationView } from "../components/organisms/Registration";
 const Registration: NextPage = () => {
 
   return (
-    <div className="bg-white dark:bg-[#0a0a0a]">
+    <div className="bg-white">
       <div className="min-h-screen py-4">
         <RegistrationView />
       </div>

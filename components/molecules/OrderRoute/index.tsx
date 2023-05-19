@@ -128,7 +128,7 @@ export const OrderRoute = ({getInfoFromMap, onNextStepStatus, onFreeCarStatus, g
         id="from"
         label="Откуда"
         variant="outlined"
-        className="autofill:bg-transparent dark:autofill:bg-sky"
+        className="autofill:bg-transparent"
         value={from}
         onChange={onChangeFrom}
       />
@@ -173,7 +173,7 @@ export const OrderRoute = ({getInfoFromMap, onNextStepStatus, onFreeCarStatus, g
           {countTransfer !== 4 && (
             <IconButton
               aria-label="addTransfer"
-              className="text-[#00ABC2] dark:text-white"
+              className="text-[#00ABC2]"
               onClick={addTransfer}
             >
               <AddRoadIcon className="mr-2" />
@@ -185,7 +185,7 @@ export const OrderRoute = ({getInfoFromMap, onNextStepStatus, onFreeCarStatus, g
           {countTransfer > 0 && (
             <IconButton
               aria-label="deleteTransfer"
-              className="text-[#00ABC2] dark:text-white"
+              className="text-[#00ABC2]"
               onClick={deleteTransfer}
             >
               <RemoveRoadIcon className="mr-2" />

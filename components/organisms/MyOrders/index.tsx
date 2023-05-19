@@ -79,13 +79,13 @@ export const MyOrdersView = () => {
   };
 
   return (
-    <div className="w-full px-4 mt-4">
+    <div className="w-full px-4 mt-4 text-black">
       {loading ? (
         <>
-          <Skeleton animation="wave" variant="rounded" height={32} className="dark:bg-[#232323]" />
-          <Skeleton animation="wave" variant="rounded" height={56} className="dark:bg-[#232323] mt-4" />
-          <Skeleton animation="wave" variant="rounded" height={56} className="dark:bg-[#232323] mt-4" />
-          <Skeleton animation="wave" variant="rounded" height={56} className="dark:bg-[#232323] mt-4" />
+          <Skeleton animation="wave" variant="rounded" height={32} className="" />
+          <Skeleton animation="wave" variant="rounded" height={56} className="mt-4" />
+          <Skeleton animation="wave" variant="rounded" height={56} className="mt-4" />
+          <Skeleton animation="wave" variant="rounded" height={56} className="mt-4" />
         </>
         ) : (
         <>

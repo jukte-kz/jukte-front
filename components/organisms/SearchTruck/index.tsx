@@ -51,7 +51,7 @@ export const SearchTruck = () => {
       {searchCargo ? (
         role === 'logistician' ? <TransportOrdersView /> : <CargoOrdersView />
         ) : (
-        <div className="w-full px-4 mt-4">
+        <div className="w-full px-4 mt-4 text-black">
           <div className="flex items-center">
             <Typography variant="h6">
               {role == 'logistician' ? 'Искать транспорт' : 'Искать груз'}
@@ -63,7 +63,7 @@ export const SearchTruck = () => {
               id="from"
               label="Откуда"
               variant="outlined"
-              className="autofill:bg-transparent dark:autofill:bg-sky"
+              className="autofill:bg-transparent"
               value={from}
               onChange={onChangeFrom}
             />

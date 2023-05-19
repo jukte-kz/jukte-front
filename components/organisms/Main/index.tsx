@@ -84,7 +84,7 @@ export const MainView = () => {
     <>
       {loading ? (
         <div className="w-full px-4">
-          <Skeleton animation="wave" variant="rounded" height={32} className="dark:bg-[#232323]" />
+          <Skeleton animation="wave" variant="rounded" height={32} className="" />
         </div>
         ) : (
         <div className="w-full">
@@ -106,15 +106,15 @@ export const MainView = () => {
           </div>
         </div>
       )}
-      <Divider className="my-2 dark:border-white" />
+      <Divider className="my-2" />
       {currentStep === ItemTypeProps.MAIN && (
         loading ? (
           <div className="w-full mt-2 px-4">
-            <Skeleton animation="wave" variant="rounded" height={120} className="dark:bg-[#232323]" />
+            <Skeleton animation="wave" variant="rounded" height={120} className="" />
             <div className="flex items-start justify-center mt-4 gap-x-16">
-              <Skeleton animation="wave" variant="circular" width={68} height={68} className="dark:bg-[#232323]" />
-              <Skeleton animation="wave" variant="circular" width={68} height={68} className="dark:bg-[#232323]" />
-              <Skeleton animation="wave" variant="circular" width={68} height={68} className="dark:bg-[#232323]" />
+              <Skeleton animation="wave" variant="circular" width={68} height={68} className="" />
+              <Skeleton animation="wave" variant="circular" width={68} height={68} className="" />
+              <Skeleton animation="wave" variant="circular" width={68} height={68} className="" />
             </div>
           </div>
           ) : userInfo && (

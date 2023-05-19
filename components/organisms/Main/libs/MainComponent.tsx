@@ -18,7 +18,7 @@ export const MainComponent = ({name, surname, role, onSetStep} : UserMainCard) =
   };
   return (
     <>
-      <div className="px-4">
+      <div className="px-4 text-black">
         <div className="flex items-center mt-2">
           <Typography variant="h6">
             Главная страница
@@ -38,8 +38,8 @@ export const MainComponent = ({name, surname, role, onSetStep} : UserMainCard) =
           <div className="text-center w-1/3" onClick={(event) => {
             onClickButton(ItemTypeProps.ADD_CARGO);
           }}>
-            <IconButton className="rounded-full bg-black dark:bg-white">
-              <UploadIcon className="fill-white dark:fill-black" />
+            <IconButton className="rounded-full bg-black">
+              <UploadIcon className="fill-white" />
             </IconButton>
             <Typography className="mt-2 text-xs" variant="body2">
               Добавить груз
@@ -72,8 +72,8 @@ export const MainComponent = ({name, surname, role, onSetStep} : UserMainCard) =
           <div className="text-center w-1/3" onClick={(event) => {
             onClickButton(ItemTypeProps.USER_DATA);
           }}>
-            <IconButton className="rounded-full bg-black dark:bg-white">
-              <AccountBoxIcon className="fill-white dark:fill-black" />
+            <IconButton className="rounded-full bg-black">
+              <AccountBoxIcon className="fill-white" />
             </IconButton>
             <Typography className="mt-2 text-xs" variant="body2">
               Профиль
@@ -81,11 +81,11 @@ export const MainComponent = ({name, surname, role, onSetStep} : UserMainCard) =
           </div>
         </div>
       </div>
-      <Divider className="my-4 dark:border-white" />
+      <Divider className="my-4" />
       <MyOrdersSection onSetStep={() => {
         onClickButton(ItemTypeProps.MY_ORDERS);
       }} />
-      <Divider className="my-4 dark:border-white" />
+      <Divider className="my-4" />
       {role === 'driver' && (
         <CargoOrderSection onSetStep={() => {
           onClickButton(ItemTypeProps.CARGO_ORDERS);

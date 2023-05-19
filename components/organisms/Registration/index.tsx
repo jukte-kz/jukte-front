@@ -191,8 +191,8 @@ export const RegistrationView = () => {
   return (
     <div className="w-full px-4 flex flex-col gap-4">
       <div className="mb-2 flex items-center relative">
-        <Fab variant='circular' size="small" className="bg-white dark:bg-[#232323] dark:shadow-none" href="/">
-          <ArrowBackIcon className="fill-[#0a0a0a] dark:fill-white" />
+        <Fab variant='circular' size="small" className="bg-white" href="/">
+          <ArrowBackIcon className="fill-[#0a0a0a]" />
         </Fab>
         <div className="absolute w-full flex justify-center">
           <svg width="112" height="24" viewBox="0 0 176 45" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -200,7 +200,7 @@ export const RegistrationView = () => {
           </svg>
         </div>
       </div>
-      <div className="flex flex-col">
+      <div className="flex flex-col text-black">
         <Typography variant="h5">
           Регистрация
         </Typography>
@@ -237,7 +237,7 @@ export const RegistrationView = () => {
         <RadioGroup
           aria-labelledby="demo-controlled-radio-buttons-group"
           name="controlled-radio-buttons-group"
-          className="flex flex-row justify-between"
+          className="flex flex-row justify-between text-black"
           value={role}
           onChange={handleChangeRole}
         >
@@ -248,9 +248,11 @@ export const RegistrationView = () => {
       <div className="mt-4 flex flex-col gap-6">
         <PhoneInput
           specialLabel="Номер телефона"
-          inputClass={"w-100"}
-          excludeCountries={['ru']}
+          containerClass="[&>.special-label]:bg-white [&>.special-label]:text-[rgba(0,0,0,0.6)]"
+          inputClass={`w-100 border-[rgba(0,0,0,0.23)] bg-transparent text-black focus:text-[#00abc2]`}
+          dropdownClass={'text-black'}
           country={'kz'}
+          excludeCountries={['ru']}
           value={phone}
           onChange={phone => {
             setPhone(phone);
@@ -344,7 +346,7 @@ export const RegistrationView = () => {
         disabled={disabled}
         endIcon={<ArrowForwardIcon />}
         variant="contained"
-        className="w-full bg-[#00abc2] text-white disabled:bg-[#e0e0e0] dark:disabled:bg-[#232323] dark:disabled:text-[#626262]"
+        className="w-full bg-[#00abc2] text-white disabled:bg-[#e0e0e0]"
         onClick={() => {
           toCheckRegistration();
         }}
@@ -364,8 +366,8 @@ export const RegistrationView = () => {
                 <div className="flex items-center mb-4" onClick={() => {
                   setAfterBiometriaView(false);
                 }}>
-                  <Fab variant='circular' size="small" className="bg-white dark:bg-[#232323] dark:shadow-none">
-                    <CloseIcon className="text-[#0a0a0a] dark:text-white" />
+                  <Fab variant='circular' size="small" className="bg-white">
+                    <CloseIcon className="text-[#0a0a0a]" />
                   </Fab>
                   <Typography variant="button" className="ml-2">
                     Закрыть
@@ -421,7 +423,7 @@ export const RegistrationView = () => {
           </Typography>
           <Button
             variant="outlined"
-            className="mt-4 w-full text-[#00abc2] border-[#00abc2] disabled:border-[#e0e0e0] disabled:bg-[#e0e0e0] disabled:text-[#e0e0e0] dark:disabled:bg-[#232323] dark:disabled:text-[#232323]"
+            className="mt-4 w-full text-[#00abc2] border-[#00abc2] disabled:border-[#e0e0e0] disabled:bg-[#e0e0e0] disabled:text-[#e0e0e0]"
             fullWidth
             onClick={() => {
               router.push('https://telegram.me/jukte/');
@@ -449,7 +451,7 @@ export const RegistrationView = () => {
           </div>
           <Button
             variant="outlined"
-            className="mt-4 w-full text-[#00abc2] border-[#00abc2] disabled:border-[#e0e0e0] disabled:bg-[#e0e0e0] disabled:text-[#e0e0e0] dark:disabled:bg-[#232323] dark:disabled:text-[#232323]"
+            className="mt-4 w-full text-[#00abc2] border-[#00abc2] disabled:border-[#e0e0e0] disabled:bg-[#e0e0e0] disabled:text-[#e0e0e0]"
             fullWidth
             href="/login"
           >

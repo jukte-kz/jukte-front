@@ -83,8 +83,8 @@ export const LoginView = () => {
       <div className="flex flex-col h-full justify-between">
         <div>
           <div className="mb-6 flex items-center relative">
-            <Fab variant='circular' size="small" className="bg-white dark:bg-[#232323] dark:shadow-none" href="/">
-              <ArrowBackIcon className="fill-[#0a0a0a] dark:fill-white" />
+            <Fab variant='circular' size="small" className="bg-white" href="/">
+              <ArrowBackIcon className="fill-[#0a0a0a]" />
             </Fab>
             <div className="absolute w-full flex justify-center">
               <svg width="112" height="24" viewBox="0 0 176 45" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -92,18 +92,20 @@ export const LoginView = () => {
               </svg>
             </div>
           </div>
-          <Typography variant="h5" className="mb-4 text-black dark:text-white">
+          <Typography variant="h5" className="mb-4 text-black">
             Вход в личный кабинет
           </Typography>
-          <Typography variant="body1" className="mb-8">
+          <Typography variant="body1" className="mb-8 text-black">
             Введите номер телефона и пароль для авторизации в <span className="text-[#00abc2]">Jukte.kz</span>
           </Typography>
           <div className="flex flex-col gap-8">
             <PhoneInput
               specialLabel="Номер телефона"
-              inputClass={"w-100"}
-              excludeCountries={['ru']}
+              containerClass="[&>.special-label]:bg-white [&>.special-label]:text-[rgba(0,0,0,0.6)]"
+              inputClass={`w-100 border-[rgba(0,0,0,0.23)] bg-transparent text-black focus:text-[#00abc2]`}
+              dropdownClass={'text-black'}
               country={'kz'}
+              excludeCountries={['ru']}
               value={phone}
               onChange={phone => {
                 setPhone(phone);
@@ -155,7 +157,7 @@ export const LoginView = () => {
           </Typography>
         </div>
         <div className="mt-10">
-          <Typography variant="body1" className="mb-4">
+          <Typography variant="body1" className="mb-4 text-black">
             У вас еще нету аккаунта? <Link href="/registration" className="text-[#00abc2]">Зарегистрироваться</Link>
           </Typography>
           <LoadingButton
@@ -166,8 +168,8 @@ export const LoginView = () => {
             )}
             variant="contained"
             className={loading ?
-              'w-full bg-[#00abc2] text-white disabled:bg-[#e0e0e0] disabled:text-[#e0e0e0] dark:disabled:bg-[#232323] dark:disabled:text-[#232323]' :
-              'w-full bg-[#00abc2] text-white disabled:bg-[#e0e0e0] dark:disabled:bg-[#232323] dark:disabled:text-[#626262]'}
+              'w-full bg-[#00abc2] text-white disabled:bg-[#e0e0e0] disabled:text-[#e0e0e0]' :
+              'w-full bg-[#00abc2] text-white disabled:bg-[#e0e0e0]'}
             onClick={() => {
               toLogin(phone, password);
             }}

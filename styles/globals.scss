@@ -124,6 +124,11 @@ input {
 }
 
 .react-tel-input {
+    &:focus {
+        .special-label {
+            color: #00abc2!important;
+        }
+    }
     .highlight {
         background: #00abc2!important;
         span {
@@ -131,27 +136,25 @@ input {
         }
     }
     .country-list {
-        @apply dark:bg-[#0a0a0a] #{!important};
-        @apply border border-[#ffffff3b]
+        @apply border border-[#ffffff3b];
     }
     .form-control {
         padding: 16.5px 14px 16.5px 58px !important;
         width: 100% !important;
-        @apply dark:bg-transparent #{!important};
-        @apply dark:border-[#ffffff3b] #{!important};
         &:hover {
             border-color: #00abc2 !important;
         }
         &:focus {
+            color: #00abc2!important;
             box-shadow: 0 0 0 1px #00abc2 !important;
         }
     }
     .special-label {
         top: -10px !important;
         left: 10px !important;
-        color: black;
-        @apply dark:text-[#ffffffb3] #{!important};
-        @apply dark:bg-[#0a0a0a] #{!important};
+        &:focus {
+            color: #00abc2 !important;
+        }
     }
     input {
         &:focus {
