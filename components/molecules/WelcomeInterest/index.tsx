@@ -3,10 +3,11 @@ import {NewsCard} from "../../atoms/NewsCard";
 import EuroIcon from '@mui/icons-material/Euro';
 import React, {useEffect, useState} from 'react';
 import Typography from "@mui/material/Typography";
-import Pagination from '@mui/material/Pagination';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import CurrencyRubleIcon from '@mui/icons-material/CurrencyRuble';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import AOS from "aos";
+import 'aos/dist/aos.css';
 
 export const WelcomeInterest = () => {
   const router = useRouter();
@@ -69,13 +70,17 @@ export const WelcomeInterest = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    AOS.init();
+  }, []);
+
   return (
-    <div className="flex flex-col gap-y-4">
+    <div className="flex flex-col gap-y-4 container w-screen p-4 md:p-0">
       <Typography className="text-[#00abc2] text-xl lg:text-2xl font-semibold">
         Интересное
       </Typography>
       <div className="flex flex-col lg:flex-row items-stretch gap-4">
-        <div className="flex flex-col p-4 gap-y-8 bg-[#292929] rounded-xl">
+        <div data-aos="fade-right" className="flex flex-col p-4 gap-y-8 bg-[#292929] rounded-xl">
           <Typography className="text-white text-2xl lg:text-4xl font-semibold">
             Новости по грузоперевозкам
           </Typography>
@@ -92,13 +97,8 @@ export const WelcomeInterest = () => {
               )
             })}
           </div>
-          {newsCardData.length > 2 && (
-            <div className="flex justify-center">
-              <Pagination count={10} color="primary" />
-            </div>
-          )}
         </div>
-        <div className="flex flex-col gap-y-5 w-full text-white">
+        <div data-aos="fade-left" className="flex flex-col gap-y-5 w-full text-white">
           <div className="flex flex-col p-4 gap-y-4 bg-[#292929] rounded-xl w-full">
             <Typography className="text-2xl lg:text-3xl font-medium">Курсы валют</Typography>
             <div className="flex flex-col gap-y-1 lg:gap-y-4">

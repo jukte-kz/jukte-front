@@ -13,6 +13,7 @@
     "@mui/lab": "^5.0.0-alpha.118",
     "@mui/material": "^5.11.7",
     "@mui/x-date-pickers-pro": "^5.0.18",
+    "aos": "^3.0.0-beta.6",
     "axios": "^1.4.0",
     "cheerio": "^1.0.0-rc.12",
     "cookies-next": "^2.1.1",
@@ -33,9 +34,11 @@
     "react-yandex-maps": "^4.6.0",
     "sass": "^1.58.0",
     "sharp": "^0.31.3",
+    "swiper": "^9.3.2",
     "workbox-webpack-plugin": "^6.5.4"
   },
   "devDependencies": {
+    "@types/aos": "^3.0.4",
     "@types/node": "18.11.3",
     "@types/qs": "^6.9.7",
     "@types/react": "18.0.21",

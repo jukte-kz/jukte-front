@@ -9,9 +9,9 @@ export const WelcomeHeadline = () => {
 
   return(
     <>
-      <div className="flex flex-col md:flex-row items-stretch justify-between gap-4">
+      <div className="flex flex-col md:flex-row items-stretch justify-between w-screen container px-4 gap-y-4 w-full md:px-0">
         <div>
-          <p className="uppercase font-bold text-3xl md:text-5xl lg:text-7xl text-white">
+          <p className="uppercase font-bold text-3xl md:text-4xl lg:text-7xl text-white">
             МЫ МОЖЕМ <span className="text-[#00abc2]">ДОСТАВИТЬ</span> В <br className="hidden md:block"/> ЛЮБУЮ ТОЧКУ <span className="text-[#00abc2]">МИРА</span>.
           </p>
         </div>

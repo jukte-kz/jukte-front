@@ -1,10 +1,12 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Typography from "@mui/material/Typography";
 import {ReviewCard} from "../../atoms/ReviewCard";
 import Trucks from '../../../public/image/trucks.png';
 import Boxes from '../../../public/image/boxes.png';
 import Image from "next/image";
 import {ReviewButton} from "../../atoms/ReviewButton";
+import AOS from "aos";
+import 'aos/dist/aos.css';
 
 export const WelcomeReviews = () => {
   const reviewsData = [
@@ -43,23 +45,27 @@ export const WelcomeReviews = () => {
       text: 'Довольных клиентов',
       title: '3500'
     }
-  ]
+  ];
+
+  useEffect(() => {
+    AOS.init();
+  }, []);
 
   return (
-    <div className="flex flex-col gapy-4 lg:gap-y-16 bg-[#292929] p-4 pb-8 md:pb-10 lg:p-8 lg:pb-16 rounded-xl text-white relative">
+    <div className="flex flex-col gap-y-4 lg:gap-y-16 bg-[#292929] p-4 pb-8 md:pb-10 lg:p-8 lg:pb-16 rounded-xl text-white relative container w-screen">
       <Typography className="text-[#00abc2] text-xl lg:text-2xl font-semibold">
-         Отзывы
+        Отзывы
       </Typography>
-      <div className="lg:absolute top-8 right-0 flex justify-end">
+      <div data-aos="fade-left" className="lg:absolute top-8 right-0 flex justify-end">
         <Image src={Trucks} alt="tricks-img" />
       </div>
       <div className="w-full">
-        <div className="flex flex-col gap-y-4 lg:gap-y-6">
+        <div data-aos="fade-right" className="flex flex-col gap-y-4 lg:gap-y-6">
           <div className="flex flex-col lg:gap-y-4">
             <Typography className="uppercase font-medium text-3xl lg:text-6xl lg:w-1/2">
               <span className="text-[#00abc2]">JUKTE</span> ОДИН ИЗ ЛУЧШИХ И ПЕРВЫХ В <span className="text-[#00abc2]">КАЗАХСТАНЕ</span>
             </Typography>
-            <Typography className="text-body lg:text-xl lg:w-2/3">
+            <Typography className="text-body lg:text-xl lg:w-[50%]">
               Мы являемся профессиональными поставщиками логистических услуг и готовы предложить нашим клиентам широкий
               спектр услуг по перевозке грузов в любую точку мира. Наша компания занимается логистикой уже много лет,
               и мы гордимся своими высокими стандартами обслуживания и качеством работы.
@@ -80,7 +86,7 @@ export const WelcomeReviews = () => {
             })}
           </div>
         </div>
-        <div className="w-full flex flex-col lg:flex-row items-center justify-between mt-6 lg:mt-1.5 gap-y-6">
+        <div data-aos="fade-left" className="w-full flex flex-col lg:flex-row items-center justify-between mt-6 lg:mt-1.5 gap-y-6">
           <div className="flex flex-col md:flex-row items-stretch md:justify-between lg:justify-start gap-y-2 gap-x-4 w-full">
             {reviewsData.map((review) => {
               return (
@@ -105,7 +111,7 @@ export const WelcomeReviews = () => {
                   Ваш отзыв <br/> важен для нас
                 </p>
                 <p className="text-xl font-semibold hidden md:block ">
-                   Ваш отзыв поможет нам понять, <br/> что мы делаем хорошо, <br/> а что можно улучшить.
+                  Ваш отзыв поможет нам понять, <br/> что мы делаем хорошо, <br/> а что можно улучшить.
                 </p>
               </div>
             </div>

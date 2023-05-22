@@ -12,7 +12,7 @@ export const WelcomeView = () => {
 
   return (
     <>
-      <div className="w-full p-4 lg:px-8 flex flex-col gap-y-9 relative">
+      <div className="w-full px-4 lg:px-8 items-center flex flex-col gap-y-9 relative overflow-x-hidden">
         <div id="navbar">
           <WelcomeNav />
         </div>
